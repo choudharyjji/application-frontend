@@ -11,7 +11,7 @@ const formSchema: FormJson = {
       label: 'Monthly Income',
       name: 'monthlyIncome',
       type: FieldType.TEXT,
-      validation: yup.string().required(),
+      validation: yup.number().positive().max(99999).required(),
     },
     {
       name: 'incomeSource',
@@ -69,6 +69,7 @@ const formSchema: FormJson = {
       name: 'payDay',
       label: 'Payday',
       type: FieldType.TEXT,
+      validation: yup.number().positive().lessThan(31).required(),
     },
     {
       name: 'jobArea',
@@ -187,11 +188,13 @@ const formSchema: FormJson = {
         field: 'vehicleOwnership',
         values: [VehicleOwnership.CAR],
       },
+      validation: yup.string().matches(/^[a-zA-Z]{3}$/).required(),
     },
     {
       name: 'iban',
       label: 'Iban',
       type: FieldType.TEXT,
+
     },
     {
       name: 'usingOnlineBanking',

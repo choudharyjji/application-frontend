@@ -9,13 +9,14 @@ const formSchema: FormJson = {
       name: 'firstName',
       type: FieldType.TEXT,
       label: 'First Name',
-      validation: yup.string().required(),
+      validation: yup.string().max(50).matches(/^[^0-9]+$/).required(),
+      autoFocus: true,
     },
     {
       name: 'lastName',
       type: FieldType.TEXT,
       label: 'Last Name',
-      validation: yup.string().required(),
+      validation: yup.string().max(50).matches(/^[^0-9]+$/).required(),
     },
     {
       name: 'gender',
@@ -31,7 +32,7 @@ const formSchema: FormJson = {
           value: Gender.FEMALE,
         },
       ],
-      validation: yup.string().required(),
+      validation: yup.string().oneOf([Gender.MALE, Gender.FEMALE]).required(),
     },
     {
       name: 'dateOfBirth',

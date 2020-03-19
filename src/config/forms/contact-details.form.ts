@@ -6,7 +6,7 @@ import { Education, HousingTenure, MaritalStatus } from '../../enum';
 const formSchema: FormJson = {
   fields: [
     {
-      name: 'dni',
+      name: 'personalCode',
       type: FieldType.TEXT,
       label: 'DNI / NIE',
       validation: yup.string().matches(/^(\d{8})([A-Z])$|^[XYZ]\d{7,8}[A-Z]$/).required(),
@@ -79,31 +79,37 @@ const formSchema: FormJson = {
       name: 'postalCode',
       label: 'Postal Code',
       type: FieldType.TEXT,
+      validation: yup.number().positive().integer().required(),
     },
     {
       name: 'province',
       label: 'Province',
       type: FieldType.TEXT,
+      validation: yup.string().required(),
     },
     {
       name: 'city',
       label: 'City',
       type: FieldType.TEXT,
+      validation: yup.string().required(),
     },
     {
       name: 'street',
       label: 'Street',
       type: FieldType.TEXT,
+      validation: yup.string().max(100).required(),
     },
     {
       name: 'houseNumber',
       label: 'House Number',
       type: FieldType.TEXT,
+      validation: yup.string().max(10).required(),
     },
     {
       name: 'flatNumber',
       label: 'Flat Number',
       type: FieldType.TEXT,
+      validation: yup.string().max(10).required(),
     },
     {
       name: 'housingTenure',
@@ -127,7 +133,13 @@ const formSchema: FormJson = {
           value: HousingTenure.OTHER,
         },
       ],
-      validation: yup.string().required(),
+      validation: yup.string().oneOf(
+        [
+          HousingTenure.OWNER_WITH_MORTGAGE,
+          HousingTenure.OWNER_WITH_MORTGAGE,
+          HousingTenure.RENTAL,
+          HousingTenure.OTHER]
+      ).required(),
     },
   ],
 };
