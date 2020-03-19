@@ -9,7 +9,7 @@ const formSchema: FormJson = {
       name: 'dni',
       type: FieldType.TEXT,
       label: 'DNI / NIE',
-      validation: yup.string().required(),
+      validation: yup.string().matches(/^(\d{8})([A-Z])$|^[XYZ]\d{7,8}[A-Z]$/).required(),
     },
     {
       name: 'maritalStatus',
@@ -125,10 +125,6 @@ const formSchema: FormJson = {
         {
           label: 'Other',
           value: HousingTenure.OTHER,
-        },
-        {
-          label: 'Higher',
-          value: Education.HIGHER,
         },
       ],
       validation: yup.string().required(),

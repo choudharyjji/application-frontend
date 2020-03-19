@@ -1,9 +1,11 @@
 import React from 'react';
-import { useForm, ErrorMessage } from 'react-hook-form';
+import { useForm, ErrorMessage, Controller } from 'react-hook-form';
+import ReactSelect from 'react-select';
 import { Form } from './util/form-generator/form';
 import Input from '../components/input/Input';
 import { FixMeType } from '../type/fix-me.type';
 import Button from '../components/button/Button';
+
 import Select from '../components/select/Select';
 
 interface DynamicFormProp {
@@ -15,7 +17,7 @@ interface DynamicFormProp {
 const DynamicForm = (props: DynamicFormProp) => {
   const { form, onSubmit } = props;
   const {
-    register, handleSubmit, errors, setValue, watch,
+    register, handleSubmit, errors, setValue, watch, control,
   } = useForm({
     validationSchema: form.getValidationSchema(),
     defaultValues: form.getDefaultValues(),
@@ -62,10 +64,30 @@ const DynamicForm = (props: DynamicFormProp) => {
             if (field.isSelectType()) {
               component = (
                 <React.Fragment key={field.id}>
+                  {/* <Controller */}
+                  {/*  as={ */}
+                  {/*    <ReactSelect /> */}
+                  {/*  } */}
+                  {/*  name={field.name} */}
+                  {/*  control={control} */}
+                  {/*  options={field.options} */}
+                  {/*  onFocus={(event:any) => field.onBlurCallback(event)} */}
+                  {/* /> */}
+
                   <Select
+                    control={control}
                     name={name}
                     options={field.options as {}[]}
                     label={field.label}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
+                      field.onChangeCallback(event);
+                    }}
+                    onBlur={(event): void => {
+                      field.onBlurCallback(event);
+                    }}
+                    onFocus={(event): void => {
+                      field.onFocusCallback(event);
+                    }}
                     innerRef={register}
                   />
                   <ErrorMessage errors={errors} name={name} as="p" />

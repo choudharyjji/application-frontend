@@ -32,4 +32,5 @@ const IncomeDetailsPage = (): ReactElement => {
   );
 };
 
+
 export default IncomeDetailsPage;
