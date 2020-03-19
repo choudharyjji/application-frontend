@@ -53,13 +53,13 @@ const formSchema: FormJson = {
     },
     {
       name: 'generalPolicies',
-      label: 'I confirm that I have read and accept the Terms and Conditions and the Data Processing Policy',
+      label: 'I confirm that I have read and accept the Terms and Conditions and the Data Processing Policy.',
       type: FieldType.CHECKBOX,
       validation: yup.boolean().oneOf([true]),
     },
     {
       name: 'marketingConsents',
-      label: 'I consent to be up to date with the latest news and receive special offers and discounts by any means, including electronic communications or equivalent from FiestaCredito.',
+      label: 'I agree to keep up to date with the latest news and receive special offers and discounts by any means, including electronic communications or equivalent from FiestaCredito.',
       type: FieldType.CHECKBOX,
       validation: yup.boolean().oneOf([true]),
     },
