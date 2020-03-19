@@ -1,0 +1,149 @@
+import * as yup from 'yup';
+import { FieldType, FormJson } from '../../dynamic-form/util/form-generator/interface/field.interface';
+import { Form } from '../../dynamic-form/util/form-generator/form';
+import { Education, HousingTenure, MaritalStatus } from '../../enum';
+
+const formSchema: FormJson = {
+  fields: [
+    {
+      name: 'personalCode',
+      type: FieldType.TEXT,
+      label: 'DNI / NIE',
+      validation: yup.string().matches(/^(\d{8})([A-Z])$|^[XYZ]\d{7,8}[A-Z]$/).required(),
+    },
+    {
+      name: 'maritalStatus',
+      label: 'Marital Status',
+      type: FieldType.SELECT,
+      options: [
+        {
+          label: 'Not Married',
+          value: MaritalStatus.NOT_MARRIED,
+        },
+        {
+          label: 'Married',
+          value: MaritalStatus.MARRIED,
+        },
+        {
+          label: 'Divorced',
+          value: MaritalStatus.DIVORCED,
+        },
+        {
+          label: 'Widower',
+          value: MaritalStatus.WIDOWER,
+        },
+        {
+          label: 'Living With Parents',
+          value: MaritalStatus.LIVING_WITH_PARENTS,
+        },
+      ],
+      validation: yup.string().required(),
+    },
+    {
+      name: 'education',
+      label: 'Education',
+      type: FieldType.SELECT,
+      options: [
+        {
+          label: 'None',
+          value: Education.NONE,
+        },
+        {
+          label: 'Primary',
+          value: Education.PRIMARY,
+        },
+        {
+          label: 'Secondary',
+          value: Education.SECONDARY,
+        },
+        {
+          label: 'Vocational',
+          value: Education.VOCATIONAL,
+        },
+        {
+          label: 'Higher',
+          value: Education.HIGHER,
+        },
+        {
+          label: 'Master',
+          value: Education.MASTER,
+        },
+        {
+          label: 'PHD',
+          value: Education.PHD,
+        },
+      ],
+      validation: yup.string().required(),
+    },
+    {
+      name: 'postalCode',
+      label: 'Postal Code',
+      type: FieldType.TEXT,
+      validation: yup.number().positive().integer().required(),
+    },
+    {
+      name: 'province',
+      label: 'Province',
+      type: FieldType.TEXT,
+      validation: yup.string().required(),
+    },
+    {
+      name: 'city',
+      label: 'City',
+      type: FieldType.TEXT,
+      validation: yup.string().required(),
+    },
+    {
+      name: 'street',
+      label: 'Street',
+      type: FieldType.TEXT,
+      validation: yup.string().max(100).required(),
+    },
+    {
+      name: 'houseNumber',
+      label: 'House Number',
+      type: FieldType.TEXT,
+      validation: yup.string().max(10).required(),
+    },
+    {
+      name: 'flatNumber',
+      label: 'Flat Number',
+      type: FieldType.TEXT,
+      validation: yup.string().max(10).required(),
+    },
+    {
+      name: 'housingTenure',
+      label: 'Housing Tenure',
+      type: FieldType.SELECT,
+      options: [
+        {
+          label: 'Owner With Mortgage',
+          value: HousingTenure.OWNER_WITH_MORTGAGE,
+        },
+        {
+          label: 'Owner Without Mortgage',
+          value: HousingTenure.OWNER_WITH_MORTGAGE,
+        },
+        {
+          label: 'Rental',
+          value: HousingTenure.RENTAL,
+        },
+        {
+          label: 'Other',
+          value: HousingTenure.OTHER,
+        },
+      ],
+      validation: yup.string().oneOf(
+        [
+          HousingTenure.OWNER_WITH_MORTGAGE,
+          HousingTenure.OWNER_WITH_MORTGAGE,
+          HousingTenure.RENTAL,
+          HousingTenure.OTHER]
+      ).required(),
+    },
+  ],
+};
+
+const contactDetailsForm = new Form(formSchema);
+
+export default contactDetailsForm;
