@@ -19,6 +19,8 @@ const ApplicationPage = (): ReactElement => {
   const { step } = currentState;
   const location = useLocation();
 
+  console.log(currentState);
+
   if (step === 0 && location.pathname !== '/application/personal-details') {
     return (<Redirect to="/application/personal-details" />);
   }
@@ -27,6 +29,9 @@ const ApplicationPage = (): ReactElement => {
   }
   if (step === 2 && location.pathname !== '/application/income-details') {
     return (<Redirect to="/application/income-details" />);
+  }
+  if (step === 3 && location.pathname !== '/application/checking') {
+    return (<Redirect to="/application/checking" />);
   }
 
   return (

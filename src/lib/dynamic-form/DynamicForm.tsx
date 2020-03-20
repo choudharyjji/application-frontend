@@ -1,12 +1,11 @@
 import React from 'react';
-import { useForm, ErrorMessage, Controller } from 'react-hook-form';
-import ReactSelect from 'react-select';
+import { useForm, ErrorMessage } from 'react-hook-form';
 import { Form } from './util/form-generator/form';
-import Input from '../components/input/Input';
-import { FixMeType } from '../type/fix-me.type';
-import Button from '../components/button/Button';
+import Input from '../../components/input/Input';
+import { FixMeType } from '../../type/fix-me.type';
+import Button from '../../components/button/Button';
 
-import Select from '../components/select/Select';
+import Select from '../../components/select/Select';
 
 interface DynamicFormProp {
   form: Form;

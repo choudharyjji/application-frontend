@@ -4,7 +4,10 @@ import { ApplicationData } from '../../../models/ApplicationData';
 
 const initialState: LeadApplicationStateInterface = {
   step: 0,
-  data: { firstName: 'valeh' },
+  data: {
+    amount: 300,
+    period: 15,
+  },
 };
 
 export function leadApplicationReducer(
@@ -16,7 +19,7 @@ export function leadApplicationReducer(
       return {
         ...state,
         step: state.step + 1,
-        data: action.payload.data,
+        data: { ...state.data, ...action.payload.data },
       };
     default:
       return state;
