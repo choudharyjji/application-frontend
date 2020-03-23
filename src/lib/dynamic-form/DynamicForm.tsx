@@ -7,6 +7,7 @@ import { FixMeType } from '../../type/fix-me.type';
 import Button from '../../components/button/Button';
 import Select from '../../components/select/Select';
 import DateSelect from '../../components/dateSelect/DateSelect';
+import Checkbox from '../../components/checkbox/Checkbox';
 
 interface DynamicFormProp {
   form: Form;
@@ -35,9 +36,10 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
             field.setValueFn = setValue;
             field.watchFn = watch;
             if (field.isInputElement()) {
+              const ComponentTypeWrapper = field.isCheckboxType() ? Checkbox : Input;
               component = (
                 <React.Fragment key={field.id}>
-                  <Input
+                  <ComponentTypeWrapper
                     label={t(field.label)}
                     name={name}
                     type={field.type}
