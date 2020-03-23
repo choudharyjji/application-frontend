@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactSelect from 'react-select';
+import moment from 'moment';
 import { FixMeType } from '../../type/fix-me.type';
 import InputTooltip from '../inputTooltip/inputTooltip';
 
@@ -12,17 +13,36 @@ interface DateSelectProps {
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   innerRef?: FixMeType;
   control?: FixMeType;
+  minDate?: Date;
+  maxDate?: Date;
 }
 
 const DateSelect = (props: DateSelectProps) => {
   const {
-    options, label, innerRef, name, onBlur, onFocus, control,
+    label, innerRef, name, onBlur, onFocus, control, minDate, maxDate,
   } = props;
-
+  const date = moment();
   let textInput: HTMLInputElement | null = null;
-  const date = new Date();
+  const minDateValue = minDate ? moment(minDate) : moment().subtract(100, 'years');
+  const maxDateValue = maxDate ? moment(maxDate) : moment();
 
-  const dayOptions = [{ label: '01', value: 1 }];
+  const yearOptions = (): { label: string; value: number }[] => {
+    const start = minDateValue.year();
+    const end = maxDateValue.year();
+    const result: { label: string; value: number }[] = [];
+
+    for (let i = end; i >= start; i--) {
+      result.push({ label: `${i}`, value: i });
+    }
+    return result;
+  };
+  const dayOptions = (): { label: string; value: number }[] => {
+    const result: { label: string; value: number }[] = [];
+    for (let i = 1; i <= 31; i++) {
+      result.push({ label: `${i < 10 ? `0${i}` : i}`, value: i });
+    }
+    return result;
+  };
 
   const monthOptions = [
     { label: 'January', value: 1 },
@@ -39,9 +59,8 @@ const DateSelect = (props: DateSelectProps) => {
     { label: 'December', value: 12 },
   ];
 
-
   const handleDayChange = (selectedOption: FixMeType) => {
-    date.setDate(selectedOption.value);
+    date.day(selectedOption.value);
     control.setValue(name, date.toISOString().split('T')[0], true);
     if (textInput !== null) {
       textInput.focus();
@@ -50,7 +69,7 @@ const DateSelect = (props: DateSelectProps) => {
   };
 
   const handleMonthChange = (selectedOption: FixMeType) => {
-    date.setMonth(selectedOption.value);
+    date.month(selectedOption.value);
     control.setValue(name, date.toISOString().split('T')[0], true);
     if (textInput !== null) {
       textInput.focus();
@@ -59,7 +78,7 @@ const DateSelect = (props: DateSelectProps) => {
   };
 
   const handleYearChange = (selectedOption: FixMeType) => {
-    date.setFullYear(selectedOption.value);
+    date.year(selectedOption.value);
     control.setValue(name, date.toISOString().split('T')[0], true);
     if (textInput !== null) {
       textInput.focus();
@@ -77,7 +96,7 @@ const DateSelect = (props: DateSelectProps) => {
           <div className="w-1/3">
             <ReactSelect
               placeholder="day"
-              options={dayOptions}
+              options={dayOptions()}
               defaultValue={null}
               onChange={handleDayChange}
             />
@@ -95,7 +114,7 @@ const DateSelect = (props: DateSelectProps) => {
           <div className="w-1/3">
             <ReactSelect
               placeholder="year"
-              options={options}
+              options={yearOptions()}
               defaultValue={null}
               onChange={handleYearChange}
             />

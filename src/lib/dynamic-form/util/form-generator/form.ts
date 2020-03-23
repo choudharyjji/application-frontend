@@ -59,6 +59,7 @@ export class Form {
         field.placeholder,
         field.tooltip,
         field.options,
+        field.dateParams,
         field.autoFocus,
         field.autoComplete,
         field.spellCheck,

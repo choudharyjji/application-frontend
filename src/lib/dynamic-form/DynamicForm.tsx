@@ -71,6 +71,8 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
                     name={name}
                     options={field.options as {}[]}
                     label={field.label}
+                    minDate={field.dateParams?.minDate}
+                    maxDate={field.dateParams?.maxDate}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
                       field.onChangeCallback(event);
                     }}

@@ -1,4 +1,6 @@
-import { FieldDependency, FieldSelectOptions, FieldType } from './interface/field.interface';
+import {
+  FieldDateParams, FieldDependency, FieldSelectOptions, FieldType,
+} from './interface/field.interface';
 import { CallbackEvent, FieldCallbacks, FieldCallbackType } from './interface/field-callback.interface';
 
 export class Field {
@@ -11,6 +13,8 @@ export class Field {
   private _type: FieldType;
 
   private _options: FieldSelectOptions[] | undefined = undefined;
+
+  private _dateParams: FieldDateParams | undefined = undefined;
 
   private readonly _defaultValue: string | null;
 
@@ -44,6 +48,7 @@ export class Field {
     placeholder: string | undefined = undefined,
     tooltip: string | undefined = undefined,
     options: FieldSelectOptions[] | undefined,
+    dateParams: FieldDateParams | undefined,
     autoFocus = false,
     autoComplete = false,
     spellCheck = false,
@@ -57,6 +62,7 @@ export class Field {
     this._placeholder = placeholder;
     this._tooltip = tooltip;
     this._options = options;
+    this._dateParams = dateParams;
     this._autoFocus = autoFocus;
     this._autoComplete = autoComplete;
     this._spellCheck = spellCheck;
@@ -107,6 +113,14 @@ export class Field {
 
   set options(value: FieldSelectOptions[] | undefined) {
     this._options = value;
+  }
+
+  get dateParams(): FieldDateParams | undefined {
+    return this._dateParams;
+  }
+
+  set dateParams(value: FieldDateParams | undefined) {
+    this._dateParams = value;
   }
 
   get placeholder(): string | undefined {

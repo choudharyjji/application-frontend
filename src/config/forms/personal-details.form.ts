@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import moment from 'moment';
 import { FieldType, FormSchema } from '../../lib/dynamic-form/util/form-generator/interface/field.interface';
 import { Form } from '../../lib/dynamic-form/util/form-generator/form';
 import { Gender } from '../../enum';
@@ -33,13 +34,23 @@ const formSchema: FormSchema = {
           value: Gender.FEMALE,
         },
       ],
-      validation: yup.string().oneOf([Gender.MALE, Gender.FEMALE]).required(),
+      validation: yup.string()
+        .oneOf([
+          Gender.MALE,
+          Gender.FEMALE,
+        ]).required(),
     },
     {
       name: 'dateOfBirth',
       label: 'Date of birth',
       type: FieldType.DATE,
-      validation: yup.date().min(new Date('1918-01-01')).max(new Date('2002-01-01')).required(),
+      dateParams: {
+        minDate: moment().subtract(102, 'years').toDate(),
+        maxDate: moment().subtract(18, 'years').toDate(),
+      },
+      validation: yup.date()
+        .min(moment().subtract(102, 'years').toDate())
+        .max(moment().subtract(18, 'years').toDate()).required(),
     },
     {
       name: 'phoneNumber',
