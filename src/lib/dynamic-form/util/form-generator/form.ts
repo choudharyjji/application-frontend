@@ -1,21 +1,20 @@
-import { FieldInterface, FormJson } from './interface/field.interface';
-import { Field } from './field';
-import * as yup from 'yup';
 import { ObjectSchema } from 'yup';
+import * as yup from 'yup';
+import { FieldSchema, FormSchema } from './interface/field.interface';
+import { Field } from './field';
 
 export class Form {
-  private readonly fieldsJson: FieldInterface[];
+  private readonly formSchema: FormSchema;
 
   private readonly fields: Record<string, Field>;
 
-  private readonly defaultValues: any;
+  private readonly defaultValues: Record<string, any>;
 
   private readonly validationSchema: ObjectSchema<{}>;
 
-  constructor(formJson: FormJson) {
-    this.fieldsJson = formJson.fields;
-
-    const result = this.parseJson(formJson);
+  constructor(formSchema: FormSchema) {
+    this.formSchema = formSchema;
+    const result = this.parseSchema();
     this.fields = result.fields;
     this.defaultValues = result.defaultValues;
     this.validationSchema = result.validationSchema;
@@ -25,8 +24,8 @@ export class Form {
     return this.fields[name];
   }
 
-  public getFields(): FieldInterface[] {
-    return this.fieldsJson;
+  public getFields(): FieldSchema[] {
+    return this.formSchema.fields;
   }
 
   public getFieldsArray(): [string, Field][] {
@@ -37,25 +36,28 @@ export class Form {
     return this.validationSchema;
   }
 
-  public getDefaultValues(): any {
+  public getDefaultValues(): Record<string, any> {
     return this.defaultValues;
   }
 
-  private parseJson(formJson: FormJson): {
-    fields: Record<string, Field>,
-    defaultValues: Record<string, any>,
-    validationSchema: ObjectSchema<{}>
+  private parseSchema(): {
+    fields: Record<string, Field>;
+    defaultValues: Record<string, any>;
+    validationSchema: ObjectSchema<{}>;
   } {
     const fields: Record<string, Field> = {};
     const validationSchema: Record<string, any> = {};
     const defaultValues: Record<string, any> = {};
-    this.fieldsJson.forEach((field) => {
+    const fieldsSchema = this.formSchema.fields;
+
+    fieldsSchema.forEach((field) => {
       fields[field.name] = new Field(
         field.label,
         field.name,
         field.type,
         field.default,
         field.placeholder,
+        field.tooltip,
         field.options,
         field.autoFocus,
         field.autoComplete,
@@ -93,7 +95,7 @@ export class Form {
     });
 
     // dependency
-    this.fieldsJson.forEach((field) => {
+    fieldsSchema.forEach((field) => {
       if (field.dependency !== undefined) {
         fields[field.name].dependency = {
           field: fields[field.dependency.field],

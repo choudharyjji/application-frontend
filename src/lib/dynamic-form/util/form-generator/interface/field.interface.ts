@@ -28,11 +28,12 @@ export interface FieldDependency {
   values: any[];
 }
 
-export interface FieldInterface {
+export interface FieldSchema {
   name: string;
   label: string;
   type: FieldType;
   placeholder?: string;
+  tooltip?: string;
   options?: FieldSelectOptions[];
   dependency?: FieldDependencyOptions;
   default?: string;
@@ -43,6 +44,6 @@ export interface FieldInterface {
   disabled?: boolean;
 }
 
-export interface FormJson {
-  fields: FieldInterface[];
+export interface FormSchema {
+  fields: FieldSchema[];
 }

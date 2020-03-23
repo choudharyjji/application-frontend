@@ -6,7 +6,7 @@ import { FieldType } from '../../lib/dynamic-form/util/form-generator/interface/
 const Input = (props: InputProp): ReactElement => {
   const {
     label, innerRef, name, value, onChange, onBlur, onFocus, type,
-    placeholder, disabled, autoFocus, spellCheck, autoComplete,
+    placeholder, tooltip, disabled, autoFocus, spellCheck, autoComplete,
   } = props;
 
   const inputClass = type === FieldType.CHECKBOX
@@ -37,7 +37,7 @@ const Input = (props: InputProp): ReactElement => {
           />
         </div>
         <div className="flex">
-          <InputTooltip />
+          <InputTooltip message={tooltip} />
         </div>
       </div>
     </div>

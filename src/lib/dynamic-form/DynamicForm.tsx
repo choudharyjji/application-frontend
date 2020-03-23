@@ -6,6 +6,7 @@ import Input from '../../components/input/Input';
 import { FixMeType } from '../../type/fix-me.type';
 import Button from '../../components/button/Button';
 import Select from '../../components/select/Select';
+import DateSelect from '../../components/dateSelect/DateSelect';
 
 interface DynamicFormProp {
   form: Form;
@@ -37,14 +38,39 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
               component = (
                 <React.Fragment key={field.id}>
                   <Input
-                    label={field.label}
-                    name={t(name)}
+                    label={t(field.label)}
+                    name={name}
                     type={field.type}
                     placeholder={field.placeholder}
+                    tooltip={field.tooltip}
                     disabled={field.disabled}
                     autoFocus={field.autoFocus}
                     spellCheck={field.spellCheck}
                     autoComplete={field.autoComplete ? 'on' : 'off'}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
+                      field.onChangeCallback(event);
+                    }}
+                    onBlur={(event): void => {
+                      field.onBlurCallback(event);
+                    }}
+                    onFocus={(event): void => {
+                      field.onFocusCallback(event);
+                    }}
+                    innerRef={register}
+                  />
+                  <ErrorMessage errors={errors} name={name} as="p" />
+                </React.Fragment>
+              );
+            }
+
+            if (field.isDateType()) {
+              component = (
+                <React.Fragment key={field.id}>
+                  <DateSelect
+                    control={control}
+                    name={name}
+                    options={field.options as {}[]}
+                    label={field.label}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
                       field.onChangeCallback(event);
                     }}

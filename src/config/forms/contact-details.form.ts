@@ -1,10 +1,10 @@
 import * as yup from 'yup';
-import { FieldType, FormJson } from '../../lib/dynamic-form/util/form-generator/interface/field.interface';
+import { FieldType, FormSchema } from '../../lib/dynamic-form/util/form-generator/interface/field.interface';
 import { Form } from '../../lib/dynamic-form/util/form-generator/form';
 import { Education, HousingTenure, MaritalStatus } from '../../enum';
 import { Province } from '../../enum/Province';
 
-const formSchema: FormJson = {
+const formSchema: FormSchema = {
   fields: [
     {
       name: 'personalCode',
@@ -349,7 +349,8 @@ const formSchema: FormJson = {
           HousingTenure.OWNER_WITH_MORTGAGE,
           HousingTenure.OWNER_WITH_MORTGAGE,
           HousingTenure.RENTAL,
-          HousingTenure.OTHER],
+          HousingTenure.OTHER,
+        ],
       ).required(),
     },
   ],

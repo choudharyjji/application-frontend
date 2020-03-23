@@ -1,11 +1,11 @@
 import * as yup from 'yup';
-import { FieldType, FormJson } from '../../lib/dynamic-form/util/form-generator/interface/field.interface';
+import { FieldType, FormSchema } from '../../lib/dynamic-form/util/form-generator/interface/field.interface';
 import { Form } from '../../lib/dynamic-form/util/form-generator/form';
 import {
   IncomeSource, JobArea, VehicleOwnership,
 } from '../../enum';
 
-const formSchema: FormJson = {
+const formSchema: FormSchema = {
   fields: [
     {
       label: 'Monthly Income',
@@ -194,7 +194,6 @@ const formSchema: FormJson = {
       name: 'iban',
       label: 'Iban',
       type: FieldType.TEXT,
-
     },
     {
       name: 'usingOnlineBanking',

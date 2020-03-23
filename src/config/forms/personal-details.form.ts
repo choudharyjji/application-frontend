@@ -1,9 +1,9 @@
 import * as yup from 'yup';
-import { FieldType, FormJson } from '../../lib/dynamic-form/util/form-generator/interface/field.interface';
+import { FieldType, FormSchema } from '../../lib/dynamic-form/util/form-generator/interface/field.interface';
 import { Form } from '../../lib/dynamic-form/util/form-generator/form';
 import { Gender } from '../../enum';
 
-const formSchema: FormJson = {
+const formSchema: FormSchema = {
   fields: [
     {
       name: 'firstName',
@@ -11,6 +11,7 @@ const formSchema: FormJson = {
       label: 'First Name',
       validation: yup.string().max(50).matches(/^[^0-9]+$/).required(),
       autoFocus: true,
+      tooltip: 'Enter your first name as on ID card',
     },
     {
       name: 'lastName',
@@ -38,6 +39,7 @@ const formSchema: FormJson = {
       name: 'dateOfBirth',
       label: 'Date of birth',
       type: FieldType.DATE,
+      validation: yup.date().min(new Date('1918-01-01')).max(new Date('2002-01-01')).required(),
     },
     {
       name: 'phoneNumber',

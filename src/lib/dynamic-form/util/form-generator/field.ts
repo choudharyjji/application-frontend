@@ -16,6 +16,8 @@ export class Field {
 
   private _placeholder?: string;
 
+  private _tooltip?: string;
+
   private _autoFocus = false;
 
   private _autoComplete = false;
@@ -40,6 +42,7 @@ export class Field {
     type: FieldType,
     defaultValue: string | null = null,
     placeholder: string | undefined = undefined,
+    tooltip: string | undefined = undefined,
     options: FieldSelectOptions[] | undefined,
     autoFocus = false,
     autoComplete = false,
@@ -52,6 +55,7 @@ export class Field {
     this._type = type;
     this._defaultValue = defaultValue;
     this._placeholder = placeholder;
+    this._tooltip = tooltip;
     this._options = options;
     this._autoFocus = autoFocus;
     this._autoComplete = autoComplete;
@@ -111,6 +115,14 @@ export class Field {
 
   set placeholder(value: string | undefined) {
     this._placeholder = value;
+  }
+
+  get tooltip(): string | undefined {
+    return this._tooltip;
+  }
+
+  set tooltip(value: string | undefined) {
+    this._tooltip = value;
   }
 
   get autoFocus(): boolean {
@@ -192,8 +204,7 @@ export class Field {
       || this.isNumberType()
       || this.isPasswordType()
       || this.isTelType()
-      || this.isCheckboxType()
-      || this.isDateType();
+      || this.isCheckboxType();
   }
 
   public isTextType(): boolean {
@@ -228,17 +239,17 @@ export class Field {
     return this.type === FieldType.CHECKBOX;
   }
 
-  public attachOnChangeCallback(callback: { (event: CallbackEvent): void }) {
+  public attachOnChangeCallback(callback: { (event: CallbackEvent): void }): Field {
     this.attachCallback(FieldCallbackType.onChange, callback);
     return this;
   }
 
-  public attachOnFocusCallback(callback: { (event: CallbackEvent): void }) {
+  public attachOnFocusCallback(callback: { (event: CallbackEvent): void }): Field {
     this.attachCallback(FieldCallbackType.onFocus, callback);
     return this;
   }
 
-  public attachOnBlurCallback(callback: { (event: CallbackEvent): void }) {
+  public attachOnBlurCallback(callback: { (event: CallbackEvent): void }): Field {
     this.attachCallback(FieldCallbackType.onBlur, callback);
     return this;
   }
@@ -270,7 +281,7 @@ export class Field {
     return this;
   }
 
-  private triggerCallback(type: FieldCallbackType, event: CallbackEvent) {
+  private triggerCallback(type: FieldCallbackType, event: CallbackEvent): void {
     let callbacks;
     switch (type) {
       case FieldCallbackType.onChange:
