@@ -10,9 +10,9 @@ import ContactDetailsPage from './ContactDetailsPage';
 import IncomeDetailsPage from './IncomeDetailsPage';
 import PersonalDetailsPage from './PersonalDetailsPage';
 import MobileVerificationPage from './MobileVerificationPage';
-import DeclinedPage from './DeclinedPage';
 import AcceptedPage from './AcceptedPage';
 import CheckingPage from './CheckingPage';
+import RejectedPage from './RejectedPage';
 
 const ApplicationPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
@@ -65,7 +65,7 @@ const ApplicationPage = (): ReactElement => {
             <AcceptedPage />
           </Route>
           <Route path="/application/declined">
-            <DeclinedPage />
+            <RejectedPage />
           </Route>
         </Switch>
       </Router>

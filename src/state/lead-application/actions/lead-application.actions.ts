@@ -1,6 +1,7 @@
 import { LeadApplicationActionInterface } from '../interface';
 import { LeadApplicationActionEnum } from '../enum';
 import { ApplicationData } from '../../../models/ApplicationData';
+import { ApplicationResult } from '../../../models/ApplicationResult';
 
 export class LeadApplicationActions {
   public static moveNextStep(data: ApplicationData): LeadApplicationActionInterface {
@@ -12,9 +13,12 @@ export class LeadApplicationActions {
     };
   }
 
-  // public static movePreviousStep(): LeadApplicationActionInterface {
-  //   return {
-  //     type: LeadApplicationActionEnum.PREVIOUS_STEP,
-  //   };
-  // }
+  public static saveApplicationResult(data: ApplicationResult): LeadApplicationActionInterface {
+    return {
+      type: LeadApplicationActionEnum.SUBMIT,
+      payload: {
+        data,
+      },
+    };
+  }
 }
