@@ -1,20 +1,19 @@
-import React from 'react';
-import { useForm, ErrorMessage, Controller } from 'react-hook-form';
-import ReactSelect from 'react-select';
+import React, { ReactElement } from 'react';
+import { useForm, ErrorMessage } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Form } from './util/form-generator/form';
-import Input from '../components/input/Input';
-import { FixMeType } from '../type/fix-me.type';
-import Button from '../components/button/Button';
-
-import Select from '../components/select/Select';
+import Input from '../../components/input/Input';
+import { FixMeType } from '../../type/fix-me.type';
+import Button from '../../components/button/Button';
+import Select from '../../components/select/Select';
 
 interface DynamicFormProp {
   form: Form;
-  onSubmit: (data: any) => void;
+  onSubmit: (data: FixMeType) => void;
   inputWrapper?: FixMeType;
 }
 
-const DynamicForm = (props: DynamicFormProp) => {
+const DynamicForm = (props: DynamicFormProp): ReactElement => {
   const { form, onSubmit } = props;
   const {
     register, handleSubmit, errors, setValue, watch, control,
@@ -23,6 +22,7 @@ const DynamicForm = (props: DynamicFormProp) => {
     defaultValues: form.getDefaultValues(),
     reValidateMode: 'onChange',
   });
+  const { t, i18n } = useTranslation();
 
   const fields = form.getFieldsArray();
   return (
@@ -38,7 +38,7 @@ const DynamicForm = (props: DynamicFormProp) => {
                 <React.Fragment key={field.id}>
                   <Input
                     label={field.label}
-                    name={name}
+                    name={t(name)}
                     type={field.type}
                     placeholder={field.placeholder}
                     disabled={field.disabled}
@@ -64,16 +64,6 @@ const DynamicForm = (props: DynamicFormProp) => {
             if (field.isSelectType()) {
               component = (
                 <React.Fragment key={field.id}>
-                  {/* <Controller */}
-                  {/*  as={ */}
-                  {/*    <ReactSelect /> */}
-                  {/*  } */}
-                  {/*  name={field.name} */}
-                  {/*  control={control} */}
-                  {/*  options={field.options} */}
-                  {/*  onFocus={(event:any) => field.onBlurCallback(event)} */}
-                  {/* /> */}
-
                   <Select
                     control={control}
                     name={name}

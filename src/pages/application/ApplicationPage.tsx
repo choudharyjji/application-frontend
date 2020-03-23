@@ -10,14 +10,16 @@ import ContactDetailsPage from './ContactDetailsPage';
 import IncomeDetailsPage from './IncomeDetailsPage';
 import PersonalDetailsPage from './PersonalDetailsPage';
 import MobileVerificationPage from './MobileVerificationPage';
-import DeclinedPage from './DeclinedPage';
 import AcceptedPage from './AcceptedPage';
 import CheckingPage from './CheckingPage';
+import RejectedPage from './RejectedPage';
 
 const ApplicationPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const { step } = currentState;
   const location = useLocation();
+
+  console.log(currentState);
 
   if (step === 0 && location.pathname !== '/application/personal-details') {
     return (<Redirect to="/application/personal-details" />);
@@ -27,6 +29,9 @@ const ApplicationPage = (): ReactElement => {
   }
   if (step === 2 && location.pathname !== '/application/income-details') {
     return (<Redirect to="/application/income-details" />);
+  }
+  if (step === 3 && location.pathname !== '/application/checking') {
+    return (<Redirect to="/application/checking" />);
   }
 
   return (
@@ -60,7 +65,7 @@ const ApplicationPage = (): ReactElement => {
             <AcceptedPage />
           </Route>
           <Route path="/application/declined">
-            <DeclinedPage />
+            <RejectedPage />
           </Route>
         </Switch>
       </Router>

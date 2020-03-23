@@ -1,6 +1,6 @@
 import * as yup from 'yup';
-import { FieldType, FormJson } from '../../dynamic-form/util/form-generator/interface/field.interface';
-import { Form } from '../../dynamic-form/util/form-generator/form';
+import { FieldType, FormJson } from '../../lib/dynamic-form/util/form-generator/interface/field.interface';
+import { Form } from '../../lib/dynamic-form/util/form-generator/form';
 import { Gender } from '../../enum';
 
 const formSchema: FormJson = {
@@ -61,7 +61,7 @@ const formSchema: FormJson = {
       name: 'marketingConsents',
       label: 'I agree to keep up to date with the latest news and receive special offers and discounts by any means, including electronic communications or equivalent from FiestaCredito.',
       type: FieldType.CHECKBOX,
-      validation: yup.boolean().oneOf([true]),
+      validation: yup.boolean().oneOf([true, false]),
     },
   ],
 };

@@ -3,6 +3,7 @@ import {
 } from '../enum';
 
 export interface ApplicationData {
+  id?: string;
   firstName?: string;
   lastName?: string;
   gender?: Gender;

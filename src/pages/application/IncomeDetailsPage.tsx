@@ -1,19 +1,26 @@
 import React, { ReactElement } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import DynamicForm from '../../dynamic-form/DynamicForm';
+import axios from 'axios';
+import DynamicForm from '../../lib/dynamic-form/DynamicForm';
 import { LeadApplicationActions } from '../../state/lead-application/actions';
 import { ApplicationData } from '../../models/ApplicationData';
 import incomeDetailsForm from '../../config/forms/income-details.form';
+import { RootStateInterface } from '../../state/root-state.interface';
 
 const IncomeDetailsPage = (): ReactElement => {
+  const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
+  const currentApplicationData = currentState.data;
   const history = useHistory();
   const dispatch = useDispatch();
 
   const onSubmit = (data: ApplicationData): void => {
-    dispatch(LeadApplicationActions.moveNextStep(data));
-    history.push('/application/wait');
+    const applicationData = { ...data, ...currentApplicationData };
+    axios.post('http://api.localhost:7515/lead', applicationData).then((response) => {
+      dispatch(LeadApplicationActions.moveNextStep(applicationData));
+      history.push('/application/wait');
+    });
   };
 
   const prevStep = (): void => {

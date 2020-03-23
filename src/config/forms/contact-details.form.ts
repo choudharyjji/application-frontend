@@ -1,7 +1,8 @@
 import * as yup from 'yup';
-import { FieldType, FormJson } from '../../dynamic-form/util/form-generator/interface/field.interface';
-import { Form } from '../../dynamic-form/util/form-generator/form';
+import { FieldType, FormJson } from '../../lib/dynamic-form/util/form-generator/interface/field.interface';
+import { Form } from '../../lib/dynamic-form/util/form-generator/form';
 import { Education, HousingTenure, MaritalStatus } from '../../enum';
+import { Province } from '../../enum/Province';
 
 const formSchema: FormJson = {
   fields: [
@@ -79,12 +80,222 @@ const formSchema: FormJson = {
       name: 'postalCode',
       label: 'Postal Code',
       type: FieldType.TEXT,
-      validation: yup.number().positive().integer().required(),
+      validation: yup.string().required(),
     },
     {
       name: 'province',
       label: 'Province',
-      type: FieldType.TEXT,
+      type: FieldType.SELECT,
+      options: [
+        {
+          label: 'Álava',
+          value: Province.ALAVA,
+        },
+        {
+          label: 'Albacete',
+          value: Province.ALBACETE,
+        },
+        {
+          label: 'Alicante',
+          value: Province.ALICANTE,
+        },
+        {
+          label: 'Almería',
+          value: Province.ALMERIA,
+        },
+        {
+          label: 'Asturias',
+          value: Province.ASTURIAS,
+        },
+        {
+          label: 'Ávila',
+          value: Province.AVILA,
+        },
+        {
+          label: 'Badajoz',
+          value: Province.BADAJOZ,
+        },
+        {
+          label: 'Barcelona',
+          value: Province.BARCELONA,
+        },
+        {
+          label: 'Burgos',
+          value: Province.BURGOS,
+        },
+        {
+          label: 'Cantabria',
+          value: Province.CANTABRIA,
+        },
+        {
+          label: 'Castellón',
+          value: Province.CASTELLON,
+        },
+        {
+          label: 'Ceuta',
+          value: Province.CEUTA,
+        },
+        {
+          label: 'Ciudad Real',
+          value: Province.CIUDAD_REAL,
+        },
+        {
+          label: 'Cuenca',
+          value: Province.CUENCA,
+        },
+        {
+          label: 'Cáceres',
+          value: Province.CACERES,
+        },
+        {
+          label: 'Cádiz',
+          value: Province.CADIZ,
+        },
+        {
+          label: 'Córdoba',
+          value: Province.CORDOBA,
+        },
+        {
+          label: 'Gerona',
+          value: Province.GERONA,
+        },
+        {
+          label: 'Granada',
+          value: Province.GRANADA,
+        },
+        {
+          label: 'Guadalajara',
+          value: Province.GUADALAJARA,
+        },
+        {
+          label: 'Guipúzcoa',
+          value: Province.GUIPUZCOA,
+        },
+        {
+          label: 'Huelva',
+          value: Province.HUELVA,
+        },
+        {
+          label: 'Huesca',
+          value: Province.HUESCA,
+        },
+        {
+          label: 'Islas Baleares',
+          value: Province.ISLAS_BALEARES,
+        },
+        {
+          label: 'Jaén',
+          value: Province.JAEN,
+        },
+        {
+          label: 'La Coruña',
+          value: Province.LA_CORUNA,
+        },
+        {
+          label: 'La Rioja',
+          value: Province.LA_RIOJA,
+        },
+        {
+          label: 'Las Palmas',
+          value: Province.LAS_PALMAS,
+        },
+        {
+          label: 'León',
+          value: Province.LEON,
+        },
+        {
+          label: 'Lugo',
+          value: Province.LUGO,
+        },
+        {
+          label: 'Lérida',
+          value: Province.LERIDA,
+        },
+        {
+          label: 'Madrid',
+          value: Province.MADRID,
+        },
+        {
+          label: 'Melilla',
+          value: Province.MELILLA,
+        },
+        {
+          label: 'Murcia',
+          value: Province.MURCIA,
+        },
+        {
+          label: 'Málaga',
+          value: Province.MALAGA,
+        },
+        {
+          label: 'Navarra',
+          value: Province.NAVARRA,
+        },
+        {
+          label: 'Orense',
+          value: Province.ORENSE,
+        },
+        {
+          label: 'Palencia',
+          value: Province.PALENCIA,
+        },
+        {
+          label: 'Pontevedra',
+          value: Province.PONTEVEDRA,
+        },
+        {
+          label: 'Salamanca',
+          value: Province.SALAMANCA,
+        },
+        {
+          label: 'Santa Cruz de Tenerife',
+          value: Province.SANTA_CRUZ_DE_TENERIFE,
+        },
+        {
+          label: 'Segovia',
+          value: Province.SEGOVIA,
+        },
+        {
+          label: 'Sevilla',
+          value: Province.SEVILLA,
+        },
+        {
+          label: 'Soria',
+          value: Province.SORIA,
+        },
+        {
+          label: 'Tarragona',
+          value: Province.TARRAGONA,
+        },
+        {
+          label: 'Teruel',
+          value: Province.TERUEL,
+        },
+        {
+          label: 'Toledo',
+          value: Province.TOLEDO,
+        },
+        {
+          label: 'Valencia',
+          value: Province.VALENCIA,
+        },
+        {
+          label: 'Valladolid',
+          value: Province.VALLADOLID,
+        },
+        {
+          label: 'Vizcaya',
+          value: Province.VIZCAYA,
+        },
+        {
+          label: 'Zamora',
+          value: Province.ZAMORA,
+        },
+        {
+          label: 'Zaragoza',
+          value: Province.ZARAGOZA,
+        },
+      ],
       validation: yup.string().required(),
     },
     {
@@ -138,7 +349,7 @@ const formSchema: FormJson = {
           HousingTenure.OWNER_WITH_MORTGAGE,
           HousingTenure.OWNER_WITH_MORTGAGE,
           HousingTenure.RENTAL,
-          HousingTenure.OTHER]
+          HousingTenure.OTHER],
       ).required(),
     },
   ],

@@ -1,6 +1,6 @@
 import * as yup from 'yup';
-import { FieldType, FormJson } from '../../dynamic-form/util/form-generator/interface/field.interface';
-import { Form } from '../../dynamic-form/util/form-generator/form';
+import { FieldType, FormJson } from '../../lib/dynamic-form/util/form-generator/interface/field.interface';
+import { Form } from '../../lib/dynamic-form/util/form-generator/form';
 import {
   IncomeSource, JobArea, VehicleOwnership,
 } from '../../enum';
@@ -66,7 +66,7 @@ const formSchema: FormJson = {
       validation: yup.string().required(),
     },
     {
-      name: 'payDay',
+      name: 'incomePayday',
       label: 'Payday',
       type: FieldType.TEXT,
       validation: yup.number().positive().lessThan(31).required(),

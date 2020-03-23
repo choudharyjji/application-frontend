@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import InputTooltip from '../inputTooltip/inputTooltip';
 import { InputProp } from './interface/InputProp';
-import { FieldType } from '../../dynamic-form/util/form-generator/interface/field.interface';
+import { FieldType } from '../../lib/dynamic-form/util/form-generator/interface/field.interface';
 
 const Input = (props: InputProp): ReactElement => {
   const {
