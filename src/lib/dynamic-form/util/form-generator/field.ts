@@ -34,9 +34,7 @@ export class Field {
 
   private _dependency: FieldDependency | null = null;
 
-  private _setValueFn: any;
-
-  private _watchFn: any;
+  private _control: any;
 
   private readonly callbacks: FieldCallbacks;
 
@@ -188,27 +186,22 @@ export class Field {
       this.visible = false;
       const that = this;
       dependency.field.attachOnBlurCallback((event) => {
-        const value = dependency.field.watch();
+        const value = event.target.value;
         that.visible = dependency.values.indexOf(value) > -1;
+        that._control.reRender();
       });
     }
     this._dependency = dependency;
   }
 
-  set setValueFn(value: any) {
-    this._setValueFn = value;
+
+  set control(value: any) {
+    this._control = value;
   }
 
-  set watchFn(value: any) {
-    this._watchFn = value;
-  }
-
-  public setValue(value: any) {
-    this._setValueFn(this.name, value);
-  }
-
-  public watch() {
-    return this._watchFn(this.name);
+  public setValue(value: any): void {
+    this._control.setValue(this.name, value);
+    this._control.reRender();
   }
 
   public isInputElement(): boolean {

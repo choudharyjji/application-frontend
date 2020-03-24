@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import ReactSelect from 'react-select';
 import InputTooltip from '../inputTooltip/inputTooltip';
 import { FixMeType } from '../../type/fix-me.type';
@@ -19,10 +19,13 @@ const Select = (props: SelectProps): ReactElement => {
     options, label, innerRef, name, onBlur, onFocus, control,
   } = props;
 
+  const defaultValue = { label: control.getValues()[name], value: control.getValues()[name] };
+
   let textInput: HTMLInputElement | null = null;
 
-  const handleChange = (selectedOption: FixMeType) => {
-    control.setValue(name, selectedOption.value, true);
+  const handleChange = (selectedOption: FixMeType): void => {
+    control.setValue(name, selectedOption.value);
+    control.reRender();
     if (textInput !== null) {
       textInput.focus();
       textInput.blur();
@@ -38,7 +41,7 @@ const Select = (props: SelectProps): ReactElement => {
         <div className="w-11/12">
           <ReactSelect
             options={options}
-            defaultValue={null}
+            value={defaultValue}
             onChange={handleChange}
           />
           <input

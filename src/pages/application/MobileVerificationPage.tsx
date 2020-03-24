@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import DynamicForm from '../../lib/dynamic-form/DynamicForm';
 import mobileVerificationForm from '../../config/forms/mobile-veridication.form';
 import { RootStateInterface } from '../../state/root-state.interface';
-import { MobileVerificationRequest } from '../../models/MobileVerificationRequest';
+import { MobileVerificationRequest } from '../../dto/request/MobileVerificationRequest';
 import { FixMeType } from '../../type/fix-me.type';
 
 const MobileVerificationPage = (): ReactElement => {

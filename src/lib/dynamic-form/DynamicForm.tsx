@@ -18,15 +18,15 @@ interface DynamicFormProp {
 const DynamicForm = (props: DynamicFormProp): ReactElement => {
   const { form, onSubmit } = props;
   const {
-    register, handleSubmit, errors, setValue, watch, control,
+    register, handleSubmit, errors, control,
   } = useForm({
     validationSchema: form.getValidationSchema(),
     defaultValues: form.getDefaultValues(),
     reValidateMode: 'onChange',
   });
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
-  console.log("rendered");
+
 
   const fields = form.getFieldsArray();
   return (
@@ -35,8 +35,7 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
         <div className="container bg-gray-200 p-5 mb-5 rounded">
           {fields.map(([name, field]) => {
             let component = null;
-            field.setValueFn = setValue;
-            field.watchFn = watch;
+            field.control = control;
             if (field.isInputElement()) {
               const ComponentTypeWrapper = field.isCheckboxType() ? Checkbox : Input;
               component = (

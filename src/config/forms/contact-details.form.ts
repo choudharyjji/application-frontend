@@ -1,8 +1,14 @@
 import * as yup from 'yup';
-import { FieldType, FormSchema } from '../../lib/dynamic-form/util/form-generator/interface/field.interface';
+import axios from 'axios';
+import {
+  FieldSelectOptions,
+  FieldType,
+  FormSchema,
+} from '../../lib/dynamic-form/util/form-generator/interface/field.interface';
 import { Form } from '../../lib/dynamic-form/util/form-generator/form';
 import { Education, HousingTenure, MaritalStatus } from '../../enum';
 import { Province } from '../../enum/Province';
+import { PostCodeLookupResponse } from '../../dto/response/PostCodeLookupResponse';
 
 const formSchema: FormSchema = {
   fields: [
@@ -16,6 +22,10 @@ const formSchema: FormSchema = {
       name: 'maritalStatus',
       label: 'Marital Status',
       type: FieldType.SELECT,
+      dependency: {
+        field: 'personalCode',
+        values: ['1'],
+      },
       options: [
         {
           label: 'Not Married',
@@ -307,7 +317,7 @@ const formSchema: FormSchema = {
     {
       name: 'street',
       label: 'Street',
-      type: FieldType.TEXT,
+      type: FieldType.SELECT,
       validation: yup.string().max(100).required(),
     },
     {
@@ -357,5 +367,25 @@ const formSchema: FormSchema = {
 };
 
 const contactDetailsForm = new Form(formSchema);
+
+const postalCode = contactDetailsForm.getField('postalCode');
+
+postalCode.attachOnBlurCallback((event) => {
+  if (event) {
+    const { value } = event.target;
+    axios.get<PostCodeLookupResponse>(`https://api.fiestacredito.es/postcode/lookup/${value}`).then(({ data }) => {
+      const { streets, province } = data.data;
+      const provinceField = contactDetailsForm.getField('province');
+      const streetField = contactDetailsForm.getField('street');
+      const streetOptions: FieldSelectOptions[] = [];
+      streets.forEach((street) => {
+        streetOptions.push({ label: street, value: street });
+      });
+      streetOptions.push({ label: 'Other', value: 'Other' });
+      streetField.options = streetOptions;
+      provinceField.setValue(province);
+    });
+  }
+});
 
 export default contactDetailsForm;
