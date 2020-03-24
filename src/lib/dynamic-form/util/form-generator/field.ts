@@ -186,8 +186,8 @@ export class Field {
       this.visible = false;
       const that = this;
       dependency.field.attachOnBlurCallback((event) => {
-        const value = event.target.value;
-        that.visible = dependency.values.indexOf(value) > -1;
+        const { value } = event.target;
+        that.visible = dependency.values.findIndex((item) => item.toLowerCase() === value.toLocaleLowerCase()) > -1;
         that._control.reRender();
       });
     }

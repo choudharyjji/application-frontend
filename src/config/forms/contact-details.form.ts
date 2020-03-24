@@ -318,7 +318,17 @@ const formSchema: FormSchema = {
       name: 'street',
       label: 'Street',
       type: FieldType.SELECT,
-      validation: yup.string().max(100).required(),
+      validation: yup.string().required(),
+    },
+    {
+      name: 'streetOther',
+      label: 'Street (Other)',
+      type: FieldType.TEXT,
+      validation: yup.string().required(),
+      dependency: {
+        field: 'street',
+        values: ['other'],
+      },
     },
     {
       name: 'houseNumber',
@@ -377,10 +387,11 @@ postalCode.attachOnBlurCallback((event) => {
       const { streets, province } = data.data;
       const provinceField = contactDetailsForm.getField('province');
       const streetField = contactDetailsForm.getField('street');
-      const streetOptions: FieldSelectOptions[] = [];
-      streets.forEach((street) => {
-        streetOptions.push({ label: street, value: street });
-      });
+
+      const streetOptions = streets.reduce((acc, curr) => {
+        acc.push({ label: curr, value: curr });
+        return acc;
+      }, [] as FieldSelectOptions[]);
       streetOptions.push({ label: 'Other', value: 'Other' });
       streetField.options = streetOptions;
       provinceField.setValue(province);
