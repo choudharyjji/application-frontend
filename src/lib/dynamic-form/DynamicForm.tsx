@@ -26,6 +26,8 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
   });
   const { t, i18n } = useTranslation();
 
+  console.log("rendered");
+
   const fields = form.getFieldsArray();
   return (
     <>
@@ -71,7 +73,6 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
                   <DateSelect
                     control={control}
                     name={name}
-                    options={field.options as {}[]}
                     label={field.label}
                     minDate={field.dateParams?.minDate}
                     maxDate={field.dateParams?.maxDate}

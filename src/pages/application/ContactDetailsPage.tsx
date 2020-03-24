@@ -1,18 +1,17 @@
 import React, { ReactElement } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
 import axios from 'axios';
 import DynamicForm from '../../lib/dynamic-form/DynamicForm';
 import contactDetailsForm from '../../config/forms/contact-details.form';
 import { LeadApplicationActions } from '../../state/lead-application/actions';
 import { ApplicationData } from '../../models/ApplicationData';
 import { RootStateInterface } from '../../state/root-state.interface';
+import { FixMeType } from '../../type/fix-me.type';
 
 const ContactDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const currentApplicationData = currentState.data;
-
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -35,7 +34,7 @@ const ContactDetailsPage = (): ReactElement => {
       </h2>
       <DynamicForm
         form={contactDetailsForm}
-        onSubmit={(data: any) => onSubmit(data)}
+        onSubmit={(data: FixMeType) => onSubmit(data)}
       />
     </>
   );

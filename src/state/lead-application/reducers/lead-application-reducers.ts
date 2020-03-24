@@ -7,7 +7,12 @@ const initialState: LeadApplicationStateInterface = {
     amount: 300,
     period: 15,
   },
-  result: {},
+  result: {
+    partner: {
+      title: 'CCLOAN',
+      logo: 'https://fiesta-public.s3-eu-west-1.amazonaws.com/partners/logo-ccloan.png',
+    },
+  },
 };
 
 export function leadApplicationReducer(

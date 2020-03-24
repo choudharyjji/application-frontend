@@ -5,6 +5,7 @@ import {
   IncomeSource, JobArea, VehicleOwnership,
 } from '../../enum';
 
+
 const formSchema: FormSchema = {
   fields: [
     {
@@ -192,7 +193,7 @@ const formSchema: FormSchema = {
     },
     {
       name: 'iban',
-      label: 'Iban',
+      label: 'IBAN',
       type: FieldType.TEXT,
     },
     {
@@ -204,5 +205,11 @@ const formSchema: FormSchema = {
 };
 
 const incomeDetailsForm = new Form(formSchema);
+
+const iban = incomeDetailsForm.getField('iban');
+iban.attachOnBlurCallback((event) => {
+  const value = event.target.value.replace(/ /g, '');
+  iban.setValue(value);
+});
 
 export default incomeDetailsForm;

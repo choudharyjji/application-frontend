@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import ReactSelect from 'react-select';
 import moment from 'moment';
 import { FixMeType } from '../../type/fix-me.type';
 import InputTooltip from '../inputTooltip/inputTooltip';
 
 interface DateSelectProps {
-  options: {}[];
   name: string;
   label: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -17,7 +16,7 @@ interface DateSelectProps {
   maxDate?: Date;
 }
 
-const DateSelect = (props: DateSelectProps) => {
+const DateSelect = (props: DateSelectProps): ReactElement => {
   const {
     label, innerRef, name, onBlur, onFocus, control, minDate, maxDate,
   } = props;
@@ -43,6 +42,10 @@ const DateSelect = (props: DateSelectProps) => {
     }
     return result;
   };
+
+  useEffect(() => {
+    control.setValue(name, date.toISOString().split('T')[0], false);
+  });
 
   const monthOptions = [
     { label: 'January', value: 1 },
