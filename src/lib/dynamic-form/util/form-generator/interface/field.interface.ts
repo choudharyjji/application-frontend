@@ -28,12 +28,19 @@ export interface FieldDependency {
   values: any[];
 }
 
-export interface FieldInterface {
+export interface FieldDateParams {
+  minDate?: Date;
+  maxDate?: Date;
+}
+
+export interface FieldSchema {
   name: string;
   label: string;
   type: FieldType;
   placeholder?: string;
+  tooltip?: string;
   options?: FieldSelectOptions[];
+  dateParams?: FieldDateParams;
   dependency?: FieldDependencyOptions;
   default?: string;
   validation?: MixedSchema;
@@ -43,6 +50,6 @@ export interface FieldInterface {
   disabled?: boolean;
 }
 
-export interface FormJson {
-  fields: FieldInterface[];
+export interface FormSchema {
+  fields: FieldSchema[];
 }

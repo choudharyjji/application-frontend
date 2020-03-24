@@ -19,6 +19,10 @@ const CheckingPage = (): ReactElement => {
         axios.get(`http://api.localhost:7515/lead/status/${currentApplicationData.id}`).then((response) => {
           const result: ApplicationResult = response.data;
           dispatch(LeadApplicationActions.saveApplicationResult(result));
+
+          if (result.mobileVerificationRequired === true) {
+            history.push('application/mobile-verification');
+          }
           if (result.status === LeadStatus.ACCEPTED) {
             history.push('/application/accepted');
           }
@@ -28,9 +32,8 @@ const CheckingPage = (): ReactElement => {
         });
       }
     }, 3000);
-    return () => clearInterval(interval);
+    return (): void => clearInterval(interval);
   });
-
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import ReactSelect from 'react-select';
 import InputTooltip from '../inputTooltip/inputTooltip';
 import { FixMeType } from '../../type/fix-me.type';
@@ -11,24 +11,23 @@ interface SelectProps {
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   innerRef?: FixMeType;
-  control?: any;
+  control?: FixMeType;
 }
 
 const Select = (props: SelectProps): ReactElement => {
   const {
-    options, label, innerRef, name, onBlur, onChange, onFocus, control,
+    options, label, innerRef, name, onBlur, onFocus, control,
   } = props;
 
   let textInput: HTMLInputElement | null = null;
 
-  const handleChange = (selectedOption: any) => {
+  const handleChange = (selectedOption: FixMeType) => {
     control.setValue(name, selectedOption.value, true);
     if (textInput !== null) {
       textInput.focus();
       textInput.blur();
     }
   };
-
 
   return (
     <div className="my-6">
@@ -52,7 +51,7 @@ const Select = (props: SelectProps): ReactElement => {
             name={name}
             onBlur={onBlur}
             onFocus={onFocus}
-            ref={(e) => {
+            ref={(e): void => {
               textInput = e;
               innerRef(e);
             }}

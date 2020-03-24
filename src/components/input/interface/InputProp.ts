@@ -5,6 +5,7 @@ export interface InputProp {
   name: string;
   type: FixMeType;
   placeholder: FixMeType;
+  tooltip: FixMeType;
   disabled: FixMeType;
   autoFocus: FixMeType;
   innerRef?: FixMeType;
@@ -13,5 +14,5 @@ export interface InputProp {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
-  value?: any;
+  value?: FixMeType;
 }

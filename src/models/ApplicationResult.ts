@@ -11,5 +11,5 @@ export interface ApplicationResult {
   redirectParams?: Record<string, FixMeType>;
   iframeParams?: Record<string, FixMeType>;
   redirect?: string;
-  partner?: Record<string, FixMeType> | null;
+  partner?: { title: string; logo: string } | null;
 }

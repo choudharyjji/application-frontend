@@ -1,11 +1,12 @@
 import * as yup from 'yup';
-import { FieldType, FormJson } from '../../lib/dynamic-form/util/form-generator/interface/field.interface';
+import { FieldType, FormSchema } from '../../lib/dynamic-form/util/form-generator/interface/field.interface';
 import { Form } from '../../lib/dynamic-form/util/form-generator/form';
 import {
   IncomeSource, JobArea, VehicleOwnership,
 } from '../../enum';
 
-const formSchema: FormJson = {
+
+const formSchema: FormSchema = {
   fields: [
     {
       label: 'Monthly Income',
@@ -192,9 +193,8 @@ const formSchema: FormJson = {
     },
     {
       name: 'iban',
-      label: 'Iban',
+      label: 'IBAN',
       type: FieldType.TEXT,
-
     },
     {
       name: 'usingOnlineBanking',
@@ -205,5 +205,11 @@ const formSchema: FormJson = {
 };
 
 const incomeDetailsForm = new Form(formSchema);
+
+const iban = incomeDetailsForm.getField('iban');
+iban.attachOnBlurCallback((event) => {
+  const value = event.target.value.replace(/ /g, '');
+  iban.setValue(value);
+});
 
 export default incomeDetailsForm;
