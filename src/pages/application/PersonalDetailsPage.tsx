@@ -7,6 +7,7 @@ import personalDetailsForm from '../../config/forms/personal-details.form';
 import DynamicForm from '../../lib/dynamic-form/DynamicForm';
 import { LeadApplicationActions } from '../../state/lead-application/actions';
 import { RootStateInterface } from '../../state/root-state.interface';
+import { LeadApplicationStepResponse } from '../../dto/response/LeadApplicationStepResponse';
 
 const PersonalDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
@@ -14,10 +15,10 @@ const PersonalDetailsPage = (): ReactElement => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const onSubmit = (data: ApplicationData): void => {
-    const applicationData = { ...data, ...currentApplicationData };
-    axios.put('http://api.localhost:7515/lead/step', applicationData).then((response) => {
-      applicationData.id = response.data.id;
+  const onSubmit = (formData: ApplicationData): void => {
+    const applicationData = { ...formData, ...currentApplicationData };
+    axios.put<LeadApplicationStepResponse>('http://api.localhost:7515/lead/step', applicationData).then(({ data }) => {
+      applicationData.id = data.id;
       dispatch(LeadApplicationActions.moveNextStep(applicationData));
       history.push('/application/contact-details');
     });

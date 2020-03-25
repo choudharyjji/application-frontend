@@ -5,7 +5,7 @@ import { InputProp } from '../input/interface/InputProp';
 const Checkbox = (props: InputProp): ReactElement => {
   const {
     label, innerRef, name, value, onChange, onBlur, onFocus,
-    placeholder, tooltip, disabled, autoFocus, spellCheck, autoComplete,
+    placeholder, disabled, autoFocus, spellCheck, autoComplete,
   } = props;
 
   return (
@@ -14,7 +14,7 @@ const Checkbox = (props: InputProp): ReactElement => {
         <div className="w-11/12">
           <label className="flex justify-start items-start">
             <div
-              className="bg-white border-1 rounded border-gray-600 w-6 h-6 flex flex-shrink-0 justify-center items-center mr-2 focus-within:border-blue-500"
+              className="bg-white border-1 rounded border-gray-600 w-5 h-5 flex flex-shrink-0 justify-center items-center mr-2 focus-within:border-blue-500"
             >
               <input
                 type="checkbox"
@@ -38,9 +38,6 @@ const Checkbox = (props: InputProp): ReactElement => {
             <div className="select-none">{label}</div>
           </label>
 
-        </div>
-        <div className="flex">
-          <InputTooltip message={tooltip} />
         </div>
       </div>
     </div>

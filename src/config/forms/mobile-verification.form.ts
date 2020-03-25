@@ -1,6 +1,6 @@
 import * as yup from 'yup';
-import { FieldType, FormSchema } from '../../lib/dynamic-form/util/form-generator/interface/field.interface';
-import { Form } from '../../lib/dynamic-form/util/form-generator/form';
+import { FieldType, FormSchema } from '../../lib/dynamic-form/util/interface/field.interface';
+import { Form } from '../../lib/dynamic-form/util/Form';
 
 const formSchema: FormSchema = {
   fields: [

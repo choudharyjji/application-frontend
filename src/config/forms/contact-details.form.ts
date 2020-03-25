@@ -4,11 +4,12 @@ import {
   FieldSelectOptions,
   FieldType,
   FormSchema,
-} from '../../lib/dynamic-form/util/form-generator/interface/field.interface';
-import { Form } from '../../lib/dynamic-form/util/form-generator/form';
+} from '../../lib/dynamic-form/util/interface/field.interface';
+import { Form } from '../../lib/dynamic-form/util/Form';
 import { Education, HousingTenure, MaritalStatus } from '../../enum';
 import { Province } from '../../enum/Province';
 import { PostCodeLookupResponse } from '../../dto/response/PostCodeLookupResponse';
+import { SelectField } from '../../lib/dynamic-form/util/SelectField';
 
 const formSchema: FormSchema = {
   fields: [
@@ -22,10 +23,6 @@ const formSchema: FormSchema = {
       name: 'maritalStatus',
       label: 'Marital Status',
       type: FieldType.SELECT,
-      dependency: {
-        field: 'personalCode',
-        values: ['1'],
-      },
       options: [
         {
           label: 'Not Married',
@@ -393,8 +390,10 @@ postalCode.attachOnBlurCallback((event) => {
         return acc;
       }, [] as FieldSelectOptions[]);
       streetOptions.push({ label: 'Other', value: 'Other' });
-      streetField.options = streetOptions;
-      provinceField.setValue(province);
+      if (streetField instanceof SelectField) {
+        streetField.setOptions(streetOptions);
+      }
+      // provinceField.setValue(province);
     });
   }
 });

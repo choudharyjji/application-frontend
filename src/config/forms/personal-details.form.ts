@@ -1,8 +1,8 @@
 import * as yup from 'yup';
 import moment from 'moment';
-import { FieldType, FormSchema } from '../../lib/dynamic-form/util/form-generator/interface/field.interface';
-import { Form } from '../../lib/dynamic-form/util/form-generator/form';
+import { FieldType, FormSchema } from '../../lib/dynamic-form/util/interface/field.interface';
 import { Gender } from '../../enum';
+import { Form } from '../../lib/dynamic-form/util/Form';
 
 const formSchema: FormSchema = {
   fields: [
@@ -48,9 +48,9 @@ const formSchema: FormSchema = {
         minDate: moment().subtract(102, 'years').toDate(),
         maxDate: moment().subtract(18, 'years').toDate(),
       },
-      validation: yup.date()
-        .min(moment().subtract(102, 'years').toDate())
-        .max(moment().subtract(18, 'years').toDate()).required(),
+      // validation: yup.date()
+      //   .min(moment().subtract(102, 'years').toDate())
+      //   .max(moment().subtract(18, 'years').toDate()).required(),
     },
     {
       name: 'phoneNumber',

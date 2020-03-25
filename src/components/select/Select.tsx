@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import ReactSelect from 'react-select';
 import InputTooltip from '../inputTooltip/inputTooltip';
 import { FixMeType } from '../../type/fix-me.type';

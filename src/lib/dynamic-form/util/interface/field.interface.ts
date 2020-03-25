@@ -1,5 +1,5 @@
 import { MixedSchema } from 'yup';
-import { Field } from '../field';
+import { BaseField } from '../BaseField';
 
 export enum FieldType {
   TEXT = 'text',
@@ -24,7 +24,7 @@ export interface FieldDependencyOptions {
 }
 
 export interface FieldDependency {
-  field: Field;
+  field: BaseField;
   values: any[];
 }
 
@@ -42,7 +42,7 @@ export interface FieldSchema {
   options?: FieldSelectOptions[];
   dateParams?: FieldDateParams;
   dependency?: FieldDependencyOptions;
-  default?: string;
+  default?: string | number | boolean;
   validation?: MixedSchema;
   autoFocus?: boolean;
   autoComplete?: boolean;
