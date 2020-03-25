@@ -1,7 +1,8 @@
+import { Control } from 'react-hook-form';
 import { FieldDependency, FieldType } from './interface/field.interface';
 import { CallbackEvent, FieldCallbacks, FieldCallbackType } from './interface/field-callback.interface';
 
-export abstract class BaseField{
+export abstract class BaseField {
   private readonly id: string;
 
   protected label: string;
@@ -24,16 +25,14 @@ export abstract class BaseField{
 
   protected type: FieldType = FieldType.TEXT;
 
-  // protected control:
+  protected control: Control | null = null;
 
-  constructor(
-    name: string,
-    label: string,
-    placeholder: string | null,
-    defaultValue: string | number | boolean | null,
-    autoFocus: boolean,
-    disabled: boolean,
-  ) {
+  protected constructor(name: string,
+                        label: string,
+                        placeholder: string | null,
+                        defaultValue: string | number | boolean | null,
+                        autoFocus: boolean,
+                        disabled: boolean) {
     this.id = `${name}_${Date.now()}`;
     this.name = name;
     this.label = label;
@@ -127,6 +126,17 @@ export abstract class BaseField{
   public setType(type: FieldType): this {
     this.type = type;
     return this;
+  }
+
+  public setControl(control: Control | null): this {
+    this.control = control;
+    return this;
+  }
+
+  public updateValue(value: string | number | boolean): void {
+    if (this.control !== null) {
+      this.control.setValue(this.name, value);
+    }
   }
 
   public isInputElement(): boolean {

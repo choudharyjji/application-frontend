@@ -384,16 +384,15 @@ postalCode.attachOnBlurCallback((event) => {
       const { streets, province } = data.data;
       const provinceField = contactDetailsForm.getField('province');
       const streetField = contactDetailsForm.getField('street');
-
-      const streetOptions = streets.reduce((acc, curr) => {
-        acc.push({ label: curr, value: curr });
-        return acc;
-      }, [] as FieldSelectOptions[]);
-      streetOptions.push({ label: 'Other', value: 'Other' });
+      provinceField.updateValue(province);
       if (streetField instanceof SelectField) {
+        const streetOptions = streets.reduce((acc, curr) => {
+          acc.push({ label: curr, value: curr });
+          return acc;
+        }, [] as FieldSelectOptions[]);
+        streetOptions.push({ label: 'Other', value: 'Other' });
         streetField.setOptions(streetOptions);
       }
-      // provinceField.setValue(province);
     });
   }
 });

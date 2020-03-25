@@ -5,8 +5,14 @@ export class InputField extends BaseField {
 
   protected spellCheck = false;
 
-
-  constructor(name: string, label: string, placeholder: string | null, defaultValue: string | number | boolean | null, autoFocus: boolean, disabled: boolean, autoComplete: boolean, spellCheck: boolean) {
+  constructor(name: string,
+    label: string,
+    placeholder: string | null,
+    defaultValue: string | number | boolean | null,
+    autoFocus: boolean,
+    disabled: boolean,
+    autoComplete: boolean,
+    spellCheck: boolean) {
     super(name, label, placeholder, defaultValue, autoFocus, disabled);
     this.autoComplete = autoComplete;
     this.spellCheck = spellCheck;

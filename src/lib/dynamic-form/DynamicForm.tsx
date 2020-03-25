@@ -35,8 +35,8 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <div className="container bg-gray-200 p-5 mb-5 rounded">
           {fields.map(([name, field]) => {
+            field.setControl(control);
             let component = null;
-            // field.control = control;
             if (field.isInputElement() && field instanceof InputField) {
               const ComponentTypeWrapper = field.isCheckboxType() ? Checkbox : Input;
               component = (
