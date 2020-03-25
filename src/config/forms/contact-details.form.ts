@@ -378,23 +378,21 @@ const contactDetailsForm = new Form(formSchema);
 const postalCode = contactDetailsForm.getField('postalCode');
 
 postalCode.attachOnBlurCallback((event) => {
-  if (event) {
-    const { value } = event.target;
-    axios.get<PostCodeLookupResponse>(`https://api.fiestacredito.es/postcode/lookup/${value}`).then(({ data }) => {
-      const { streets, province } = data.data;
-      const provinceField = contactDetailsForm.getField('province');
-      const streetField = contactDetailsForm.getField('street');
-      provinceField.updateValue(province);
-      if (streetField instanceof SelectField) {
-        const streetOptions = streets.reduce((acc, curr) => {
-          acc.push({ label: curr, value: curr });
-          return acc;
-        }, [] as FieldSelectOptions[]);
-        streetOptions.push({ label: 'Other', value: 'Other' });
-        streetField.setOptions(streetOptions);
-      }
-    });
-  }
+  const { value } = event.target;
+  axios.get<PostCodeLookupResponse>(`https://api.fiestacredito.es/postcode/lookup/${value}`).then(({ data }) => {
+    const { streets, province } = data.data;
+    const provinceField = contactDetailsForm.getField('province');
+    const streetField = contactDetailsForm.getField('street');
+    provinceField.updateValue(province);
+    if (streetField instanceof SelectField) {
+      const streetOptions = streets.reduce((acc, curr) => {
+        acc.push({ label: curr, value: curr });
+        return acc;
+      }, [] as FieldSelectOptions[]);
+      streetOptions.push({ label: 'Other', value: 'Other' });
+      streetField.setOptions(streetOptions);
+    }
+  });
 });
 
 export default contactDetailsForm;

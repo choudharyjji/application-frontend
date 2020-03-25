@@ -28,11 +28,11 @@ export abstract class BaseField {
   protected control: Control | null = null;
 
   protected constructor(name: string,
-                        label: string,
-                        placeholder: string | null,
-                        defaultValue: string | number | boolean | null,
-                        autoFocus: boolean,
-                        disabled: boolean) {
+    label: string,
+    placeholder: string | null,
+    defaultValue: string | number | boolean | null,
+    autoFocus: boolean,
+    disabled: boolean) {
     this.id = `${name}_${Date.now()}`;
     this.name = name;
     this.label = label;
@@ -111,6 +111,18 @@ export abstract class BaseField {
   }
 
   public setDependency(dependency: FieldDependency | null): this {
+    if (dependency != null) {
+      this.visible = false;
+      dependency.field.attachOnBlurCallback((event) => {
+        const currentVisible = this.visible;
+        const { value } = event.target;
+        this.visible = dependency.values.findIndex((item) => item.toLowerCase() === value.toLocaleLowerCase()) > -1;
+        if (this.visible !== currentVisible) {
+          this.reRender();
+        }
+      });
+    }
+
     this.dependency = dependency;
     return this;
   }
@@ -136,6 +148,12 @@ export abstract class BaseField {
   public updateValue(value: string | number | boolean): void {
     if (this.control !== null) {
       this.control.setValue(this.name, value);
+    }
+  }
+
+  public reRender(): void {
+    if (this.control !== null) {
+      this.control.reRender();
     }
   }
 
@@ -243,7 +261,9 @@ export abstract class BaseField {
     }
     if (callbacks) {
       callbacks.forEach((callback) => {
-        callback(event);
+        if (event) {
+          callback(event);
+        }
       });
     }
   }
