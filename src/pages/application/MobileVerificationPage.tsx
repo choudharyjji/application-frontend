@@ -3,14 +3,14 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import DynamicForm from '../../lib/dynamic-form/DynamicForm';
-import mobileVerificationForm from '../../config/forms/mobile-veridication.form';
+import mobileVerificationForm from '../../config/forms/mobile-verification.form';
 import { RootStateInterface } from '../../state/root-state.interface';
-import { MobileVerificationRequest } from '../../models/MobileVerificationRequest';
+import { MobileVerificationRequest } from '../../dto/request/MobileVerificationRequest';
 import { FixMeType } from '../../type/fix-me.type';
 
 const MobileVerificationPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
-  const currentApplicationData = currentState.data;
+  const currentApplicationData = currentState.applicationData;
   const history = useHistory();
   const onSubmit = (data: FixMeType): void => {
     if (currentApplicationData.id) {

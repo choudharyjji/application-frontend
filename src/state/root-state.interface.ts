@@ -1,5 +1,5 @@
-import { LeadApplicationStateInterface } from './lead-application/interface';
+import { LeadApplicationState } from './lead-application/interface';
 
 export interface RootStateInterface {
-  leadApplication: LeadApplicationStateInterface;
+  leadApplication: LeadApplicationState;
 }

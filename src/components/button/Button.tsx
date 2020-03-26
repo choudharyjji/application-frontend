@@ -8,7 +8,7 @@ const Button = (props: ButtonProp): ReactElement => {
 
   return (
     <button
-      className="bg-blue-500 rounded-full uppercase text-white font-bold px-8 py-3 focus:outline-none hover:shadow-xl transition ease-in-out duration-500"
+      className="bg-dark-blue rounded-full uppercase text-white font-bold px-8 py-3 focus:outline-none hover:shadow-xl transition ease-in-out duration-500"
       type={type}
       onClick={onClick}
       disabled={disabled}

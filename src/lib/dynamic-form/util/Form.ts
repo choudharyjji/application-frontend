@@ -1,12 +1,15 @@
-import { ObjectSchema } from 'yup';
 import * as yup from 'yup';
-import { FieldSchema, FormSchema } from './interface/field.interface';
-import { Field } from './field';
+import { ObjectSchema } from 'yup';
+import { FieldType, FormSchema } from './interface/field.interface';
+import { InputField } from './InputField';
+import { BaseField } from './BaseField';
+import { SelectField } from './SelectField';
+import { DateField } from './DateField';
 
 export class Form {
   private readonly formSchema: FormSchema;
 
-  private readonly fields: Record<string, Field>;
+  private readonly fields: Record<string, BaseField>;
 
   private readonly defaultValues: Record<string, any>;
 
@@ -20,15 +23,11 @@ export class Form {
     this.validationSchema = result.validationSchema;
   }
 
-  public getField(name: string): Field {
+  public getField(name: string): BaseField {
     return this.fields[name];
   }
 
-  public getFields(): FieldSchema[] {
-    return this.formSchema.fields;
-  }
-
-  public getFieldsArray(): [string, Field][] {
+  public getFieldsArray(): [string, BaseField][] {
     return Object.entries(this.fields);
   }
 
@@ -41,30 +40,46 @@ export class Form {
   }
 
   private parseSchema(): {
-    fields: Record<string, Field>;
+    fields: Record<string, BaseField>;
     defaultValues: Record<string, any>;
     validationSchema: ObjectSchema<{}>;
   } {
-    const fields: Record<string, Field> = {};
+    const fields: Record<string, BaseField> = {};
     const validationSchema: Record<string, any> = {};
     const defaultValues: Record<string, any> = {};
     const fieldsSchema = this.formSchema.fields;
 
     fieldsSchema.forEach((field) => {
-      fields[field.name] = new Field(
-        field.label,
-        field.name,
-        field.type,
-        field.default,
-        field.placeholder,
-        field.tooltip,
-        field.options,
-        field.dateParams,
-        field.autoFocus,
-        field.autoComplete,
-        field.spellCheck,
-        field.disabled,
-      );
+      if (Form.isInputField(field.type)) {
+        fields[field.name] = (new InputField(field.name,
+          field.label,
+          field.placeholder || null,
+          field.default || null,
+          field.autoFocus || false,
+          field.disabled || false,
+          field.autoComplete || false,
+          field.spellCheck || false))
+          .setType(field.type);
+      }
+      if (field.type === FieldType.SELECT) {
+        fields[field.name] = new SelectField(field.name,
+          field.label,
+          field.placeholder || null,
+          field.default || null,
+          field.autoFocus || false,
+          field.disabled || false,
+          field.options || []);
+      }
+      if (field.type === FieldType.DATE) {
+        fields[field.name] = new DateField(field.name,
+          field.label,
+          field.placeholder || null,
+          field.default || null,
+          field.autoFocus || false,
+          field.disabled || false,
+          field.dateParams ? field.dateParams.minDate || null : null,
+          field.dateParams ? field.dateParams.maxDate || null : null);
+      }
 
       defaultValues[field.name] = field.default !== null ? field.default : '';
 
@@ -98,13 +113,26 @@ export class Form {
     // dependency
     fieldsSchema.forEach((field) => {
       if (field.dependency !== undefined) {
-        fields[field.name].dependency = {
+        fields[field.name].setDependency({
           field: fields[field.dependency.field],
           values: field.dependency.values,
-        };
+        });
       }
     });
 
     return { fields, defaultValues, validationSchema: yup.object(validationSchema) };
+  }
+
+  private static isInputField(type: FieldType): boolean {
+    const inputTypes = [
+      FieldType.TEXT,
+      FieldType.TEL,
+      FieldType.NUMBER,
+      FieldType.EMAIL,
+      FieldType.PASSWORD,
+      FieldType.HIDDEN,
+      FieldType.CHECKBOX
+    ];
+    return inputTypes.indexOf(type) > -1;
   }
 }

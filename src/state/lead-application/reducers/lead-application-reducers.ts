@@ -1,36 +1,27 @@
-import { LeadApplicationStateInterface, LeadApplicationActionInterface } from '../interface';
+import { ApplicationDataUpdateAction, LeadApplicationState } from '../interface';
 import { LeadApplicationActionEnum } from '../enum';
 
-const initialState: LeadApplicationStateInterface = {
-  step: 0,
-  data: {
-    amount: 300,
-    period: 15,
-  },
-  result: {
-    partner: {
-      title: 'CCLOAN',
-      logo: 'https://fiesta-public.s3-eu-west-1.amazonaws.com/partners/logo-ccloan.png',
-    },
-  },
-};
+const initialState: Partial<LeadApplicationState> = {};
 
-export function leadApplicationReducer(
+export function leadApplicationReducer<T>(
   state = initialState,
-  action: LeadApplicationActionInterface,
-): LeadApplicationStateInterface {
+  action: ApplicationDataUpdateAction<T>,
+): Partial<LeadApplicationState> {
   switch (action.type) {
-    case LeadApplicationActionEnum.NEXT_STEP:
+    case LeadApplicationActionEnum.UPDATE_APPLICATION_DATA:
       return {
         ...state,
-        step: state.step + 1,
-        data: { ...state.data, ...action.payload.data },
+        applicationData: { ...state.applicationData, ...action.payload },
       };
-    case LeadApplicationActionEnum.SUBMIT:
+    case LeadApplicationActionEnum.UPDATE_APPLICATION_RESULT:
       return {
         ...state,
-        step: state.step + 1,
-        result: { ...state.result, ...action.payload.data },
+        applicationResult: { ...state.applicationResult, ...action.payload },
+      };
+    case LeadApplicationActionEnum.UPDATE_APPLICATION_PROGRESS_STATE:
+      return {
+        ...state,
+        progressState: { ...state.progressState, ...action.payload },
       };
     default:
       return state;

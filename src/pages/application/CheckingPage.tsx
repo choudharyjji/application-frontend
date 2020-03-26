@@ -4,29 +4,28 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { RootStateInterface } from '../../state/root-state.interface';
 import { LeadApplicationActions } from '../../state/lead-application/actions';
-import { ApplicationResult } from '../../models/ApplicationResult';
 import { LeadStatus } from '../../enum/LeadStatus';
+import { LeadApplicationStatusResponse } from '../../dto/response/LeadApplicationStatusResponse';
 
 const CheckingPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
-  const currentApplicationData = currentState.data;
+  const currentApplicationData = currentState.applicationData;
   const history = useHistory();
   const dispatch = useDispatch();
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (currentApplicationData.id) {
-        axios.get(`http://api.localhost:7515/lead/status/${currentApplicationData.id}`).then((response) => {
-          const result: ApplicationResult = response.data;
-          dispatch(LeadApplicationActions.saveApplicationResult(result));
+        axios.get<LeadApplicationStatusResponse>(`http://api.localhost:7515/lead/status/${currentApplicationData.id}`).then(({ data }) => {
+          dispatch(LeadApplicationActions.updateApplicationResult(data));
 
-          if (result.mobileVerificationRequired === true) {
+          if (data.mobileVerificationRequired === true) {
             history.push('application/mobile-verification');
           }
-          if (result.status === LeadStatus.ACCEPTED) {
+          if (data.status === LeadStatus.ACCEPTED) {
             history.push('/application/accepted');
           }
-          if (result.status === LeadStatus.REJECTED) {
+          if (data.status === LeadStatus.REJECTED || data.status === LeadStatus.ERROR) {
             history.push('/application/rejected');
           }
         });

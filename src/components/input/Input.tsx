@@ -9,7 +9,7 @@ const Input = (props: InputProp): ReactElement => {
   } = props;
 
   return (
-    <div className="my-6">
+    <div className="mb-6">
       <span className="font-light block mb-2 text-sm">
         {label}
       </span>
@@ -28,7 +28,7 @@ const Input = (props: InputProp): ReactElement => {
               autoFocus={autoFocus}
               spellCheck={spellCheck}
               autoComplete={autoComplete}
-              className="bg-white focus:outline-none hover:shadow-md hover:border-transparent border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal transition ease-in-out duration-500"
+              className="bg-white focus:outline-none hover:shadow-md hover:border-transparent border border-gray-300 rounded-md py-2 px-4 block w-full appearance-none leading-normal transition ease-in-out duration-500"
               ref={innerRef}
             />
           </label>

@@ -1,13 +1,16 @@
 import React, { ReactElement } from 'react';
 import { useForm, ErrorMessage } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Form } from './util/form-generator/form';
 import Input from '../../components/input/Input';
 import { FixMeType } from '../../type/fix-me.type';
 import Button from '../../components/button/Button';
 import Select from '../../components/select/Select';
 import DateSelect from '../../components/dateSelect/DateSelect';
 import Checkbox from '../../components/checkbox/Checkbox';
+import { Form } from './util/Form';
+import { DateField } from './util/DateField';
+import { SelectField } from './util/SelectField';
+import { InputField } from './util/InputField';
 
 interface DynamicFormProp {
   form: Form;
@@ -18,39 +21,35 @@ interface DynamicFormProp {
 const DynamicForm = (props: DynamicFormProp): ReactElement => {
   const { form, onSubmit } = props;
   const {
-    register, handleSubmit, errors, setValue, watch, control,
+    register, handleSubmit, errors, control,
   } = useForm({
     validationSchema: form.getValidationSchema(),
     defaultValues: form.getDefaultValues(),
     reValidateMode: 'onChange',
   });
-  const { t, i18n } = useTranslation();
-
-  console.log("rendered");
+  const { t } = useTranslation();
 
   const fields = form.getFieldsArray();
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-        <div className="container bg-gray-200 p-5 mb-5 rounded">
+        <div className="container bg-light-gray p-5 mb-5 rounded-lg">
           {fields.map(([name, field]) => {
+            field.setControl(control);
             let component = null;
-            field.setValueFn = setValue;
-            field.watchFn = watch;
-            if (field.isInputElement()) {
+            if (field.isInputElement() && field instanceof InputField) {
               const ComponentTypeWrapper = field.isCheckboxType() ? Checkbox : Input;
               component = (
-                <React.Fragment key={field.id}>
+                <React.Fragment key={field.getId()}>
                   <ComponentTypeWrapper
-                    label={t(field.label)}
+                    label={t(field.getLabel())}
                     name={name}
-                    type={field.type}
-                    placeholder={field.placeholder}
-                    tooltip={field.tooltip}
-                    disabled={field.disabled}
-                    autoFocus={field.autoFocus}
-                    spellCheck={field.spellCheck}
-                    autoComplete={field.autoComplete ? 'on' : 'off'}
+                    type={field.getType()}
+                    placeholder={field.getPlaceHolder()}
+                    disabled={field.isDisabled()}
+                    autoFocus={field.getAutoFocus()}
+                    spellCheck={field.getSpellCheck()}
+                    autoComplete={field.getAutoComplete() ? 'on' : 'off'}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
                       field.onChangeCallback(event);
                     }}
@@ -67,15 +66,15 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
               );
             }
 
-            if (field.isDateType()) {
+            if (field.isDateType() && field instanceof DateField) {
               component = (
-                <React.Fragment key={field.id}>
+                <React.Fragment key={field.getId()}>
                   <DateSelect
                     control={control}
                     name={name}
-                    label={field.label}
-                    minDate={field.dateParams?.minDate}
-                    maxDate={field.dateParams?.maxDate}
+                    label={field.getLabel()}
+                    minDate={field.getMinDate() || undefined}
+                    maxDate={field.getMaxDate() || undefined}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
                       field.onChangeCallback(event);
                     }}
@@ -92,14 +91,14 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
               );
             }
 
-            if (field.isSelectType()) {
+            if (field.isSelectType() && field instanceof SelectField) {
               component = (
-                <React.Fragment key={field.id}>
+                <React.Fragment key={field.getId()}>
                   <Select
                     control={control}
                     name={name}
-                    options={field.options as {}[]}
-                    label={field.label}
+                    options={field.getOptions() as {}[]}
+                    label={field.getLabel()}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
                       field.onChangeCallback(event);
                     }}
@@ -116,7 +115,7 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
               );
             }
 
-            if (field.visible) {
+            if (field.isVisible()) {
               return component;
             }
             return null;

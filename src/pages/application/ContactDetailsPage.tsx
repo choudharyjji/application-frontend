@@ -8,24 +8,21 @@ import { LeadApplicationActions } from '../../state/lead-application/actions';
 import { ApplicationData } from '../../models/ApplicationData';
 import { RootStateInterface } from '../../state/root-state.interface';
 import { FixMeType } from '../../type/fix-me.type';
+import { LeadApplicationStepResponse } from '../../dto/response/LeadApplicationStepResponse';
 
 const ContactDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
-  const currentApplicationData = currentState.data;
+  const currentApplicationData = currentState.applicationData;
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const onSubmit = (data: ApplicationData): void => {
-    const applicationData = { ...data, ...currentApplicationData };
-    axios.put('http://api.localhost:7515/lead/step', applicationData).then((response) => {
-      applicationData.id = response.data.id;
-      dispatch(LeadApplicationActions.moveNextStep(applicationData));
+  const onSubmit = (formData: ApplicationData): void => {
+    const applicationData = { ...formData, ...currentApplicationData };
+    axios.put<LeadApplicationStepResponse>('http://api.localhost:7515/lead/step', applicationData).then(({ data }) => {
+      applicationData.id = data.id;
+      dispatch(LeadApplicationActions.updateApplicationData(applicationData));
       history.push('/application/income-details');
     });
-  };
-
-  const prevStep = (): void => {
-    history.goBack();
   };
   return (
     <>
@@ -34,7 +31,7 @@ const ContactDetailsPage = (): ReactElement => {
       </h2>
       <DynamicForm
         form={contactDetailsForm}
-        onSubmit={(data: FixMeType) => onSubmit(data)}
+        onSubmit={(data: FixMeType): void => onSubmit(data)}
       />
     </>
   );

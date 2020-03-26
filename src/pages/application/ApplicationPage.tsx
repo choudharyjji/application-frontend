@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import {
   BrowserRouter as Router, Switch, Route, Redirect, useLocation,
 } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Steps from '../../modules/steps/Steps';
 import Step from '../../modules/steps/Step';
 import { RootStateInterface } from '../../state/root-state.interface';
@@ -13,11 +13,22 @@ import MobileVerificationPage from './MobileVerificationPage';
 import AcceptedPage from './AcceptedPage';
 import CheckingPage from './CheckingPage';
 import RejectedPage from './RejectedPage';
+import { LeadApplicationActions } from '../../state/lead-application/actions';
+import { ApplicationData } from '../../models/ApplicationData';
+import ContinuePage from './ContinuePage';
 
 const ApplicationPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
-  const { step } = currentState;
   const location = useLocation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const applicationData: ApplicationData = {};
+    applicationData.period = 31;
+    applicationData.amount = 300;
+    dispatch(LeadApplicationActions.updateApplicationData<ApplicationData>(applicationData));
+  }, []);
+
 
   // if (step === 0 && location.pathname !== '/application/personal-details') {
   //   return (<Redirect to="/application/personal-details" />);
@@ -34,7 +45,7 @@ const ApplicationPage = (): ReactElement => {
 
   return (
     <div className="container max-w-form">
-      <Steps step={step}>
+      <Steps step={0}>
         <Step />
         <Step />
         <Step />
@@ -64,6 +75,9 @@ const ApplicationPage = (): ReactElement => {
           </Route>
           <Route path="/application/declined">
             <RejectedPage />
+          </Route>
+          <Route path="/application/continue/:id">
+            <ContinuePage />
           </Route>
         </Switch>
       </Router>
