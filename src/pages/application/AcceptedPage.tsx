@@ -8,8 +8,8 @@ import logo from '../../assets/img/logo-dark-with-colors@3x.png';
 const AcceptedPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const [seconds, updateSeconds] = useState(5);
-  const { result } = currentState;
-  const { partner } = result;
+  const { applicationResult } = currentState;
+  const { partner } = applicationResult;
 
   const partnerLogo = partner?.logo ? partner?.logo : logo;
 

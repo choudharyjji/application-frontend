@@ -11,21 +11,18 @@ import { LeadApplicationStepResponse } from '../../dto/response/LeadApplicationS
 
 const IncomeDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
-  const currentApplicationData = currentState.data;
+  const currentApplicationData = currentState.applicationData;
   const history = useHistory();
   const dispatch = useDispatch();
 
   const onSubmit = (formData: ApplicationData): void => {
     const applicationData = { ...formData, ...currentApplicationData };
-    axios.post<LeadApplicationStepResponse>('http://api.localhost:7515/lead', applicationData).then(({ data }) => {
-      dispatch(LeadApplicationActions.moveNextStep(applicationData));
-      history.push('/application/wait');
+    axios.post<LeadApplicationStepResponse>('http://api.localhost:7515/lead', applicationData).then(() => {
+      dispatch(LeadApplicationActions.updateApplicationData(applicationData));
+      history.push('/application/checking');
     });
   };
 
-  const prevStep = (): void => {
-    history.goBack();
-  };
   return (
     <>
       <h2 className="text-3xl font-extrabold mb-5 xl:text-4xl">

@@ -33,7 +33,7 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-        <div className="container bg-gray-200 p-5 mb-5 rounded">
+        <div className="container bg-light-gray p-5 mb-5 rounded-lg">
           {fields.map(([name, field]) => {
             field.setControl(control);
             let component = null;
@@ -45,7 +45,7 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
                     label={t(field.getLabel())}
                     name={name}
                     type={field.getType()}
-                    placeholder={field.getLabel()}
+                    placeholder={field.getPlaceHolder()}
                     disabled={field.isDisabled()}
                     autoFocus={field.getAutoFocus()}
                     spellCheck={field.getSpellCheck()}
@@ -74,7 +74,7 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
                     name={name}
                     label={field.getLabel()}
                     minDate={field.getMinDate() || undefined}
-                    maxDate={field.getMinDate() || undefined}
+                    maxDate={field.getMaxDate() || undefined}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
                       field.onChangeCallback(event);
                     }}

@@ -2,7 +2,7 @@ import { BaseField } from './BaseField';
 import { FieldSelectOptions, FieldType } from './interface/field.interface';
 
 export class SelectField extends BaseField {
-  private options: FieldSelectOptions[] | null = null;
+  private options: FieldSelectOptions[] = [];
 
   protected type: FieldType = FieldType.SELECT;
 
@@ -11,7 +11,7 @@ export class SelectField extends BaseField {
     placeholder: string | null,
     defaultValue: string | number | boolean | null,
     autoFocus: boolean, disabled: boolean,
-    options: FieldSelectOptions[] | null) {
+    options: FieldSelectOptions[]) {
     super(name, label, placeholder, defaultValue, autoFocus, disabled);
     this.options = options;
   }
@@ -20,7 +20,7 @@ export class SelectField extends BaseField {
     return this.options;
   }
 
-  public setOptions(options: FieldSelectOptions[] | null): this {
+  public setOptions(options: FieldSelectOptions[]): this {
     this.options = options;
     return this;
   }

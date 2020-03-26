@@ -35,7 +35,7 @@ const Checkbox = (props: InputProp): ReactElement => {
                 <rect fill="#1d354e" x="10%" y="10%" width="80%" height="80%" rx="3" ry="3" />
               </svg>
             </div>
-            <div className="select-none">{label}</div>
+            <div className="select-none font-light block -mt-1 text-sm">{label}</div>
           </label>
 
         </div>

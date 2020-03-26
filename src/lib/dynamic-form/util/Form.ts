@@ -68,7 +68,7 @@ export class Form {
           field.default || null,
           field.autoFocus || false,
           field.disabled || false,
-          field.options || null);
+          field.options || []);
       }
       if (field.type === FieldType.DATE) {
         fields[field.name] = new DateField(field.name,

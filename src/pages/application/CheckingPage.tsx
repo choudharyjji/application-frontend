@@ -9,7 +9,7 @@ import { LeadApplicationStatusResponse } from '../../dto/response/LeadApplicatio
 
 const CheckingPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
-  const currentApplicationData = currentState.data;
+  const currentApplicationData = currentState.applicationData;
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -17,7 +17,7 @@ const CheckingPage = (): ReactElement => {
     const interval = setInterval(() => {
       if (currentApplicationData.id) {
         axios.get<LeadApplicationStatusResponse>(`http://api.localhost:7515/lead/status/${currentApplicationData.id}`).then(({ data }) => {
-          dispatch(LeadApplicationActions.saveApplicationResult(data));
+          dispatch(LeadApplicationActions.updateApplicationResult(data));
 
           if (data.mobileVerificationRequired === true) {
             history.push('application/mobile-verification');

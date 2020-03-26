@@ -87,6 +87,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
       textInput.focus();
       textInput.blur();
     }
+    console.log(textInput);
   };
 
   return (
@@ -100,7 +101,6 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
             <ReactSelect
               placeholder="day"
               options={dayOptions()}
-              defaultValue={null}
               onChange={handleDayChange}
             />
           </div>

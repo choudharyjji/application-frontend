@@ -148,6 +148,7 @@ export abstract class BaseField {
   public updateValue(value: string | number | boolean): void {
     if (this.control !== null) {
       this.control.setValue(this.name, value);
+      this.control.reRender();
     }
   }
 

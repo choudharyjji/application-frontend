@@ -12,7 +12,7 @@ import { LeadApplicationStepResponse } from '../../dto/response/LeadApplicationS
 
 const ContactDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
-  const currentApplicationData = currentState.data;
+  const currentApplicationData = currentState.applicationData;
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -20,13 +20,9 @@ const ContactDetailsPage = (): ReactElement => {
     const applicationData = { ...formData, ...currentApplicationData };
     axios.put<LeadApplicationStepResponse>('http://api.localhost:7515/lead/step', applicationData).then(({ data }) => {
       applicationData.id = data.id;
-      dispatch(LeadApplicationActions.moveNextStep(applicationData));
+      dispatch(LeadApplicationActions.updateApplicationData(applicationData));
       history.push('/application/income-details');
     });
-  };
-
-  const prevStep = (): void => {
-    history.goBack();
   };
   return (
     <>
@@ -35,7 +31,7 @@ const ContactDetailsPage = (): ReactElement => {
       </h2>
       <DynamicForm
         form={contactDetailsForm}
-        onSubmit={(data: FixMeType) => onSubmit(data)}
+        onSubmit={(data: FixMeType): void => onSubmit(data)}
       />
     </>
   );

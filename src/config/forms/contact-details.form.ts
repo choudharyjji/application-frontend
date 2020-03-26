@@ -383,7 +383,6 @@ postalCode.attachOnBlurCallback((event) => {
     const { streets, province } = data.data;
     const provinceField = contactDetailsForm.getField('province');
     const streetField = contactDetailsForm.getField('street');
-    provinceField.updateValue(province);
     if (streetField instanceof SelectField) {
       const streetOptions = streets.reduce((acc, curr) => {
         acc.push({ label: curr, value: curr });
@@ -392,6 +391,7 @@ postalCode.attachOnBlurCallback((event) => {
       streetOptions.push({ label: 'Other', value: 'Other' });
       streetField.setOptions(streetOptions);
     }
+    provinceField.updateValue(province);
   });
 });
 

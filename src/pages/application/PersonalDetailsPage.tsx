@@ -11,22 +11,20 @@ import { LeadApplicationStepResponse } from '../../dto/response/LeadApplicationS
 
 const PersonalDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
-  const currentApplicationData = currentState.data;
+  const currentApplicationData = currentState.applicationData;
   const history = useHistory();
   const dispatch = useDispatch();
 
   const onSubmit = (formData: ApplicationData): void => {
     const applicationData = { ...formData, ...currentApplicationData };
+    dispatch(LeadApplicationActions.updateApplicationData(applicationData));
     axios.put<LeadApplicationStepResponse>('http://api.localhost:7515/lead/step', applicationData).then(({ data }) => {
       applicationData.id = data.id;
-      dispatch(LeadApplicationActions.moveNextStep(applicationData));
+      dispatch(LeadApplicationActions.updateApplicationData(applicationData));
       history.push('/application/contact-details');
     });
   };
 
-  const prevStep = (): void => {
-    // history.goBack();
-  };
   return (
     <>
       <h2 className="text-3xl font-extrabold mb-5 xl:text-4xl">

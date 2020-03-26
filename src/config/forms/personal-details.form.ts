@@ -19,10 +19,6 @@ const formSchema: FormSchema = {
       type: FieldType.TEXT,
       label: 'Last Name',
       validation: yup.string().max(50).matches(/^[^0-9]+$/).required(),
-      dependency: {
-        field: 'firstName',
-        values: ['joe'],
-      },
     },
     {
       name: 'gender',
