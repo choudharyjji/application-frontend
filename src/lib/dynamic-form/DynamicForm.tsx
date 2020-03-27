@@ -33,7 +33,7 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-        <div className="container bg-light-gray p-5 mb-5 rounded-lg">
+        <div className="container bg-fiesta-light-gray p-5 mb-5 rounded-lg">
           {fields.map(([name, field]) => {
             field.setControl(control);
             let component = null;
@@ -46,6 +46,7 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
                     name={name}
                     type={field.getType()}
                     placeholder={field.getPlaceHolder()}
+                    tooltip={field.getHelperMessage()}
                     disabled={field.isDisabled()}
                     autoFocus={field.getAutoFocus()}
                     spellCheck={field.getSpellCheck()}

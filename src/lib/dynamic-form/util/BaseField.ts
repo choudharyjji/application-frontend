@@ -11,6 +11,8 @@ export abstract class BaseField {
 
   protected placeholder: string | null = null;
 
+  protected helperMessage: string | null = null;
+
   protected defaultValue: string | number | boolean | null = null;
 
   protected autoFocus = false;
@@ -30,6 +32,7 @@ export abstract class BaseField {
   protected constructor(name: string,
     label: string,
     placeholder: string | null,
+    helperMessage: string | null,
     defaultValue: string | number | boolean | null,
     autoFocus: boolean,
     disabled: boolean) {
@@ -37,6 +40,7 @@ export abstract class BaseField {
     this.name = name;
     this.label = label;
     this.placeholder = placeholder;
+    this.helperMessage = helperMessage;
     this.defaultValue = defaultValue;
     this.autoFocus = autoFocus;
     this.disabled = disabled;
@@ -76,6 +80,15 @@ export abstract class BaseField {
 
   public setPlaceHolder(placeholder: string | null): this {
     this.placeholder = placeholder;
+    return this;
+  }
+
+  public getHelperMessage(): string | null {
+    return this.helperMessage;
+  }
+
+  public setHelperMessage(helperMessage: string | null): this {
+    this.helperMessage = helperMessage;
     return this;
   }
 

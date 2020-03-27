@@ -8,12 +8,13 @@ export class InputField extends BaseField {
   constructor(name: string,
     label: string,
     placeholder: string | null,
+    helperMessage: string | null,
     defaultValue: string | number | boolean | null,
     autoFocus: boolean,
     disabled: boolean,
     autoComplete: boolean,
     spellCheck: boolean) {
-    super(name, label, placeholder, defaultValue, autoFocus, disabled);
+    super(name, label, placeholder, helperMessage, defaultValue, autoFocus, disabled);
     this.autoComplete = autoComplete;
     this.spellCheck = spellCheck;
   }
