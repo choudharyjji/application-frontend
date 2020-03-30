@@ -26,6 +26,9 @@ const ApplicationPage = (): ReactElement => {
     const applicationData: ApplicationData = {};
     applicationData.period = 31;
     applicationData.amount = 300;
+    applicationData.affiliateReference = localStorage.getItem('affiliateReference') || undefined;
+    applicationData.affiliateReferenceSubId = localStorage.getItem('affiliateReferenceSubId') || undefined;
+    applicationData.affiliateReferenceTransactionId = localStorage.getItem('affiliateReferenceTransactionId') || undefined;
     dispatch(LeadApplicationActions.updateApplicationData<ApplicationData>(applicationData));
   }, []);
 
