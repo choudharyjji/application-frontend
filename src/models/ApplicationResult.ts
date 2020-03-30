@@ -9,7 +9,7 @@ export interface ApplicationResult {
   passwordSetRequired?: boolean;
   employmentDetailsRequired?: boolean;
   redirectParams?: Record<string, FixMeType>;
-  iframeParams?: Record<string, FixMeType>;
+  iframeParams?: any;
   redirect?: string;
   partner?: { title: string; logo: string } | null;
 }
