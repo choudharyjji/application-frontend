@@ -22,6 +22,9 @@ const CheckingPage = (): ReactElement => {
           if (data.mobileVerificationRequired === true) {
             history.push('application/mobile-verification');
           }
+          if (data.iframeParams !== null) {
+            history.push('application/instantor');
+          }
           if (data.status === LeadStatus.ACCEPTED) {
             history.push('/application/accepted');
           }
