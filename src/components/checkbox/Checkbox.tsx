@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import InputTooltip from '../inputTooltip/inputTooltip';
 import { InputProp } from '../input/interface/InputProp';
 
 const Checkbox = (props: InputProp): ReactElement => {

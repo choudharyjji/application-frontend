@@ -10,14 +10,15 @@ const formSchema: FormSchema = {
       name: 'firstName',
       type: FieldType.TEXT,
       label: 'First Name',
+      helperMessage: 'The tooltiptext class holds the actual tooltip text. It is hidden by default, and will be visible on hover (see below). We have also added some basic styles to it: 120px width, black background color, white text color, centered text, and 5px top and bottom padding.',
       validation: yup.string().max(50).matches(/^[^0-9]+$/).required(),
       autoFocus: true,
-      tooltip: 'Enter your first name as on ID card',
     },
     {
       name: 'lastName',
       type: FieldType.TEXT,
       label: 'Last Name',
+      helperMessage: 'Hello world',
       validation: yup.string().max(50).matches(/^[^0-9]+$/).required(),
     },
     {

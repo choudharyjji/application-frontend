@@ -1,12 +1,13 @@
 import React, { ReactElement } from 'react';
 import ReactSelect from 'react-select';
-import InputTooltip from '../inputTooltip/inputTooltip';
 import { FixMeType } from '../../type/fix-me.type';
+import InputTooltip from '../inputTooltip/InputTooltip';
 
 interface SelectProps {
   options: {}[];
   name: string;
   label: string;
+  tooltip?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
@@ -16,12 +17,28 @@ interface SelectProps {
 
 const Select = (props: SelectProps): ReactElement => {
   const {
-    options, label, innerRef, name, onBlur, onFocus, control,
+    options, label, tooltip, innerRef, name, onBlur, onFocus, control,
   } = props;
 
   const defaultValue = { label: control.getValues()[name], value: control.getValues()[name] };
 
   let textInput: HTMLInputElement | null = null;
+
+  const customStyles = {
+    control: (provided: any, state: any) => ({
+      ...provided,
+      borderColor: '#e2e8f0',
+      boxShadow: 'none',
+      '&:hover':
+        {
+          borderColor: '#e2e8f0',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        },
+      '&:focus': {
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+      },
+    }),
+  };
 
   const handleChange = (selectedOption: FixMeType): void => {
     control.setValue(name, selectedOption.value);
@@ -40,6 +57,7 @@ const Select = (props: SelectProps): ReactElement => {
       <div className="flex flex-no-wrap justify-between items-center">
         <div className="w-11/12">
           <ReactSelect
+            styles={customStyles}
             options={options}
             value={defaultValue}
             onChange={handleChange}
@@ -61,7 +79,7 @@ const Select = (props: SelectProps): ReactElement => {
           />
         </div>
         <div className="flex ml-3">
-          <InputTooltip />
+          {tooltip && <InputTooltip message={tooltip} />}
         </div>
       </div>
     </div>

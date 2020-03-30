@@ -11,7 +11,7 @@ export class Form {
 
   private readonly fields: Record<string, BaseField>;
 
-  private readonly defaultValues: Record<string, any>;
+  private readonly defaultValues: Record<string, string | number | boolean | null>;
 
   private readonly validationSchema: ObjectSchema<{}>;
 
@@ -54,6 +54,7 @@ export class Form {
         fields[field.name] = (new InputField(field.name,
           field.label,
           field.placeholder || null,
+          field.helperMessage || null,
           field.default || null,
           field.autoFocus || false,
           field.disabled || false,
@@ -65,6 +66,7 @@ export class Form {
         fields[field.name] = new SelectField(field.name,
           field.label,
           field.placeholder || null,
+          field.helperMessage || null,
           field.default || null,
           field.autoFocus || false,
           field.disabled || false,
@@ -74,6 +76,7 @@ export class Form {
         fields[field.name] = new DateField(field.name,
           field.label,
           field.placeholder || null,
+          field.helperMessage || null,
           field.default || null,
           field.autoFocus || false,
           field.disabled || false,
@@ -131,7 +134,7 @@ export class Form {
       FieldType.EMAIL,
       FieldType.PASSWORD,
       FieldType.HIDDEN,
-      FieldType.CHECKBOX
+      FieldType.CHECKBOX,
     ];
     return inputTypes.indexOf(type) > -1;
   }

@@ -38,7 +38,7 @@ export interface FieldSchema {
   label: string;
   type: FieldType;
   placeholder?: string;
-  tooltip?: string;
+  helperMessage?: string;
   options?: FieldSelectOptions[];
   dateParams?: FieldDateParams;
   dependency?: FieldDependencyOptions;

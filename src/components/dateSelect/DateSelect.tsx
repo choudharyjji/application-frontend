@@ -2,11 +2,12 @@ import React, { ReactElement, useEffect } from 'react';
 import ReactSelect from 'react-select';
 import moment from 'moment';
 import { FixMeType } from '../../type/fix-me.type';
-import InputTooltip from '../inputTooltip/inputTooltip';
+import InputTooltip from '../inputTooltip/InputTooltip';
 
 interface DateSelectProps {
   name: string;
   label: string;
+  tooltip?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
@@ -18,8 +19,25 @@ interface DateSelectProps {
 
 const DateSelect = (props: DateSelectProps): ReactElement => {
   const {
-    label, innerRef, name, onBlur, onFocus, control, minDate, maxDate,
+    label, tooltip, innerRef, name, onBlur, onFocus, control, minDate, maxDate,
   } = props;
+  const customStyles = {
+    control: (provided: any, state: any) => ({
+      ...provided,
+      borderColor: '#e2e8f0',
+      boxShadow: 'none',
+      '&:hover':
+        {
+          borderColor: '#e2e8f0',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        },
+      '&:focus': {
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+      },
+    }),
+  };
+
+
   const date = moment();
   let textInput: HTMLInputElement | null = null;
   const minDateValue = minDate ? moment(minDate) : moment().subtract(100, 'years');
@@ -99,6 +117,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
         <div className="w-11/12 flex flex-no-wrap justify-between items-center">
           <div className="w-1/3">
             <ReactSelect
+              styles={customStyles}
               placeholder="day"
               options={dayOptions()}
               onChange={handleDayChange}
@@ -107,6 +126,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
 
           <div className="w-1/3 px-2">
             <ReactSelect
+              styles={customStyles}
               placeholder="month"
               options={monthOptions}
               defaultValue={null}
@@ -116,6 +136,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
 
           <div className="w-1/3">
             <ReactSelect
+              styles={customStyles}
               placeholder="year"
               options={yearOptions()}
               defaultValue={null}
@@ -140,7 +161,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
           />
         </div>
         <div className="flex ml-3">
-          <InputTooltip />
+          {tooltip && <InputTooltip message={tooltip} /> }
         </div>
       </div>
     </div>
