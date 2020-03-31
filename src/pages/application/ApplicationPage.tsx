@@ -17,6 +17,7 @@ import { LeadApplicationActions } from '../../state/lead-application/actions';
 import { ApplicationData } from '../../models/ApplicationData';
 import ContinuePage from './ContinuePage';
 import InstantorPage from './InstantorPage';
+import EmploymentDetailsPage from './EmploymentDetailsPage';
 
 const ApplicationPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
@@ -73,6 +74,9 @@ const ApplicationPage = (): ReactElement => {
           </Route>
           <Route path="/application/instantor">
             <InstantorPage />
+          </Route>
+          <Route path="/application/employment-details">
+            <EmploymentDetailsPage />
           </Route>
           <Route path="/application/mobile-verification">
             <MobileVerificationPage />
