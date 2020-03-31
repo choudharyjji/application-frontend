@@ -1,10 +1,17 @@
 import { LeadApplicationActionEnum } from '../enum';
-import { ApplicationDataUpdateAction, LeadApplicationProgressState } from '../interface';
+import { ApplicationDataUpdateAction } from '../interface';
 
 export class LeadApplicationActions {
   public static updateApplicationData<T>(data: T): ApplicationDataUpdateAction<T> {
     return {
       type: LeadApplicationActionEnum.UPDATE_APPLICATION_DATA,
+      payload: data,
+    };
+  }
+
+  public static updateCustomerConsentsData<T>(data: T): ApplicationDataUpdateAction<T> {
+    return {
+      type: LeadApplicationActionEnum.UPDATE_CUSTOMER_CONSENTS,
       payload: data,
     };
   }

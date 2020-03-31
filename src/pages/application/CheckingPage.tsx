@@ -19,6 +19,9 @@ const CheckingPage = (): ReactElement => {
         axios.get<LeadApplicationStatusResponse>(`http://api.localhost:7515/lead/status/${currentApplicationData.id}`).then(({ data }) => {
           dispatch(LeadApplicationActions.updateApplicationResult(data));
 
+          if (data.employmentDetailsRequired === true) {
+            history.push('application/employment-details');
+          }
           if (data.mobileVerificationRequired === true) {
             history.push('application/mobile-verification');
           }
