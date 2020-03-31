@@ -57,7 +57,7 @@ const ApplicationPage = (): ReactElement => {
       </Steps>
       <Router>
         <Switch>
-          <Route exact path="/">
+          <Route exact path="/application">
             <Redirect to="/application/personal-details" />
           </Route>
           <Route path="/application/personal-details">

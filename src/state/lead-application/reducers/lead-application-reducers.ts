@@ -23,6 +23,11 @@ export function leadApplicationReducer<T>(
         ...state,
         progressState: { ...state.progressState, ...action.payload },
       };
+    case LeadApplicationActionEnum.UPDATE_CUSTOMER_CONSENTS:
+      return {
+        ...state,
+        customerConsents: { ...state.customerConsents, ...action.payload },
+      };
     default:
       return state;
   }
