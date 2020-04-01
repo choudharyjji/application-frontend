@@ -5,20 +5,29 @@ import { Form } from '../../lib/dynamic-form/util/Form';
 const formSchema: FormSchema = {
   fields: [
     {
+      type: FieldType.TEXT,
       name: 'companyName',
       label: 'Company Name',
-      type: FieldType.TEXT,
-      validation: yup.string().required(),
+      helperMessage: 'Enter the company name',
+      validation: yup.string()
+        .matches(/^[^0-9]+$/, { message: 'Please fill in valid company name' })
+        .required('Please fill in company name'),
     }, {
+      type: FieldType.TEXT,
       name: 'jobTitle',
       label: 'Job Title',
-      type: FieldType.TEXT,
-      validation: yup.string().required(),
+      helperMessage: 'Enter the job title',
+      validation: yup.string()
+        .matches(/^[^0-9]+$/, { message: 'Please fill in valid job title' })
+        .required('Please fill in job title'),
     }, {
+      type: FieldType.TEXT,
       name: 'workPhone',
       label: 'Work Phone',
-      type: FieldType.TEXT,
-      validation: yup.string().matches(/^(6[0-9]{8})$|(7[1-4][0-9]{7})$/).required(),
+      helperMessage: 'Enter the contact number of company',
+      validation: yup.string()
+        .matches(/^(6[0-9]{8})$|(7[1-4][0-9]{7})$/, { message: 'Please fill in valid phone number. Please use format 6|7xxxxxxxx' })
+        .required('Please fill in work phone'),
     },
   ],
 };

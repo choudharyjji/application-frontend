@@ -8,7 +8,7 @@ const formSchema: FormSchema = {
       name: 'code',
       label: 'Code',
       type: FieldType.TEXT,
-      validation: yup.string().required(),
+      validation: yup.string().required('Please fill in verification code'),
     },
   ],
 };
