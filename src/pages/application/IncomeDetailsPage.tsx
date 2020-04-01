@@ -30,6 +30,7 @@ const IncomeDetailsPage = (): ReactElement => {
       </h2>
       <DynamicForm
         form={incomeDetailsForm}
+        defaultValues={currentApplicationData}
         onSubmit={(data: any) => onSubmit(data)}
       />
     </>

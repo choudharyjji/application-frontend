@@ -31,6 +31,7 @@ const ContactDetailsPage = (): ReactElement => {
       </h2>
       <DynamicForm
         form={contactDetailsForm}
+        defaultValues={currentApplicationData}
         onSubmit={(data: FixMeType): void => onSubmit(data)}
       />
     </>

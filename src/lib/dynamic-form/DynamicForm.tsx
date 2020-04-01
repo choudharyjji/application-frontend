@@ -15,16 +15,18 @@ import { InputField } from './util/InputField';
 interface DynamicFormProp {
   form: Form;
   onSubmit: (data: FixMeType) => void;
+  defaultValues?: Record<string, any>,
   inputWrapper?: FixMeType;
 }
 
 const DynamicForm = (props: DynamicFormProp): ReactElement => {
-  const { form, onSubmit } = props;
+  const { form, onSubmit, defaultValues } = props;
+  const formDefaultValues = defaultValues || form.getDefaultValues();
   const {
     register, handleSubmit, errors, control,
   } = useForm({
     validationSchema: form.getValidationSchema(),
-    defaultValues: form.getDefaultValues(),
+    defaultValues: formDefaultValues,
     reValidateMode: 'onChange',
   });
   const { t } = useTranslation();

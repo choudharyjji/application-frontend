@@ -50,6 +50,7 @@ const CustomerConsetsPage = (): ReactElement => {
       </div>
       <DynamicForm
         form={customerConsentsForm}
+        defaultValues={currentCustomerConsents}
         onSubmit={(data: FixMeType): void => onSubmit(data)}
       />
     </>

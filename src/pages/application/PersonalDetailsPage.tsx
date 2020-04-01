@@ -32,6 +32,7 @@ const PersonalDetailsPage = (): ReactElement => {
       </h2>
       <DynamicForm
         form={personalDetailsForm}
+        defaultValues={currentApplicationData}
         onSubmit={(data: any) => onSubmit(data)}
       />
     </>
