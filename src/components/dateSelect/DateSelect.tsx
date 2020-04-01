@@ -1,6 +1,7 @@
 import React, { ReactElement, useEffect } from 'react';
 import ReactSelect from 'react-select';
 import moment from 'moment';
+import { Control } from 'react-hook-form';
 import { FixMeType } from '../../type/fix-me.type';
 import InputTooltip from '../inputTooltip/InputTooltip';
 
@@ -12,7 +13,7 @@ interface DateSelectProps {
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   innerRef?: FixMeType;
-  control?: FixMeType;
+  control: Control;
   minDate?: Date;
   maxDate?: Date;
 }
@@ -21,8 +22,13 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
   const {
     label, tooltip, innerRef, name, onBlur, onFocus, control, minDate, maxDate,
   } = props;
+  let textInput: HTMLInputElement | null = null;
+  const date = moment();
+  useEffect(() => {
+    control.setValue(name, date.toISOString().split('T')[0], false);
+  });
   const customStyles = {
-    control: (provided: any, state: any) => ({
+    control: (provided: FixMeType) => ({
       ...provided,
       borderColor: '#e2e8f0',
       boxShadow: 'none',
@@ -37,13 +43,10 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
     }),
   };
 
-
-  const date = moment();
-  let textInput: HTMLInputElement | null = null;
   const minDateValue = minDate ? moment(minDate) : moment().subtract(100, 'years');
   const maxDateValue = maxDate ? moment(maxDate) : moment();
 
-  const yearOptions = (): { label: string; value: number }[] => {
+  const yearOptions = (): {}[] => {
     const start = minDateValue.year();
     const end = maxDateValue.year();
     const result: { label: string; value: number }[] = [];
@@ -53,17 +56,13 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
     }
     return result;
   };
-  const dayOptions = (): { label: string; value: number }[] => {
+  const dayOptions = (): {}[] => {
     const result: { label: string; value: number }[] = [];
     for (let i = 1; i <= 31; i++) {
       result.push({ label: `${i < 10 ? `0${i}` : i}`, value: i });
     }
     return result;
   };
-
-  useEffect(() => {
-    control.setValue(name, date.toISOString().split('T')[0], false);
-  });
 
   const monthOptions = [
     { label: 'January', value: 1 },
@@ -80,9 +79,17 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
     { label: 'December', value: 12 },
   ];
 
+
+  const formValues = { ...control.defaultValuesRef.current, ...control.getValues() };
+  const defaultValue = formValues[name] instanceof Date ? formValues[name] : new Date(formValues[name]);
+  const defaultValueDay = { label: defaultValue.getDate(), value: defaultValue.getDate() };
+  const defaultValueMonth = monthOptions.find((option) => option.value === defaultValue.getMonth() + 1);
+  const defaultValueYear = { label: defaultValue.getFullYear(), value: defaultValue.getFullYear() };
+
   const handleDayChange = (selectedOption: FixMeType) => {
     date.day(selectedOption.value);
-    control.setValue(name, date.toISOString().split('T')[0], true);
+    control.setValue(name, date.toISOString().split('T')[0]);
+    control.reRender();
     if (textInput !== null) {
       textInput.focus();
       textInput.blur();
@@ -91,7 +98,8 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
 
   const handleMonthChange = (selectedOption: FixMeType) => {
     date.month(selectedOption.value);
-    control.setValue(name, date.toISOString().split('T')[0], true);
+    control.setValue(name, date.toISOString().split('T')[0]);
+    control.reRender();
     if (textInput !== null) {
       textInput.focus();
       textInput.blur();
@@ -100,12 +108,12 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
 
   const handleYearChange = (selectedOption: FixMeType) => {
     date.year(selectedOption.value);
-    control.setValue(name, date.toISOString().split('T')[0], true);
+    control.setValue(name, date.toISOString().split('T')[0]);
+    control.reRender();
     if (textInput !== null) {
       textInput.focus();
       textInput.blur();
     }
-    console.log(textInput);
   };
 
   return (
@@ -161,7 +169,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
           />
         </div>
         <div className="flex ml-3">
-          {tooltip && <InputTooltip message={tooltip} /> }
+          {tooltip && <InputTooltip message={tooltip} />}
         </div>
       </div>
     </div>

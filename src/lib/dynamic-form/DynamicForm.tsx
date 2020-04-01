@@ -98,7 +98,7 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
                   <Select
                     control={control}
                     name={name}
-                    options={field.getOptions() as {}[]}
+                    options={field.getOptions()}
                     label={field.getLabel()}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
                       field.onChangeCallback(event);

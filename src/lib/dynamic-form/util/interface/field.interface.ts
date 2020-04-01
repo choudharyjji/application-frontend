@@ -42,7 +42,7 @@ export interface FieldSchema {
   options?: FieldSelectOptions[];
   dateParams?: FieldDateParams;
   dependency?: FieldDependencyOptions;
-  default?: string | number | boolean;
+  default?: string | number | boolean | Date;
   validation?: MixedSchema;
   autoFocus?: boolean;
   autoComplete?: boolean;

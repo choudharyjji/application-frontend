@@ -1,10 +1,12 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import ReactSelect from 'react-select';
+import { Control } from 'react-hook-form';
 import { FixMeType } from '../../type/fix-me.type';
 import InputTooltip from '../inputTooltip/InputTooltip';
+import { FieldSelectOptions } from '../../lib/dynamic-form/util/interface/field.interface';
 
 interface SelectProps {
-  options: {}[];
+  options: FieldSelectOptions[];
   name: string;
   label: string;
   tooltip?: string;
@@ -12,20 +14,20 @@ interface SelectProps {
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   innerRef?: FixMeType;
-  control?: FixMeType;
+  control: Control;
 }
 
 const Select = (props: SelectProps): ReactElement => {
   const {
     options, label, tooltip, innerRef, name, onBlur, onFocus, control,
   } = props;
-
-  const defaultValue = { label: control.getValues()[name], value: control.getValues()[name] };
-
   let textInput: HTMLInputElement | null = null;
 
+  const formValues = { ...control.defaultValuesRef.current, ...control.getValues() };
+  const defaultValue = options.find((option) => option.value === formValues[name]);
+
   const customStyles = {
-    control: (provided: any, state: any) => ({
+    control: (provided: FixMeType) => ({
       ...provided,
       borderColor: '#e2e8f0',
       boxShadow: 'none',
@@ -42,11 +44,12 @@ const Select = (props: SelectProps): ReactElement => {
 
   const handleChange = (selectedOption: FixMeType): void => {
     control.setValue(name, selectedOption.value);
-    control.reRender();
     if (textInput !== null) {
       textInput.focus();
       textInput.blur();
     }
+    control.reRender();
+    console.log(formValues);
   };
 
   return (
