@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import { ApplicationData } from '../../models/ApplicationData';
 import personalDetailsForm from '../../config/forms/personal-details.form';
 import DynamicForm from '../../lib/dynamic-form/DynamicForm';
@@ -14,6 +15,7 @@ const PersonalDetailsPage = (): ReactElement => {
   const currentApplicationData = currentState.applicationData;
   const history = useHistory();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const onSubmit = (formData: ApplicationData): void => {
     const applicationData = { ...formData, ...currentApplicationData };
@@ -27,8 +29,8 @@ const PersonalDetailsPage = (): ReactElement => {
 
   return (
     <>
-      <h2 className="text-3xl font-extrabold mb-5 xl:text-4xl">
-        Personal Information
+      <h2 className="text-3xl font-extrabold text-fiesta-dark-blue mb-5 xl:text-4xl">
+        {t('Personal information')}
       </h2>
       <DynamicForm
         form={personalDetailsForm}

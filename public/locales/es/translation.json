@@ -33,6 +33,7 @@
   "Day": "Día",
   "Month": "Mes",
   "Year": "Año",
+  "Please fill in valid personal code": "Por favor complete el código personal válido",
   "First name can't be longer than 50 symbols": "El primer nombre no puede ser más largo que 50 letras",
   "Please fill in valid first name": "Por favor rellena un nombre válido",
   "Last name can't be longer than 50 symbols": "El apellido no puede ser más largo que 50 letras",

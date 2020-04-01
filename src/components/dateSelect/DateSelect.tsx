@@ -4,6 +4,7 @@ import moment from 'moment';
 import { Control } from 'react-hook-form';
 import { FixMeType } from '../../type/fix-me.type';
 import InputTooltip from '../inputTooltip/InputTooltip';
+import { useTranslation } from 'react-i18next';
 
 interface DateSelectProps {
   name: string;
@@ -22,6 +23,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
   const {
     label, tooltip, innerRef, name, onBlur, onFocus, control, minDate, maxDate,
   } = props;
+  const { t } = useTranslation();
   let textInput: HTMLInputElement | null = null;
   const date = moment();
   useEffect(() => {
@@ -126,7 +128,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
           <div className="w-1/3">
             <ReactSelect
               styles={customStyles}
-              placeholder="day"
+              placeholder={t('Day')}
               options={dayOptions()}
               onChange={handleDayChange}
             />
@@ -135,7 +137,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
           <div className="w-1/3 px-2">
             <ReactSelect
               styles={customStyles}
-              placeholder="month"
+              placeholder={t('Month')}
               options={monthOptions}
               defaultValue={null}
               onChange={handleMonthChange}
@@ -145,7 +147,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
           <div className="w-1/3">
             <ReactSelect
               styles={customStyles}
-              placeholder="year"
+              placeholder={t('Year')}
               options={yearOptions()}
               defaultValue={null}
               onChange={handleYearChange}

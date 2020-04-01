@@ -8,12 +8,14 @@ import { ApplicationData } from '../../models/ApplicationData';
 import incomeDetailsForm from '../../config/forms/income-details.form';
 import { RootStateInterface } from '../../state/root-state.interface';
 import { LeadApplicationStepResponse } from '../../dto/response/LeadApplicationStepResponse';
+import { useTranslation } from 'react-i18next';
 
 const IncomeDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const currentApplicationData = currentState.applicationData;
   const history = useHistory();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const onSubmit = (formData: ApplicationData): void => {
     const applicationData = { ...formData, ...currentApplicationData };
@@ -25,8 +27,8 @@ const IncomeDetailsPage = (): ReactElement => {
 
   return (
     <>
-      <h2 className="text-3xl font-extrabold mb-5 xl:text-4xl">
-        Income Details
+      <h2 className="text-3xl font-extrabold text-fiesta-dark-blue mb-5 xl:text-4xl">
+        {t('Job information')}
       </h2>
       <DynamicForm
         form={incomeDetailsForm}

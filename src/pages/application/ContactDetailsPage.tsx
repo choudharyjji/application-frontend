@@ -9,12 +9,14 @@ import { ApplicationData } from '../../models/ApplicationData';
 import { RootStateInterface } from '../../state/root-state.interface';
 import { FixMeType } from '../../type/fix-me.type';
 import { LeadApplicationStepResponse } from '../../dto/response/LeadApplicationStepResponse';
+import { useTranslation } from 'react-i18next';
 
 const ContactDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const currentApplicationData = currentState.applicationData;
   const history = useHistory();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const onSubmit = (formData: ApplicationData): void => {
     const applicationData = { ...formData, ...currentApplicationData };
@@ -26,8 +28,8 @@ const ContactDetailsPage = (): ReactElement => {
   };
   return (
     <>
-      <h2 className="text-3xl font-extrabold mb-5 xl:text-4xl">
-        Contact Details
+      <h2 className="text-3xl font-extrabold text-fiesta-dark-blue mb-5 xl:text-4xl">
+        {t('Contact information')}
       </h2>
       <DynamicForm
         form={contactDetailsForm}

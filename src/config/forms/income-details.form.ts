@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import moment from 'moment';
 import { FieldType, FormSchema } from '../../lib/dynamic-form/util/interface/field.interface';
 import { Form } from '../../lib/dynamic-form/util/Form';
 import {
@@ -8,15 +9,22 @@ import {
 const formSchema: FormSchema = {
   fields: [
     {
-      label: 'Monthly Income',
-      name: 'monthlyIncome',
       type: FieldType.TEXT,
-      validation: yup.number().positive().max(99999).required(),
+      name: 'monthlyIncome',
+      label: 'Monthly Income',
+      helperMessage: 'Enter your monthly net income',
+      default: 0,
+      validation: yup.number()
+        .transform((v, o) => (o === '' ? 0 : v))
+        .min(0, 'Please enter monthly income greater than or equal to 0')
+        .max(99999, 'Please enter monthly income less than or equal to 99999')
+        .required('Please fill in total monthly net income'),
     },
     {
+      type: FieldType.SELECT,
       name: 'incomeSource',
       label: 'Income Source',
-      type: FieldType.SELECT,
+      helperMessage: 'Select your income source',
       options: [
         {
           label: 'Fixed',
@@ -66,15 +74,20 @@ const formSchema: FormSchema = {
       validation: yup.string().required(),
     },
     {
-      name: 'incomePayday',
-      label: 'Payday',
       type: FieldType.TEXT,
-      validation: yup.number().positive().lessThan(31).required(),
+      name: 'incomePayday',
+      label: 'Income Payday',
+      helperMessage: 'Select your income payday',
+      validation: yup.number()
+        .positive()
+        .max(31)
+        .required('Please select your income payday'),
     },
     {
+      type: FieldType.SELECT,
       name: 'jobArea',
       label: 'Job Area',
-      type: FieldType.SELECT,
+      helperMessage: 'Select area you working in',
       options: [
         {
           label: 'Army',
@@ -129,12 +142,21 @@ const formSchema: FormSchema = {
           value: JobArea.OTHER,
         },
       ],
-      validation: yup.string().required(),
+      validation: yup.string().required('Please select your job area'),
     },
     {
+      type: FieldType.DATE,
       name: 'incomeContractStartedAt',
       label: 'Income Contract Started At',
-      type: FieldType.DATE,
+      helperMessage: 'Please enter when your contract started',
+      dateParams: {
+        minDate: moment().subtract(80, 'years').toDate(),
+        maxDate: moment().subtract(1, 'days').toDate(),
+      },
+      validation: yup.date()
+        .min(moment().subtract(80, 'years').toDate(), 'Contract can not be longer than 80 years')
+        .max(moment().subtract(1, 'days').toDate(), 'Contract minimum duration is 1 day')
+        .required('Please fill in when your contract started'),
       dependency: {
         field: 'incomeSource',
         values: [
@@ -150,9 +172,10 @@ const formSchema: FormSchema = {
       },
     },
     {
+      type: FieldType.SELECT,
       name: 'vehicleOwnership',
       label: 'Vehicle Ownership',
-      type: FieldType.SELECT,
+      helperMessage: 'Please select what type of vehicle do you have',
       options: [
         {
           label: 'Moto',
@@ -179,26 +202,32 @@ const formSchema: FormSchema = {
           value: VehicleOwnership.NOT_AVAILABLE,
         },
       ],
+      validation: yup.string().required('Please select your vehicle ownership'),
     },
     {
+      type: FieldType.TEXT,
       name: 'vehicleLicensePlateNumber',
       label: 'Last 3 letters of the license plate (example: 5649 JSN)',
-      type: FieldType.TEXT,
+      helperMessage: 'Enter the last 3 letters of the license plate',
       dependency: {
         field: 'vehicleOwnership',
         values: [VehicleOwnership.CAR],
       },
-      validation: yup.string().matches(/^[a-zA-Z]{3}$/).required(),
+      validation: yup.string()
+        .matches(/^[a-zA-Z]{3}$/, { message: 'Please fill in valid plate number' })
+        .required('Please fill in the last 3 letters of the license plate'),
     },
     {
+      type: FieldType.TEXT,
       name: 'iban',
       label: 'IBAN',
-      type: FieldType.TEXT,
+      helperMessage: 'Enter your International Bank Account Number (IBAN should start with ES)',
     },
     {
+      type: FieldType.CHECKBOX,
       name: 'usingOnlineBanking',
       label: 'Do you use online banking?',
-      type: FieldType.CHECKBOX,
+      validation: yup.boolean().oneOf([true, false]),
     },
   ],
 };

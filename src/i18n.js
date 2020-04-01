@@ -8,6 +8,7 @@ i18n.use(Backend)
   .init({
     fallbackLng: 'es',
     debug: true,
+    keySeparator: false,
     interpolation: {
       escapeValue: false,
     },
