@@ -43,7 +43,7 @@ const formSchema: FormSchema = {
     },
     {
       name: 'dateOfBirth',
-      label: 'Date of birth',
+      label: 'Date of Birth',
       type: FieldType.DATE,
       dateParams: {
         minDate: moment().subtract(102, 'years').toDate(),
@@ -55,7 +55,7 @@ const formSchema: FormSchema = {
     },
     {
       name: 'phoneNumber',
-      label: 'Mobile number',
+      label: 'Phone Number',
       type: FieldType.TEXT,
       validation: yup.string().matches(/^(6[0-9]{8})$|(7[1-4][0-9]{7})$/).required(),
     },
@@ -67,13 +67,13 @@ const formSchema: FormSchema = {
     },
     {
       name: 'generalPolicies',
-      label: 'I confirm that I have read and accept the Terms and Conditions and the Data Processing Policy.',
+      label: 'I confirm that I have read and accept the <a href="{{tac_url}}" target="_blank">Terms and Conditions</a>, and <a href="{{dpp_url}}" target="_blank">Data Processing Policy</a>',
       type: FieldType.CHECKBOX,
       validation: yup.boolean().oneOf([true]),
     },
     {
       name: 'marketingConsents',
-      label: 'I agree to keep up to date with the latest news and receive special offers and discounts by any means, including electronic communications or equivalent from FiestaCredito.',
+      label: 'I agree to keep up to date with the latest news and receive special offers and discounts by any means, including electronic communications or equivalent from FiestaCredito',
       type: FieldType.CHECKBOX,
       validation: yup.boolean().oneOf([true, false]),
     },

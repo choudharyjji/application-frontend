@@ -117,7 +117,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
   };
 
   return (
-    <div className="my-6">
+    <>
       <label className="font-light block mb-2 text-sm">
         {label}
       </label>
@@ -172,7 +172,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
           {tooltip && <InputTooltip message={tooltip} />}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

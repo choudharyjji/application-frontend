@@ -8,7 +8,7 @@ const Checkbox = (props: InputProp): ReactElement => {
   } = props;
 
   return (
-    <div className="my-6">
+    <>
       <div className="flex flex-no-wrap justify-between items-center">
         <div className="w-11/12">
           <label className="flex justify-start items-start">
@@ -39,7 +39,7 @@ const Checkbox = (props: InputProp): ReactElement => {
 
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

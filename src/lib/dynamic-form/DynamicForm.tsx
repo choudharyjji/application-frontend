@@ -15,7 +15,7 @@ import { InputField } from './util/InputField';
 interface DynamicFormProp {
   form: Form;
   onSubmit: (data: FixMeType) => void;
-  defaultValues?: Record<string, any>,
+  defaultValues?: Record<string, any>;
   inputWrapper?: FixMeType;
 }
 
@@ -75,7 +75,7 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
                   <DateSelect
                     control={control}
                     name={name}
-                    label={field.getLabel()}
+                    label={t(field.getLabel())}
                     minDate={field.getMinDate() || undefined}
                     maxDate={field.getMaxDate() || undefined}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -101,7 +101,7 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
                     control={control}
                     name={name}
                     options={field.getOptions()}
-                    label={field.getLabel()}
+                    label={t(field.getLabel())}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
                       field.onChangeCallback(event);
                     }}
@@ -119,7 +119,7 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
             }
 
             if (field.isVisible()) {
-              return component;
+              return <div className="mb-6" key={field.getId()}>{component}</div>;
             }
             return null;
           })}

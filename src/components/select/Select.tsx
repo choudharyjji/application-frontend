@@ -53,7 +53,7 @@ const Select = (props: SelectProps): ReactElement => {
   };
 
   return (
-    <div className="my-6">
+    <>
       <label className="font-light block mb-2 text-sm">
         {label}
       </label>
@@ -85,7 +85,7 @@ const Select = (props: SelectProps): ReactElement => {
           {tooltip && <InputTooltip message={tooltip} />}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

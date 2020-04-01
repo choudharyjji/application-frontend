@@ -6,7 +6,7 @@ import Backend from 'i18next-xhr-backend';
 i18n.use(Backend)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'en',
+    fallbackLng: 'es',
     debug: true,
     interpolation: {
       escapeValue: false,
