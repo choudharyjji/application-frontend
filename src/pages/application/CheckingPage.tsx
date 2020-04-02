@@ -6,12 +6,15 @@ import { RootStateInterface } from '../../state/root-state.interface';
 import { LeadApplicationActions } from '../../state/lead-application/actions';
 import { LeadStatus } from '../../enum/LeadStatus';
 import { LeadApplicationStatusResponse } from '../../dto/response/LeadApplicationStatusResponse';
+import Loader from '../../components/loader/Loader';
+import { useTranslation } from 'react-i18next';
 
 const CheckingPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const currentApplicationData = currentState.applicationData;
   const history = useHistory();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -41,11 +44,12 @@ const CheckingPage = (): ReactElement => {
   });
 
   return (
-    <>
-      <h2 className="text-3xl font-extrabold mb-5 xl:text-4xl">
-        Please Wait!
+    <div className="mt-64">
+      <h2 className="text-3xl font-extrabold mb-5 xl:text-4xl text-center text-fiesta-dark-blue">
+        {t('Your loan application accepted. Please wait')}
       </h2>
-    </>
+      <Loader />
+    </div>
   );
 };
 

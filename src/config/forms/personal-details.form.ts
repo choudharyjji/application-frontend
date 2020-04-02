@@ -53,6 +53,7 @@ const formSchema: FormSchema = {
         maxDate: moment().subtract(18, 'years').toDate(),
       },
       validation: yup.date()
+        .typeError('Please fill in your date of birth')
         .min(moment().subtract(102, 'years').toDate(), 'Maximum age is 102 years')
         .max(moment().subtract(18, 'years').toDate(), 'Minimum age is 18 years')
         .required('Please fill in your date of birth'),

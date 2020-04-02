@@ -20,6 +20,7 @@ interface DynamicFormProp {
 }
 
 const DynamicForm = (props: DynamicFormProp): ReactElement => {
+  const { t } = useTranslation();
   const { form, onSubmit, defaultValues } = props;
   const formDefaultValues = defaultValues || form.getDefaultValues();
   const {
@@ -29,9 +30,9 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
     defaultValues: formDefaultValues,
     reValidateMode: 'onChange',
   });
-  const { t } = useTranslation();
 
   const fields = form.getFieldsArray();
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">

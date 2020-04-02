@@ -15,7 +15,7 @@ const formSchema: FormSchema = {
       helperMessage: 'Enter your monthly net income',
       default: 0,
       validation: yup.number()
-        .transform((v, o) => (o === '' ? 0 : v))
+        .typeError('Please fill in total monthly net income')
         .min(0, 'Please enter monthly income greater than or equal to 0')
         .max(99999, 'Please enter monthly income less than or equal to 99999')
         .required('Please fill in total monthly net income'),
@@ -79,6 +79,7 @@ const formSchema: FormSchema = {
       label: 'Income Payday',
       helperMessage: 'Select your income payday',
       validation: yup.number()
+        .typeError('Please select your income payday')
         .positive()
         .max(31)
         .required('Please select your income payday'),
@@ -154,6 +155,7 @@ const formSchema: FormSchema = {
         maxDate: moment().subtract(1, 'days').toDate(),
       },
       validation: yup.date()
+        .typeError('Please fill in when your contract started')
         .min(moment().subtract(80, 'years').toDate(), 'Contract can not be longer than 80 years')
         .max(moment().subtract(1, 'days').toDate(), 'Contract minimum duration is 1 day')
         .required('Please fill in when your contract started'),
