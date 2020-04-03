@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { useForm, ErrorMessage } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Input from '../../components/input/Input';
 import { FixMeType } from '../../type/fix-me.type';

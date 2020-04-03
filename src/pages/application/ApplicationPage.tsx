@@ -3,6 +3,7 @@ import {
   BrowserRouter as Router, Switch, Route, Redirect, useLocation,
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import environment from 'environment';
 import Steps from '../../modules/steps/Steps';
 import Step from '../../modules/steps/Step';
 import { RootStateInterface } from '../../state/root-state.interface';
@@ -23,6 +24,8 @@ const ApplicationPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const location = useLocation();
   const dispatch = useDispatch();
+
+  console.log(environment);
 
   useEffect(() => {
     const applicationData: ApplicationData = {};
@@ -84,7 +87,7 @@ const ApplicationPage = (): ReactElement => {
           <Route path="/application/accepted">
             <AcceptedPage />
           </Route>
-          <Route path="/application/declined">
+          <Route path="/application/rejected">
             <RejectedPage />
           </Route>
           <Route path="/application/continue/:id">

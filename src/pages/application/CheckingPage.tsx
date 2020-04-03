@@ -1,13 +1,14 @@
 import React, { ReactElement, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
+import { useTranslation } from 'react-i18next';
+import environment from 'environment';
 import { RootStateInterface } from '../../state/root-state.interface';
 import { LeadApplicationActions } from '../../state/lead-application/actions';
 import { LeadStatus } from '../../enum/LeadStatus';
 import { LeadApplicationStatusResponse } from '../../dto/response/LeadApplicationStatusResponse';
 import Loader from '../../components/loader/Loader';
-import { useTranslation } from 'react-i18next';
+import HttpModule from '../../services/api/HttpModule';
 
 const CheckingPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
@@ -19,7 +20,8 @@ const CheckingPage = (): ReactElement => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (currentApplicationData.id) {
-        axios.get<LeadApplicationStatusResponse>(`http://api.localhost:7515/lead/status/${currentApplicationData.id}`).then(({ data }) => {
+        const endpoint = HttpModule.parse(environment.api.leadCheckStatus, { id: currentApplicationData.id });
+        HttpModule.get<LeadApplicationStatusResponse>(endpoint).then(({ data }) => {
           dispatch(LeadApplicationActions.updateApplicationResult(data));
 
           if (data.employmentDetailsRequired === true) {

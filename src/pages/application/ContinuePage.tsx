@@ -1,9 +1,10 @@
 import React, { ReactElement, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import axios from 'axios';
+import environment from 'environment';
 import { LeadApplicationActions } from '../../state/lead-application/actions';
 import { LeadApplicationStatusResponse } from '../../dto/response/LeadApplicationStatusResponse';
+import HttpModule from '../../services/api/HttpModule';
 
 const ContinuePage = (): ReactElement => {
   const history = useHistory();
@@ -12,7 +13,8 @@ const ContinuePage = (): ReactElement => {
 
   useEffect(() => {
     if (id) {
-      axios.get<LeadApplicationStatusResponse>(`http://api.localhost:7515/lead/access/${id}`).then(({ data }) => {
+      const endpoint = HttpModule.parse(environment.api.leadContinue, { id });
+      HttpModule.get<LeadApplicationStatusResponse>(endpoint).then(({ data }) => {
         dispatch(LeadApplicationActions.updateApplicationData(data));
         history.push('/application');
       });

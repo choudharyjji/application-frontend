@@ -2,11 +2,13 @@ import React, { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import environment from 'environment';
 import DynamicForm from '../../lib/dynamic-form/DynamicForm';
 import { RootStateInterface } from '../../state/root-state.interface';
 import { FixMeType } from '../../type/fix-me.type';
 import { EmploymentDetailsRequest } from '../../dto/request/EmploymentDetailsRequest';
 import employmentDetailsForm from '../../config/forms/employment-details.form';
+import HttpModule from '../../services/api/HttpModule';
 
 const EmploymentDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
@@ -20,7 +22,7 @@ const EmploymentDetailsPage = (): ReactElement => {
         jobTitle: data.jobTitle,
         workPhone: data.workPhone,
       };
-      axios.post('http://api.localhost:7515/lead/employment-details', requestData).then((response) => {
+      HttpModule.post(environment.api.leadSetEmploymentDetails, requestData).then(() => {
         history.push('/application/checking');
       });
     }

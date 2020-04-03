@@ -21,8 +21,9 @@
     "yup": "^0.28.2"
   },
   "scripts": {
-    "start": "npm run tailwind:css && react-scripts start",
-    "build": "npm run tailwind:css && react-scripts build",
+    "start": "npm run tailwind:css && cross-env CLIENT_ENV=dev craco start",
+    "prod": "npm run tailwind:css && cross-env CLIENT_ENV=prod craco start",
+    "build": "npm run tailwind:css && cross-env CLIENT_ENV=prod craco build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "tailwind:css": "tailwind build src/css/tailwind.src.css -c  tailwind.js -o src/css/tailwind.css"
@@ -40,6 +41,7 @@
     ]
   },
   "devDependencies": {
+    "@craco/craco": "^5.6.4",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -52,6 +54,7 @@
     "@types/yup": "^0.26.32",
     "@typescript-eslint/eslint-plugin": "^2.22.0",
     "@typescript-eslint/parser": "^2.22.0",
+    "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-typescript": "^7.0.0",
     "eslint-plugin-import": "^2.20.1",

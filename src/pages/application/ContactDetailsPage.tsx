@@ -10,6 +10,8 @@ import { RootStateInterface } from '../../state/root-state.interface';
 import { FixMeType } from '../../type/fix-me.type';
 import { LeadApplicationStepResponse } from '../../dto/response/LeadApplicationStepResponse';
 import { useTranslation } from 'react-i18next';
+import environment from "environment";
+import HttpModule from '../../services/api/HttpModule';
 
 const ContactDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
@@ -20,7 +22,7 @@ const ContactDetailsPage = (): ReactElement => {
 
   const onSubmit = (formData: ApplicationData): void => {
     const applicationData = { ...formData, ...currentApplicationData };
-    axios.put<LeadApplicationStepResponse>('http://api.localhost:7515/lead/step', applicationData).then(({ data }) => {
+    HttpModule.put<LeadApplicationStepResponse>(environment.api.leadCreateStep, applicationData).then(({ data }) => {
       applicationData.id = data.id;
       dispatch(LeadApplicationActions.updateApplicationData(applicationData));
       history.push('/application/income-details');

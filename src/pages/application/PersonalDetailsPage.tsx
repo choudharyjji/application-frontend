@@ -1,14 +1,15 @@
 import React, { ReactElement } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import environment from 'environment';
 import { ApplicationData } from '../../models/ApplicationData';
 import personalDetailsForm from '../../config/forms/personal-details.form';
 import DynamicForm from '../../lib/dynamic-form/DynamicForm';
 import { LeadApplicationActions } from '../../state/lead-application/actions';
 import { RootStateInterface } from '../../state/root-state.interface';
 import { LeadApplicationStepResponse } from '../../dto/response/LeadApplicationStepResponse';
+import HttpModule from '../../services/api/HttpModule';
 
 const PersonalDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
@@ -20,7 +21,7 @@ const PersonalDetailsPage = (): ReactElement => {
   const onSubmit = (formData: ApplicationData): void => {
     const applicationData = { ...formData, ...currentApplicationData };
     dispatch(LeadApplicationActions.updateApplicationData(applicationData));
-    axios.put<LeadApplicationStepResponse>('http://api.localhost:7515/lead/step', applicationData).then(({ data }) => {
+    HttpModule.put<LeadApplicationStepResponse>(environment.api.leadCreateStep, applicationData).then(({ data }) => {
       applicationData.id = data.id;
       dispatch(LeadApplicationActions.updateApplicationData(applicationData));
       history.push('/application/contact-details');

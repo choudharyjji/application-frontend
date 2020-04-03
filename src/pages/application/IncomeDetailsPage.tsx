@@ -1,14 +1,15 @@
 import React, { ReactElement } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
+import { useTranslation } from 'react-i18next';
+import environment from 'environment';
 import DynamicForm from '../../lib/dynamic-form/DynamicForm';
 import { LeadApplicationActions } from '../../state/lead-application/actions';
 import { ApplicationData } from '../../models/ApplicationData';
 import incomeDetailsForm from '../../config/forms/income-details.form';
 import { RootStateInterface } from '../../state/root-state.interface';
 import { LeadApplicationStepResponse } from '../../dto/response/LeadApplicationStepResponse';
-import { useTranslation } from 'react-i18next';
+import HttpModule from '../../services/api/HttpModule';
 
 const IncomeDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
@@ -19,7 +20,7 @@ const IncomeDetailsPage = (): ReactElement => {
 
   const onSubmit = (formData: ApplicationData): void => {
     const applicationData = { ...formData, ...currentApplicationData };
-    axios.post<LeadApplicationStepResponse>('http://api.localhost:7515/lead', applicationData).then(() => {
+    HttpModule.post<LeadApplicationStepResponse>(environment.api.leadCreate, applicationData).then(() => {
       dispatch(LeadApplicationActions.updateApplicationData(applicationData));
       history.push('/application/checking');
     });

@@ -1,12 +1,13 @@
 import React, { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import environment from 'environment';
 import DynamicForm from '../../lib/dynamic-form/DynamicForm';
 import mobileVerificationForm from '../../config/forms/mobile-verification.form';
 import { RootStateInterface } from '../../state/root-state.interface';
 import { MobileVerificationRequest } from '../../dto/request/MobileVerificationRequest';
 import { FixMeType } from '../../type/fix-me.type';
+import HttpModule from '../../services/api/HttpModule';
 
 const MobileVerificationPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
@@ -18,7 +19,7 @@ const MobileVerificationPage = (): ReactElement => {
         globalId: currentApplicationData.id,
         verificationCode: data.code,
       };
-      axios.post('http://api.localhost:7515/lead/mobile/verification', requestData).then((response) => {
+      HttpModule.post(environment.api.leadMobileVerification, requestData).then(() => {
         history.push('/application/checking');
       });
     }

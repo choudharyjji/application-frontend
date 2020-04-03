@@ -1,5 +1,4 @@
 import * as yup from 'yup';
-import axios from 'axios';
 import {
   FieldSelectOptions,
   FieldType,
@@ -10,6 +9,9 @@ import { Education, HousingTenure, MaritalStatus } from '../../enum';
 import { Province } from '../../enum/Province';
 import { PostCodeLookupResponse } from '../../dto/response/PostCodeLookupResponse';
 import { SelectField } from '../../lib/dynamic-form/util/SelectField';
+import environment from 'environment';
+import HttpModule from '../../services/api/HttpModule';
+
 
 const formSchema: FormSchema = {
   fields: [
@@ -393,22 +395,24 @@ const contactDetailsForm = new Form(formSchema);
 
 const postalCode = contactDetailsForm.getField('postalCode');
 
-postalCode.attachOnBlurCallback((event) => {
+
+postalCode.attachOnBlurCallback(async (event) => {
   const { value } = event.target;
-  axios.get<PostCodeLookupResponse>(`https://api.fiestacredito.es/postcode/lookup/${value}`).then(({ data }) => {
-    const { streets, province } = data.data;
-    const provinceField = contactDetailsForm.getField('province');
-    const streetField = contactDetailsForm.getField('street');
-    if (streetField instanceof SelectField) {
-      const streetOptions = streets.reduce((acc, curr) => {
-        acc.push({ label: curr, value: curr });
-        return acc;
-      }, [] as FieldSelectOptions[]);
-      streetOptions.push({ label: 'Other', value: 'Other' });
-      streetField.setOptions(streetOptions);
-    }
-    provinceField.updateValue(province);
-  });
+
+  const endpoint = HttpModule.parse(environment.api.postCodeLookup, { code: value });
+  const { data: response } = await HttpModule.get<PostCodeLookupResponse>(endpoint);
+  const { streets, province } = response.data;
+  const provinceField = contactDetailsForm.getField('province');
+  const streetField = contactDetailsForm.getField('street');
+  if (streetField instanceof SelectField) {
+    const streetOptions = streets.reduce((acc, curr) => {
+      acc.push({ label: curr, value: curr });
+      return acc;
+    }, [] as FieldSelectOptions[]);
+    streetOptions.push({ label: 'Other', value: 'Other' });
+    streetField.setOptions(streetOptions);
+  }
+  provinceField.updateValue(province);
 });
 
 export default contactDetailsForm;
