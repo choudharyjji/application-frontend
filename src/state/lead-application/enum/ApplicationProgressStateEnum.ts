@@ -1,5 +1,5 @@
 export enum ApplicationProgressStateEnum {
-  PERSONAL_INFORMATION,
+  PERSONAL_DETAILS,
   INCOME_DETAILS,
   CONTACT_DETAILS,
   CHECKING,

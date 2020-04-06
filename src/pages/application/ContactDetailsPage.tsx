@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
+import { useTranslation } from 'react-i18next';
+import environment from 'environment';
 import DynamicForm from '../../lib/dynamic-form/DynamicForm';
 import contactDetailsForm from '../../config/forms/contact-details.form';
 import { LeadApplicationActions } from '../../state/lead-application/actions';
@@ -9,13 +10,14 @@ import { ApplicationData } from '../../models/ApplicationData';
 import { RootStateInterface } from '../../state/root-state.interface';
 import { FixMeType } from '../../type/fix-me.type';
 import { LeadApplicationStepResponse } from '../../dto/response/LeadApplicationStepResponse';
-import { useTranslation } from 'react-i18next';
-import environment from "environment";
 import HttpModule from '../../services/api/HttpModule';
+import { LeadApplicationProgressState } from '../../state/lead-application/interface';
+import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
+import AppRoute from '../../config/route/AppRoute';
 
 const ContactDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
-  const currentApplicationData = currentState.applicationData;
+  const { applicationData: currentApplicationData, progressState: currentProgress } = currentState;
   const history = useHistory();
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -25,7 +27,11 @@ const ContactDetailsPage = (): ReactElement => {
     HttpModule.put<LeadApplicationStepResponse>(environment.api.leadCreateStep, applicationData).then(({ data }) => {
       applicationData.id = data.id;
       dispatch(LeadApplicationActions.updateApplicationData(applicationData));
-      history.push('/application/income-details');
+      // history.push('/application/income-details');
+
+      currentProgress.state = ApplicationProgressStateEnum.INCOME_DETAILS;
+      currentProgress.route = AppRoute.application.incomeDetails;
+      dispatch(LeadApplicationActions.updateApplicationProgressState<LeadApplicationProgressState>(currentProgress));
     });
   };
   return (

@@ -10,10 +10,13 @@ import { LeadApplicationActions } from '../../state/lead-application/actions';
 import { RootStateInterface } from '../../state/root-state.interface';
 import { LeadApplicationStepResponse } from '../../dto/response/LeadApplicationStepResponse';
 import HttpModule from '../../services/api/HttpModule';
+import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
+import AppRoute from '../../config/route/AppRoute';
+import { LeadApplicationProgressState } from '../../state/lead-application/interface';
 
 const PersonalDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
-  const currentApplicationData = currentState.applicationData;
+  const { applicationData: currentApplicationData, progressState: currentProgress } = currentState;
   const history = useHistory();
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -24,7 +27,12 @@ const PersonalDetailsPage = (): ReactElement => {
     HttpModule.put<LeadApplicationStepResponse>(environment.api.leadCreateStep, applicationData).then(({ data }) => {
       applicationData.id = data.id;
       dispatch(LeadApplicationActions.updateApplicationData(applicationData));
-      history.push('/application/contact-details');
+
+      currentProgress.state = ApplicationProgressStateEnum.CONTACT_DETAILS;
+      currentProgress.route = AppRoute.application.contactDetails;
+      dispatch(LeadApplicationActions.updateApplicationProgressState<LeadApplicationProgressState>(currentProgress));
+
+      // history.push('/application/contact-details');
     });
   };
 

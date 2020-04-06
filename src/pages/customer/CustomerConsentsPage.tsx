@@ -14,7 +14,6 @@ const CustomerConsetsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const currentCustomerConsents = currentState.customerConsents;
   const dispatch = useDispatch();
-  const history = useHistory();
   const { id } = useParams();
 
   useEffect(() => {

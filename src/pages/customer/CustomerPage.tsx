@@ -4,12 +4,13 @@ import {
 } from 'react-router-dom';
 
 import CustomerConsetsPage from './CustomerConsentsPage';
+import AppRoute from '../../config/route/AppRoute';
 
 const CustomerPage = (): ReactElement => (
   <div className="container max-w-form">
     <Router>
       <Switch>
-        <Route path="/customer/:id/consents">
+        <Route path={AppRoute.customer.consent}>
           <CustomerConsetsPage />
         </Route>
       </Switch>

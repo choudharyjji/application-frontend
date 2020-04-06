@@ -1,9 +1,9 @@
 import React, { ReactElement, useEffect } from 'react';
 import {
-  BrowserRouter as Router, Switch, Route, Redirect, useLocation,
+  BrowserRouter as Router, Redirect, Route, Switch, useLocation,
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import environment from 'environment';
+import AppRoute from '../../config/route/AppRoute';
 import Steps from '../../modules/steps/Steps';
 import Step from '../../modules/steps/Step';
 import { RootStateInterface } from '../../state/root-state.interface';
@@ -19,37 +19,35 @@ import { ApplicationData } from '../../models/ApplicationData';
 import ContinuePage from './ContinuePage';
 import InstantorPage from './InstantorPage';
 import EmploymentDetailsPage from './EmploymentDetailsPage';
+import { LeadApplicationProgressState } from '../../state/lead-application/interface';
+import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
 
 const ApplicationPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
+  const { progressState: currentApplicationProgress } = currentState;
   const location = useLocation();
   const dispatch = useDispatch();
 
-  console.log(environment);
-
   useEffect(() => {
     const applicationData: ApplicationData = {};
+    const applicationProgress: LeadApplicationProgressState = {};
+    applicationProgress.state = ApplicationProgressStateEnum.PERSONAL_DETAILS;
+    applicationProgress.route = AppRoute.application.personalDetails;
     applicationData.period = 31;
     applicationData.amount = 300;
     applicationData.affiliateReference = localStorage.getItem('affiliateReference') || undefined;
     applicationData.affiliateReferenceSubId = localStorage.getItem('affiliateReferenceSubId') || undefined;
     applicationData.affiliateReferenceTransactionId = localStorage.getItem('affiliateReferenceTransactionId') || undefined;
     dispatch(LeadApplicationActions.updateApplicationData<ApplicationData>(applicationData));
+    dispatch(LeadApplicationActions.updateApplicationProgressState<LeadApplicationProgressState>(applicationProgress));
   }, []);
 
 
-  // if (step === 0 && location.pathname !== '/application/personal-details') {
-  //   return (<Redirect to="/application/personal-details" />);
-  // }
-  // if (step === 1 && location.pathname !== '/application/contact-details') {
-  //   return (<Redirect to="/application/contact-details" />);
-  // }
-  // if (step === 2 && location.pathname !== '/application/income-details') {
-  //   return (<Redirect to="/application/income-details" />);
-  // }
-  // if (step === 3 && location.pathname !== '/application/checking') {
-  //   return (<Redirect to="/application/checking" />);
-  // }
+  if (currentApplicationProgress
+    && currentApplicationProgress.route
+    && currentApplicationProgress.route !== location.pathname) {
+    return (<Redirect to={currentApplicationProgress.route} />);
+  }
 
   return (
     <div className="container max-w-form">
@@ -60,37 +58,34 @@ const ApplicationPage = (): ReactElement => {
       </Steps>
       <Router>
         <Switch>
-          <Route exact path="/application">
-            <Redirect to="/application/personal-details" />
-          </Route>
-          <Route path="/application/personal-details">
+          <Route path={AppRoute.application.personalDetails}>
             <PersonalDetailsPage />
           </Route>
-          <Route path="/application/contact-details">
+          <Route path={AppRoute.application.contactDetails}>
             <ContactDetailsPage />
           </Route>
-          <Route path="/application/income-details">
+          <Route path={AppRoute.application.incomeDetails}>
             <IncomeDetailsPage />
           </Route>
-          <Route path="/application/checking">
+          <Route path={AppRoute.application.checking}>
             <CheckingPage />
           </Route>
-          <Route path="/application/instantor">
+          <Route path={AppRoute.application.instantor}>
             <InstantorPage />
           </Route>
-          <Route path="/application/employment-details">
+          <Route path={AppRoute.application.employmentDetails}>
             <EmploymentDetailsPage />
           </Route>
-          <Route path="/application/mobile-verification">
+          <Route path={AppRoute.application.mobileVerification}>
             <MobileVerificationPage />
           </Route>
-          <Route path="/application/accepted">
+          <Route path={AppRoute.application.accepted}>
             <AcceptedPage />
           </Route>
-          <Route path="/application/rejected">
+          <Route path={AppRoute.application.rejected}>
             <RejectedPage />
           </Route>
-          <Route path="/application/continue/:id">
+          <Route path={AppRoute.application.continue}>
             <ContinuePage />
           </Route>
         </Switch>
