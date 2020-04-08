@@ -17,11 +17,14 @@ interface DynamicFormProp {
   onSubmit: (data: FixMeType) => void;
   defaultValues?: Record<string, any>;
   inputWrapper?: FixMeType;
+  buttonTitle?: string;
 }
 
 const DynamicForm = (props: DynamicFormProp): ReactElement => {
   const { t } = useTranslation();
-  const { form, onSubmit, defaultValues } = props;
+  const {
+    form, onSubmit, defaultValues, buttonTitle,
+  } = props;
   const formDefaultValues = defaultValues || form.getDefaultValues();
   const {
     register, handleSubmit, errors, control,
@@ -133,7 +136,7 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
             return null;
           })}
         </div>
-        <Button label="Save" type="submit" />
+        <Button label={buttonTitle || 'Submit'} color="blue" type="submit" />
       </form>
     </>
   );

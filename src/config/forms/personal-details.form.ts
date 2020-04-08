@@ -79,7 +79,7 @@ const formSchema: FormSchema = {
     {
       type: FieldType.CHECKBOX,
       name: 'generalPolicies',
-      label: 'I confirm that I have read and accept the <a href="{{tac_url}}" target="_blank">Terms and Conditions</a>, and <a href="{{dpp_url}}" target="_blank">Data Processing Policy</a>',
+      label: 'I confirm that I have read and accept the Terms and Conditions, and Data Processing Policy.',
       validation: yup.boolean().oneOf([true], 'Please confirm that You are agree with Terms and Conditions'),
     },
     {

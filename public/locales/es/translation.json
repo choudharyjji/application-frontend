@@ -17,6 +17,7 @@
   "Province": "Provincia",
   "City": "Ciudad",
   "Street": "Calle",
+  "Street (Other)": "Calle (Otro)",
   "House Number": "Número de casa",
   "Flat Number": "Planta y piso",
   "Housing Tenure": "Tipo de vivienda",
@@ -150,7 +151,7 @@
   "days": "dias",
   "I explicitly authorize Traffic Control to make decisions about me based solely on automated processing, including the creation of profiles (as explained in the <a href=\\\"{url}\\\" target=\\\"_blank\\\">Data Processing Policy</a>)": "Autorizo explícitamente al control de tráfico para tomar decisiones sobre mí basándose únicamente en el procesamiento automatizado, incluida la creación de perfiles (como se explica en la <a href=\\\"{url}\\\" target=\\\"_blank\\\">Política de procesamiento de datos</a>)",
   "I also accept the <a href=\"{{url}}\" target=\"_blank\">Terms and Conditions</a>": "También acepto los <a href=\"{{url}}\" target=\"_blank\">Términos y condiciones</a>",
-  "I confirm that I have read and accept the <a href=\"{{tac_url}}\" target=\"_blank\">Terms and Conditions</a>, and <a href=\"{{dpp_url}}\" target=\"_blank\">Data Processing Policy</a>.": "Confirmo que he leído y acepto los <a href=\"{{tac_url}}\" target=\"_blank\">Términos y condiciones</a> y la <a href=\"{{dpp_url}}\" target=\"_blank\">Política de procesamiento de datos</a>.",
+  "I confirm that I have read and accept the Terms and Conditions, and Data Processing Policy.": "Confirmo que he leído y acepto los Términos y condiciones y la Política de procesamiento de datos.",
   "I agree to keep up to date with the latest news and receive special offers and discounts by any means, including electronic communications or equivalent from FiestaCredito": "Consiento estar al día de las últimas noticias y recibir ofertas especiales y descuentos por cualquier medio, incluidas las comunicaciones electrónicas o equivalentes de FiestaCredito.",
   "Please confirm that You are agree with Data Processing Policy": "Por favor, confirme que estás de acuerdo con la política de procesamiento de datos",
   "Please confirm that You are agree with Terms and Conditions": "Por favor confirme que estás de acuerdo con los Términos y Condiciones",
@@ -239,6 +240,7 @@
   "These details will help us to find best loan for you.": "Estos detalles nos ayudarán a encontrar el mejor préstamo para usted.",
   "Please wait...": "Por favor espere...",
   "We have an offer for you!": "¡Tenemos una oferta para ti!",
-  "We are redirecting you to <span class=\"partner\">{{partner}}</span> in <span class=\"seconds\">{{seconds}}</span> seconds": "Te estamos redirigiendo a <span class=\"partner\">{{partner}}</span> en <span class=\"seconds\">{{seconds}}</span> segundos",
-  "SEE OFFER NOW!": "¡VER OFERTA AHORA!"
+  "We are redirecting you to {{partner}} in {{seconds}} seconds.": "Te estamos redirigiendo a {{partner}} en {{seconds}} segundos.",
+  "SEE OFFER NOW!": "¡VER OFERTA AHORA!",
+  "You just have to answer some more questions at {{partner}} and you will get your loan now!": "Sólo tienes que responder algunas preguntas más en {{partner}} y conseguirás tu préstamo ¡Ahora!"
 }

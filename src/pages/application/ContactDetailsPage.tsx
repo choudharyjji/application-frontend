@@ -14,28 +14,35 @@ import HttpModule from '../../services/api/HttpModule';
 import { LeadApplicationProgressState } from '../../state/lead-application/interface';
 import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
 import AppRoute from '../../config/route/AppRoute';
+import Steps from '../../modules/steps/Steps';
+import Step from '../../modules/steps/Step';
 
 const ContactDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const { applicationData: currentApplicationData, progressState: currentProgress } = currentState;
-  const history = useHistory();
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   const onSubmit = (formData: ApplicationData): void => {
+    formData.street = formData.streetOther ? formData.streetOther : formData.street;
     const applicationData = { ...formData, ...currentApplicationData };
     HttpModule.put<LeadApplicationStepResponse>(environment.api.leadCreateStep, applicationData).then(({ data }) => {
       applicationData.id = data.id;
       dispatch(LeadApplicationActions.updateApplicationData(applicationData));
-      // history.push('/application/income-details');
 
       currentProgress.state = ApplicationProgressStateEnum.INCOME_DETAILS;
       currentProgress.route = AppRoute.application.incomeDetails;
       dispatch(LeadApplicationActions.updateApplicationProgressState<LeadApplicationProgressState>(currentProgress));
     });
   };
+
   return (
     <>
+      <Steps step={1}>
+        <Step />
+        <Step />
+        <Step />
+      </Steps>
       <h2 className="text-3xl font-extrabold text-fiesta-dark-blue mb-5 xl:text-4xl">
         {t('Contact information')}
       </h2>
@@ -43,6 +50,7 @@ const ContactDetailsPage = (): ReactElement => {
         form={contactDetailsForm}
         defaultValues={currentApplicationData}
         onSubmit={(data: FixMeType): void => onSubmit(data)}
+        buttonTitle={t('Next')}
       />
     </>
   );

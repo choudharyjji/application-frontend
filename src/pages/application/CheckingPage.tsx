@@ -9,6 +9,7 @@ import { LeadStatus } from '../../enum/LeadStatus';
 import { LeadApplicationStatusResponse } from '../../dto/response/LeadApplicationStatusResponse';
 import Loader from '../../components/loader/Loader';
 import HttpModule from '../../services/api/HttpModule';
+import PageHeading from '../../components/pageHeading/PageHeading';
 
 const CheckingPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
@@ -30,9 +31,9 @@ const CheckingPage = (): ReactElement => {
           if (data.mobileVerificationRequired === true) {
             history.push('application/mobile-verification');
           }
-          if (data.iframeParams !== null) {
-            history.push('application/instantor');
-          }
+          // if (data.iframeParams !== null) {
+          //   history.push('application/instantor');
+          // }
           if (data.status === LeadStatus.ACCEPTED) {
             history.push('/application/accepted');
           }
@@ -46,10 +47,8 @@ const CheckingPage = (): ReactElement => {
   });
 
   return (
-    <div className="mt-64">
-      <h2 className="text-3xl font-extrabold mb-5 xl:text-4xl text-center text-fiesta-dark-blue">
-        {t('Your loan application accepted. Please wait')}
-      </h2>
+    <div className="mt-48">
+      <PageHeading value={t('Your loan application accepted. Please wait')} />
       <Loader />
     </div>
   );

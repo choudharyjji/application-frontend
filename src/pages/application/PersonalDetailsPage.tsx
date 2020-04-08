@@ -13,11 +13,12 @@ import HttpModule from '../../services/api/HttpModule';
 import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
 import AppRoute from '../../config/route/AppRoute';
 import { LeadApplicationProgressState } from '../../state/lead-application/interface';
+import Steps from '../../modules/steps/Steps';
+import Step from '../../modules/steps/Step';
 
 const PersonalDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const { applicationData: currentApplicationData, progressState: currentProgress } = currentState;
-  const history = useHistory();
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -31,13 +32,16 @@ const PersonalDetailsPage = (): ReactElement => {
       currentProgress.state = ApplicationProgressStateEnum.CONTACT_DETAILS;
       currentProgress.route = AppRoute.application.contactDetails;
       dispatch(LeadApplicationActions.updateApplicationProgressState<LeadApplicationProgressState>(currentProgress));
-
-      // history.push('/application/contact-details');
     });
   };
 
   return (
     <>
+      <Steps step={0}>
+        <Step />
+        <Step />
+        <Step />
+      </Steps>
       <h2 className="text-3xl font-extrabold text-fiesta-dark-blue mb-5 xl:text-4xl">
         {t('Personal information')}
       </h2>
@@ -45,6 +49,7 @@ const PersonalDetailsPage = (): ReactElement => {
         form={personalDetailsForm}
         defaultValues={currentApplicationData}
         onSubmit={(data: any) => onSubmit(data)}
+        buttonTitle={t('Next')}
       />
     </>
   );

@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import environment from 'environment';
 import {
   FieldSelectOptions,
   FieldType,
@@ -9,7 +10,6 @@ import { Education, HousingTenure, MaritalStatus } from '../../enum';
 import { Province } from '../../enum/Province';
 import { PostCodeLookupResponse } from '../../dto/response/PostCodeLookupResponse';
 import { SelectField } from '../../lib/dynamic-form/util/SelectField';
-import environment from 'environment';
 import HttpModule from '../../services/api/HttpModule';
 
 
@@ -330,6 +330,9 @@ const formSchema: FormSchema = {
       name: 'street',
       label: 'Street',
       helperMessage: 'Enter your street',
+      options: [
+        { label: 'Other', value: 'Other' }
+      ],
       validation: yup.string()
         .max(100, 'Street can\'t be longer than 100 symbols')
         .required('Please fill in your street'),
@@ -394,8 +397,6 @@ const formSchema: FormSchema = {
 const contactDetailsForm = new Form(formSchema);
 
 const postalCode = contactDetailsForm.getField('postalCode');
-
-
 postalCode.attachOnBlurCallback(async (event) => {
   const { value } = event.target;
 

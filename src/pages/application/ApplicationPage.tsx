@@ -4,8 +4,6 @@ import {
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import AppRoute from '../../config/route/AppRoute';
-import Steps from '../../modules/steps/Steps';
-import Step from '../../modules/steps/Step';
 import { RootStateInterface } from '../../state/root-state.interface';
 import ContactDetailsPage from './ContactDetailsPage';
 import IncomeDetailsPage from './IncomeDetailsPage';
@@ -30,32 +28,27 @@ const ApplicationPage = (): ReactElement => {
 
   useEffect(() => {
     const applicationData: ApplicationData = {};
-    const applicationProgress: LeadApplicationProgressState = {};
-    applicationProgress.state = ApplicationProgressStateEnum.PERSONAL_DETAILS;
-    applicationProgress.route = AppRoute.application.personalDetails;
     applicationData.period = 31;
     applicationData.amount = 300;
     applicationData.affiliateReference = localStorage.getItem('affiliateReference') || undefined;
     applicationData.affiliateReferenceSubId = localStorage.getItem('affiliateReferenceSubId') || undefined;
     applicationData.affiliateReferenceTransactionId = localStorage.getItem('affiliateReferenceTransactionId') || undefined;
     dispatch(LeadApplicationActions.updateApplicationData<ApplicationData>(applicationData));
+
+    const applicationProgress: LeadApplicationProgressState = {};
+    applicationProgress.state = ApplicationProgressStateEnum.PERSONAL_DETAILS;
+    applicationProgress.route = AppRoute.application.personalDetails;
     dispatch(LeadApplicationActions.updateApplicationProgressState<LeadApplicationProgressState>(applicationProgress));
   }, []);
 
-
-  if (currentApplicationProgress
-    && currentApplicationProgress.route
-    && currentApplicationProgress.route !== location.pathname) {
-    return (<Redirect to={currentApplicationProgress.route} />);
-  }
+  // if (currentApplicationProgress
+  //   && currentApplicationProgress.route
+  //   && currentApplicationProgress.route !== location.pathname) {
+  //   return (<Redirect to={currentApplicationProgress.route} />);
+  // }
 
   return (
     <div className="container max-w-form">
-      <Steps step={0}>
-        <Step />
-        <Step />
-        <Step />
-      </Steps>
       <Router>
         <Switch>
           <Route path={AppRoute.application.personalDetails}>

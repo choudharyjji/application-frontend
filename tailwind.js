@@ -7,6 +7,7 @@ module.exports = {
         'fiesta-gray': '#e9ebec',
         'fiesta-dark-blue': '#1d354e',
         'fiesta-red': '#ed5459',
+        'fiesta-cyan': '#17a2b8',
       },
       container: {
         center: true,
