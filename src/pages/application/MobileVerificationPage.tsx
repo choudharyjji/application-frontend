@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
-import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import environment from 'environment';
 import { useTranslation } from 'react-i18next';
 import DynamicForm from '../../lib/dynamic-form/DynamicForm';
@@ -11,12 +10,14 @@ import { FixMeType } from '../../type/fix-me.type';
 import HttpModule from '../../services/api/HttpModule';
 import PageHeading from '../../components/pageHeading/PageHeading';
 import PageDescription from '../../components/pageDescription/PageDescription';
+import { LeadApplicationActions } from '../../state/lead-application/actions';
+import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
 
 const MobileVerificationPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const currentApplicationData = currentState.applicationData;
-  const history = useHistory();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const onSubmit = (data: FixMeType): void => {
     if (currentApplicationData.id) {
       const requestData: MobileVerificationRequest = {
@@ -24,7 +25,7 @@ const MobileVerificationPage = (): ReactElement => {
         verificationCode: data.code,
       };
       HttpModule.post(environment.api.leadMobileVerification, requestData).then(() => {
-        history.push('/application/checking');
+        dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.CHECKING));
       });
     }
   };

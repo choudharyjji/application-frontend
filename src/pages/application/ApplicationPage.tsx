@@ -17,7 +17,6 @@ import { ApplicationData } from '../../models/ApplicationData';
 import ContinuePage from './ContinuePage';
 import InstantorPage from './InstantorPage';
 import EmploymentDetailsPage from './EmploymentDetailsPage';
-import { LeadApplicationProgressState } from '../../state/lead-application/interface';
 import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
 
 const ApplicationPage = (): ReactElement => {
@@ -25,6 +24,59 @@ const ApplicationPage = (): ReactElement => {
   const { progressState: currentApplicationProgress } = currentState;
   const location = useLocation();
   const dispatch = useDispatch();
+
+  const progressRouteMap = [
+    {
+      state: ApplicationProgressStateEnum.PERSONAL_DETAILS,
+      route: AppRoute.application.personalDetails,
+      strict: true,
+    },
+    {
+      state: ApplicationProgressStateEnum.CONTACT_DETAILS,
+      route: AppRoute.application.contactDetails,
+      strict: true,
+    },
+    {
+      state: ApplicationProgressStateEnum.INCOME_DETAILS,
+      route: AppRoute.application.incomeDetails,
+      strict: true,
+    },
+    {
+      state: ApplicationProgressStateEnum.CHECKING,
+      route: AppRoute.application.checking,
+      strict: true,
+    },
+    {
+      state: ApplicationProgressStateEnum.EMPLOYMENT_DETAILS,
+      route: AppRoute.application.employmentDetails,
+      strict: true,
+    },
+    {
+      state: ApplicationProgressStateEnum.INSTANTOR,
+      route: AppRoute.application.instantor,
+      strict: true,
+    },
+    {
+      state: ApplicationProgressStateEnum.MOBILE_VERIFICATION,
+      route: AppRoute.application.mobileVerification,
+      strict: true,
+    },
+    {
+      state: ApplicationProgressStateEnum.ACCEPTED,
+      route: AppRoute.application.accepted,
+      strict: true,
+    },
+    {
+      state: ApplicationProgressStateEnum.REJECTED,
+      route: AppRoute.application.rejected,
+      strict: true,
+    },
+    {
+      state: ApplicationProgressStateEnum.CONTINUE,
+      route: AppRoute.application.continue,
+      strict: false,
+    },
+  ];
 
   useEffect(() => {
     const applicationData: ApplicationData = {};
@@ -35,17 +87,13 @@ const ApplicationPage = (): ReactElement => {
     applicationData.affiliateReferenceTransactionId = localStorage.getItem('affiliateReferenceTransactionId') || undefined;
     dispatch(LeadApplicationActions.updateApplicationData<ApplicationData>(applicationData));
 
-    const applicationProgress: LeadApplicationProgressState = {};
-    applicationProgress.state = ApplicationProgressStateEnum.PERSONAL_DETAILS;
-    applicationProgress.route = AppRoute.application.personalDetails;
-    dispatch(LeadApplicationActions.updateApplicationProgressState<LeadApplicationProgressState>(applicationProgress));
+    dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.PERSONAL_DETAILS));
   }, []);
 
-  // if (currentApplicationProgress
-  //   && currentApplicationProgress.route
-  //   && currentApplicationProgress.route !== location.pathname) {
-  //   return (<Redirect to={currentApplicationProgress.route} />);
-  // }
+  const stateRout = progressRouteMap.find((item) => item.state === currentApplicationProgress);
+  if (stateRout && stateRout.strict && stateRout.route !== location.pathname) {
+    return (<Redirect to={stateRout.route} />);
+  }
 
   return (
     <div className="container max-w-form">

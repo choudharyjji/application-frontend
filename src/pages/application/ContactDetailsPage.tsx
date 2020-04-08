@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import environment from 'environment';
@@ -11,15 +10,13 @@ import { RootStateInterface } from '../../state/root-state.interface';
 import { FixMeType } from '../../type/fix-me.type';
 import { LeadApplicationStepResponse } from '../../dto/response/LeadApplicationStepResponse';
 import HttpModule from '../../services/api/HttpModule';
-import { LeadApplicationProgressState } from '../../state/lead-application/interface';
 import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
-import AppRoute from '../../config/route/AppRoute';
 import Steps from '../../modules/steps/Steps';
 import Step from '../../modules/steps/Step';
 
 const ContactDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
-  const { applicationData: currentApplicationData, progressState: currentProgress } = currentState;
+  const { applicationData: currentApplicationData } = currentState;
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -30,9 +27,7 @@ const ContactDetailsPage = (): ReactElement => {
       applicationData.id = data.id;
       dispatch(LeadApplicationActions.updateApplicationData(applicationData));
 
-      currentProgress.state = ApplicationProgressStateEnum.INCOME_DETAILS;
-      currentProgress.route = AppRoute.application.incomeDetails;
-      dispatch(LeadApplicationActions.updateApplicationProgressState<LeadApplicationProgressState>(currentProgress));
+      dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.INCOME_DETAILS));
     });
   };
 

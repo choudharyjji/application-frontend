@@ -1,6 +1,5 @@
 import React, { ReactElement, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import environment from 'environment';
 import { RootStateInterface } from '../../state/root-state.interface';
@@ -10,11 +9,11 @@ import { LeadApplicationStatusResponse } from '../../dto/response/LeadApplicatio
 import Loader from '../../components/loader/Loader';
 import HttpModule from '../../services/api/HttpModule';
 import PageHeading from '../../components/pageHeading/PageHeading';
+import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
 
 const CheckingPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const currentApplicationData = currentState.applicationData;
-  const history = useHistory();
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -25,20 +24,19 @@ const CheckingPage = (): ReactElement => {
         HttpModule.get<LeadApplicationStatusResponse>(endpoint).then(({ data }) => {
           dispatch(LeadApplicationActions.updateApplicationResult(data));
 
+          let nextState: ApplicationProgressStateEnum | null = null;
           if (data.employmentDetailsRequired === true) {
-            history.push('application/employment-details');
+            nextState = ApplicationProgressStateEnum.EMPLOYMENT_DETAILS;
+          } else if (data.mobileVerificationRequired === true) {
+            nextState = ApplicationProgressStateEnum.MOBILE_VERIFICATION;
+          } else if (data.status === LeadStatus.ACCEPTED) {
+            nextState = ApplicationProgressStateEnum.ACCEPTED;
+          } else if (data.status === LeadStatus.REJECTED || data.status === LeadStatus.ERROR) {
+            nextState = ApplicationProgressStateEnum.REJECTED;
           }
-          if (data.mobileVerificationRequired === true) {
-            history.push('application/mobile-verification');
-          }
-          // if (data.iframeParams !== null) {
-          //   history.push('application/instantor');
-          // }
-          if (data.status === LeadStatus.ACCEPTED) {
-            history.push('/application/accepted');
-          }
-          if (data.status === LeadStatus.REJECTED || data.status === LeadStatus.ERROR) {
-            history.push('/application/rejected');
+
+          if (nextState) {
+            dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(nextState));
           }
         });
       }
