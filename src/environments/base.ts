@@ -13,6 +13,7 @@ export interface Environment {
   };
   isProduction: boolean;
   isDevelopment: boolean;
+  locale: string;
 }
 
 export default (baseUrl: string): Environment => ({
@@ -30,4 +31,5 @@ export default (baseUrl: string): Environment => ({
   },
   isProduction: false,
   isDevelopment: false,
+  locale: 'es',
 });

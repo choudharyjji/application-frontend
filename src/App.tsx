@@ -1,4 +1,5 @@
 import React, { ReactElement, Suspense } from 'react';
+
 import PageRoutes from './pages/PageRoute';
 
 const App = (): ReactElement => (
@@ -8,5 +9,4 @@ const App = (): ReactElement => (
     </Suspense>
   </div>
 );
-
 export default App;

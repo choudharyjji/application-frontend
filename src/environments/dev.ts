@@ -5,4 +5,5 @@ const env = environment('http://api.localhost:7515');
 export default {
   ...env,
   isDevelopment: true,
+  locale: 'en',
 } as Environment;
