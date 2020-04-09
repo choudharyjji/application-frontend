@@ -10,14 +10,14 @@ export class SelectField extends BaseField {
     label: string,
     placeholder: string | null,
     helperMessage: string | null,
-    defaultValue: string | number | boolean | null,
+    defaultValue: string | number | boolean | Date | null,
     autoFocus: boolean, disabled: boolean,
     options: FieldSelectOptions[]) {
     super(name, label, placeholder, helperMessage, defaultValue, autoFocus, disabled);
     this.options = options;
   }
 
-  public getOptions(): FieldSelectOptions[] | null {
+  public getOptions(): FieldSelectOptions[] {
     return this.options;
   }
 

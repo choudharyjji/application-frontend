@@ -23,6 +23,8 @@ export interface ApplicationData {
   province?: string;
   city?: string;
   postalCode?: string;
+  street?: string;
+  streetOther?: string;
   houseNumber?: string;
   flatNumber?: string;
   housingTenure?: HousingTenure;

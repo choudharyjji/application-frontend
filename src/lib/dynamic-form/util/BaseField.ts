@@ -13,7 +13,7 @@ export abstract class BaseField {
 
   protected helperMessage: string | null = null;
 
-  protected defaultValue: string | number | boolean | null = null;
+  protected defaultValue: string | number | boolean | Date | null = null;
 
   protected autoFocus = false;
 
@@ -33,7 +33,7 @@ export abstract class BaseField {
     label: string,
     placeholder: string | null,
     helperMessage: string | null,
-    defaultValue: string | number | boolean | null,
+    defaultValue: string | number | boolean | Date | null,
     autoFocus: boolean,
     disabled: boolean) {
     this.id = `${name}_${Date.now()}`;

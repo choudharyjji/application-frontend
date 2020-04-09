@@ -5,7 +5,7 @@ export interface InputProp {
   name: string;
   type: FixMeType;
   placeholder: FixMeType;
-  tooltip?: FixMeType;
+  tooltip?: string;
   disabled: FixMeType;
   autoFocus: FixMeType;
   innerRef?: FixMeType;

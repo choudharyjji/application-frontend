@@ -3,7 +3,7 @@ import { LeadApplicationActionEnum } from '../enum';
 
 const initialState: Partial<LeadApplicationState> = {};
 
-export function leadApplicationReducer<T>(
+export function leadApplicationReducer<T extends any>(
   state = initialState,
   action: ApplicationDataUpdateAction<T>,
 ): Partial<LeadApplicationState> {
@@ -21,7 +21,7 @@ export function leadApplicationReducer<T>(
     case LeadApplicationActionEnum.UPDATE_APPLICATION_PROGRESS_STATE:
       return {
         ...state,
-        progressState: { ...state.progressState, ...action.payload },
+        progressState: action.payload,
       };
     case LeadApplicationActionEnum.UPDATE_CUSTOMER_CONSENTS:
       return {

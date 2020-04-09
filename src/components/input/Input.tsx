@@ -9,7 +9,7 @@ const Input = (props: InputProp): ReactElement => {
   } = props;
 
   return (
-    <div className="mb-6">
+    <>
       <span className="font-light block mb-2 text-sm">
         {label}
       </span>
@@ -37,7 +37,7 @@ const Input = (props: InputProp): ReactElement => {
           {tooltip && <InputTooltip message={tooltip} /> }
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

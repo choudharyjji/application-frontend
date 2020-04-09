@@ -14,7 +14,6 @@ const CustomerConsetsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const currentCustomerConsents = currentState.customerConsents;
   const dispatch = useDispatch();
-  const history = useHistory();
   const { id } = useParams();
 
   useEffect(() => {
@@ -50,6 +49,7 @@ const CustomerConsetsPage = (): ReactElement => {
       </div>
       <DynamicForm
         form={customerConsentsForm}
+        defaultValues={currentCustomerConsents}
         onSubmit={(data: FixMeType): void => onSubmit(data)}
       />
     </>

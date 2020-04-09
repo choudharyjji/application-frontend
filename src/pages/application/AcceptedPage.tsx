@@ -1,21 +1,34 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { RootStateInterface } from '../../state/root-state.interface';
 import Button from '../../components/button/Button';
 import logo from '../../assets/img/logo-dark-with-colors@3x.png';
+import PageHeading from '../../components/pageHeading/PageHeading';
+import PageDescription from '../../components/pageDescription/PageDescription';
 
 const AcceptedPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
+  const { t } = useTranslation();
   const [seconds, updateSeconds] = useState(5);
   const { applicationResult } = currentState;
   const { partner } = applicationResult;
-
   const partnerLogo = partner?.logo ? partner?.logo : logo;
+
+  const redirect = (): void => {
+    if (applicationResult.redirect) {
+      window.location.href = applicationResult.redirect;
+    }
+  };
 
   useEffect(() => {
     const countdown = setInterval(() => {
-      updateSeconds(seconds - 1);
+      if (seconds <= 0) {
+        redirect();
+      } else {
+        updateSeconds(seconds - 1);
+      }
     }, 1000);
     return (): void => clearInterval(countdown);
   });
@@ -25,21 +38,13 @@ const AcceptedPage = (): ReactElement => {
   }
 
   return (
-    <>
-      <h2 className="text-center text-3xl font-extrabold mb-3 xl:text-4xl">
-        We have an offer for you!
-      </h2>
-      <p className="text-center text-xl text-blue-600">
-        We are redirecting you to
-        {' '}
-        {partner?.title}
-        {' '}
-        in
-        {' '}
-        {seconds}
-        {' '}
-        seconds
-      </p>
+    <div className="mt-48">
+      <PageHeading value={t('We have an offer for you!')} />
+      <PageDescription value={t('We are redirecting you to {{partner}} in {{seconds}} seconds.', {
+        partner: partner?.title,
+        seconds,
+      })}
+      />
 
       <div className="flex my-10 flex-wrap items-center justify-around ">
         <div className="w-1/3 bg-gray-200 rounded px-2 px-6">
@@ -76,20 +81,19 @@ const AcceptedPage = (): ReactElement => {
           />
         </div>
       </div>
-      <div className="mt-20 mb-5 text-center">
-        <Button label="SEE OFFER NOW!" type="button" />
+      <div className="mt-12 mb-2 text-center">
+        <Button label={t('SEE OFFER NOW!')} color="yellow" type="button" onClick={redirect} />
       </div>
 
-      <p className="text-center text-sm">
-        You just have to answer some more questions at
-        {' '}
-        {partner.title}
-        {' '}
-        and you will get your
-        loan now!
+      <p className="text-center text-sm text-fiesta-dark-blue">
+        {t('You just have to answer some more questions at {{partner}} and you will get your loan now!',
+          {
+            partner: partner?.title,
+          })}
+
       </p>
 
-    </>
+    </div>
   );
 };
 

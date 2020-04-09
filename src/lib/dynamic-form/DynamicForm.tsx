@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { useForm, ErrorMessage } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Input from '../../components/input/Input';
 import { FixMeType } from '../../type/fix-me.type';
@@ -15,21 +15,27 @@ import { InputField } from './util/InputField';
 interface DynamicFormProp {
   form: Form;
   onSubmit: (data: FixMeType) => void;
+  defaultValues?: Record<string, any>;
   inputWrapper?: FixMeType;
+  buttonTitle?: string;
 }
 
 const DynamicForm = (props: DynamicFormProp): ReactElement => {
-  const { form, onSubmit } = props;
+  const { t } = useTranslation();
+  const {
+    form, onSubmit, defaultValues, buttonTitle,
+  } = props;
+  const formDefaultValues = defaultValues || form.getDefaultValues();
   const {
     register, handleSubmit, errors, control,
   } = useForm({
     validationSchema: form.getValidationSchema(),
-    defaultValues: form.getDefaultValues(),
+    defaultValues: formDefaultValues,
     reValidateMode: 'onChange',
   });
-  const { t } = useTranslation();
 
   const fields = form.getFieldsArray();
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
@@ -37,6 +43,9 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
           {fields.map(([name, field]) => {
             field.setControl(control);
             let component = null;
+            const fieldError = errors[name];
+            const error: string = fieldError && fieldError.message ? fieldError.message : '';
+
             if (field.isInputElement() && field instanceof InputField) {
               const ComponentTypeWrapper = field.isCheckboxType() ? Checkbox : Input;
               component = (
@@ -46,7 +55,7 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
                     name={name}
                     type={field.getType()}
                     placeholder={field.getPlaceHolder()}
-                    tooltip={field.getHelperMessage()}
+                    tooltip={t(field.getHelperMessage() || '')}
                     disabled={field.isDisabled()}
                     autoFocus={field.getAutoFocus()}
                     spellCheck={field.getSpellCheck()}
@@ -62,7 +71,6 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
                     }}
                     innerRef={register}
                   />
-                  <ErrorMessage errors={errors} name={name} as="p" />
                 </React.Fragment>
               );
             }
@@ -73,7 +81,8 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
                   <DateSelect
                     control={control}
                     name={name}
-                    label={field.getLabel()}
+                    label={t(field.getLabel())}
+                    tooltip={t(field.getHelperMessage() || '')}
                     minDate={field.getMinDate() || undefined}
                     maxDate={field.getMaxDate() || undefined}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -87,19 +96,21 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
                     }}
                     innerRef={register}
                   />
-                  <ErrorMessage errors={errors} name={name} as="p" />
                 </React.Fragment>
               );
             }
 
             if (field.isSelectType() && field instanceof SelectField) {
+              const options = field.getOptions().map((option) => ({ label: t(option.label), value: option.value }));
+
               component = (
                 <React.Fragment key={field.getId()}>
                   <Select
                     control={control}
                     name={name}
-                    options={field.getOptions() as {}[]}
-                    label={field.getLabel()}
+                    options={options}
+                    label={t(field.getLabel())}
+                    tooltip={t(field.getHelperMessage() || '')}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
                       field.onChangeCallback(event);
                     }}
@@ -111,18 +122,21 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
                     }}
                     innerRef={register}
                   />
-                  <ErrorMessage errors={errors} name={name} as="p" />
                 </React.Fragment>
               );
             }
-
             if (field.isVisible()) {
-              return component;
+              return (
+                <div className="mb-6" key={field.getId()}>
+                  {component}
+                  <p className="text-fiesta-red text-xs pt-1">{t(error)}</p>
+                </div>
+              );
             }
             return null;
           })}
         </div>
-        <Button label="Save" type="submit" />
+        <Button label={buttonTitle || 'Submit'} color="blue" type="submit" />
       </form>
     </>
   );

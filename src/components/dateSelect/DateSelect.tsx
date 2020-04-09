@@ -1,6 +1,8 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement } from 'react';
 import ReactSelect from 'react-select';
 import moment from 'moment';
+import { Control } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { FixMeType } from '../../type/fix-me.type';
 import InputTooltip from '../inputTooltip/InputTooltip';
 
@@ -12,7 +14,7 @@ interface DateSelectProps {
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   innerRef?: FixMeType;
-  control?: FixMeType;
+  control: Control;
   minDate?: Date;
   maxDate?: Date;
 }
@@ -21,8 +23,27 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
   const {
     label, tooltip, innerRef, name, onBlur, onFocus, control, minDate, maxDate,
   } = props;
+  const { t } = useTranslation();
+  let textInput: HTMLInputElement | null = null;
+  const date = moment();
+  let selectYearValue: number | null = null;
+  let selectMonthValue: number | null = null;
+  let selectDayValue: number | null = null;
+
+  const syncWithInputValue = (): void => {
+    if (selectYearValue != null && selectMonthValue != null && selectDayValue != null) {
+      date.set({ year: selectYearValue, month: selectMonthValue, day: selectDayValue });
+      control.setValue(name, date.toDate().toISOString().split('T')[0], true);
+      control.reRender();
+      if (textInput !== null) {
+        textInput.focus();
+        textInput.blur();
+      }
+    }
+  };
+
   const customStyles = {
-    control: (provided: any, state: any) => ({
+    control: (provided: FixMeType) => ({
       ...provided,
       borderColor: '#e2e8f0',
       boxShadow: 'none',
@@ -37,13 +58,10 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
     }),
   };
 
-
-  const date = moment();
-  let textInput: HTMLInputElement | null = null;
   const minDateValue = minDate ? moment(minDate) : moment().subtract(100, 'years');
   const maxDateValue = maxDate ? moment(maxDate) : moment();
 
-  const yearOptions = (): { label: string; value: number }[] => {
+  const yearOptions = (): {}[] => {
     const start = minDateValue.year();
     const end = maxDateValue.year();
     const result: { label: string; value: number }[] = [];
@@ -53,7 +71,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
     }
     return result;
   };
-  const dayOptions = (): { label: string; value: number }[] => {
+  const dayOptions = (): {}[] => {
     const result: { label: string; value: number }[] = [];
     for (let i = 1; i <= 31; i++) {
       result.push({ label: `${i < 10 ? `0${i}` : i}`, value: i });
@@ -61,55 +79,44 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
     return result;
   };
 
-  useEffect(() => {
-    control.setValue(name, date.toISOString().split('T')[0], false);
-  });
-
   const monthOptions = [
-    { label: 'January', value: 1 },
-    { label: 'February', value: 2 },
-    { label: 'March', value: 3 },
-    { label: 'April', value: 4 },
-    { label: 'May', value: 5 },
-    { label: 'June', value: 6 },
-    { label: 'July', value: 7 },
-    { label: 'August', value: 8 },
-    { label: 'September', value: 9 },
-    { label: 'October', value: 10 },
-    { label: 'November', value: 11 },
-    { label: 'December', value: 12 },
+    { label: t('January'), value: 0 },
+    { label: t('February'), value: 1 },
+    { label: t('March'), value: 2 },
+    { label: t('April'), value: 3 },
+    { label: t('May'), value: 4 },
+    { label: t('June'), value: 5 },
+    { label: t('July'), value: 6 },
+    { label: t('August'), value: 7 },
+    { label: t('September'), value: 8 },
+    { label: t('October'), value: 9 },
+    { label: t('November'), value: 10 },
+    { label: t('December'), value: 11 },
   ];
 
+  const formValues = { ...control.defaultValuesRef.current, ...control.getValues() };
+  const defaultValue = formValues[name] instanceof Date ? formValues[name] : new Date(formValues[name]);
+  const defaultValueDay = { label: defaultValue.getDate(), value: defaultValue.getDate() };
+  const defaultValueMonth = monthOptions.find((option) => option.value === defaultValue.getMonth() + 1);
+  const defaultValueYear = { label: defaultValue.getFullYear(), value: defaultValue.getFullYear() };
+
   const handleDayChange = (selectedOption: FixMeType) => {
-    date.day(selectedOption.value);
-    control.setValue(name, date.toISOString().split('T')[0], true);
-    if (textInput !== null) {
-      textInput.focus();
-      textInput.blur();
-    }
+    selectDayValue = selectedOption.value;
+    syncWithInputValue();
   };
 
   const handleMonthChange = (selectedOption: FixMeType) => {
-    date.month(selectedOption.value);
-    control.setValue(name, date.toISOString().split('T')[0], true);
-    if (textInput !== null) {
-      textInput.focus();
-      textInput.blur();
-    }
+    selectMonthValue = selectedOption.value;
+    syncWithInputValue();
   };
 
   const handleYearChange = (selectedOption: FixMeType) => {
-    date.year(selectedOption.value);
-    control.setValue(name, date.toISOString().split('T')[0], true);
-    if (textInput !== null) {
-      textInput.focus();
-      textInput.blur();
-    }
-    console.log(textInput);
+    selectYearValue = selectedOption.value;
+    syncWithInputValue();
   };
 
   return (
-    <div className="my-6">
+    <>
       <label className="font-light block mb-2 text-sm">
         {label}
       </label>
@@ -118,7 +125,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
           <div className="w-1/3">
             <ReactSelect
               styles={customStyles}
-              placeholder="day"
+              placeholder={t('Day')}
               options={dayOptions()}
               onChange={handleDayChange}
             />
@@ -127,7 +134,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
           <div className="w-1/3 px-2">
             <ReactSelect
               styles={customStyles}
-              placeholder="month"
+              placeholder={t('Month')}
               options={monthOptions}
               defaultValue={null}
               onChange={handleMonthChange}
@@ -137,7 +144,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
           <div className="w-1/3">
             <ReactSelect
               styles={customStyles}
-              placeholder="year"
+              placeholder={t('Year')}
               options={yearOptions()}
               defaultValue={null}
               onChange={handleYearChange}
@@ -161,10 +168,10 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
           />
         </div>
         <div className="flex ml-3">
-          {tooltip && <InputTooltip message={tooltip} /> }
+          {tooltip && <InputTooltip message={tooltip} />}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -12,7 +12,7 @@ export class DateField extends BaseField {
     label: string,
     placeholder: string | null,
     helperMessage: string | null,
-    defaultValue: string | number | boolean | null,
+    defaultValue: string | number | boolean | Date | null,
     autoFocus: boolean,
     disabled: boolean,
     minDate: Date | null,

@@ -9,7 +9,7 @@ export class InputField extends BaseField {
     label: string,
     placeholder: string | null,
     helperMessage: string | null,
-    defaultValue: string | number | boolean | null,
+    defaultValue: string | number | boolean | Date | null,
     autoFocus: boolean,
     disabled: boolean,
     autoComplete: boolean,

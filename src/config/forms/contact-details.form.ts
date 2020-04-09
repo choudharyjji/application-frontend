@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import axios from 'axios';
+import environment from 'environment';
 import {
   FieldSelectOptions,
   FieldType,
@@ -10,19 +10,25 @@ import { Education, HousingTenure, MaritalStatus } from '../../enum';
 import { Province } from '../../enum/Province';
 import { PostCodeLookupResponse } from '../../dto/response/PostCodeLookupResponse';
 import { SelectField } from '../../lib/dynamic-form/util/SelectField';
+import HttpModule from '../../services/api/HttpModule';
+
 
 const formSchema: FormSchema = {
   fields: [
     {
-      name: 'personalCode',
       type: FieldType.TEXT,
-      label: 'DNI / NIE',
-      validation: yup.string().matches(/^(\d{8})([A-Z])$|^[XYZ]\d{7,8}[A-Z]$/).required(),
+      name: 'personalCode',
+      label: 'Personal Code',
+      helperMessage: 'Enter your DNI / NIE code',
+      validation: yup.string()
+        .matches(/^(\d{8})([A-Z])$|^[XYZ]\d{7,8}[A-Z]$/, { message: 'Please fill in valid personal code' })
+        .required('Please fill in your personal code'),
     },
     {
+      type: FieldType.SELECT,
       name: 'maritalStatus',
       label: 'Marital Status',
-      type: FieldType.SELECT,
+      helperMessage: 'Select your marital status',
       options: [
         {
           label: 'Not Married',
@@ -45,12 +51,13 @@ const formSchema: FormSchema = {
           value: MaritalStatus.LIVING_WITH_PARENTS,
         },
       ],
-      validation: yup.string().required(),
+      validation: yup.string().required('Please select your marital status'),
     },
     {
+      type: FieldType.SELECT,
       name: 'education',
       label: 'Education',
-      type: FieldType.SELECT,
+      helperMessage: 'Select your education stage',
       options: [
         {
           label: 'None',
@@ -81,18 +88,22 @@ const formSchema: FormSchema = {
           value: Education.PHD,
         },
       ],
-      validation: yup.string().required(),
+      validation: yup.string().required('Please select your education'),
     },
     {
+      type: FieldType.TEXT,
       name: 'postalCode',
       label: 'Postal Code',
-      type: FieldType.TEXT,
-      validation: yup.string().required(),
+      helperMessage: 'Enter your postcode (5 digits)',
+      validation: yup.string()
+        .matches(/^\d{5}$/, { message: 'Please fill in valid postal code' })
+        .required('Please fill in your postal code'),
     },
     {
+      type: FieldType.SELECT,
       name: 'province',
       label: 'Province',
-      type: FieldType.SELECT,
+      helperMessage: 'Select your province',
       options: [
         {
           label: 'Álava',
@@ -303,46 +314,63 @@ const formSchema: FormSchema = {
           value: Province.ZARAGOZA,
         },
       ],
-      validation: yup.string().required(),
+      validation: yup.string().required('Please select your province'),
     },
     {
+      type: FieldType.TEXT,
       name: 'city',
       label: 'City',
-      type: FieldType.TEXT,
-      validation: yup.string().required(),
+      helperMessage: 'Enter your city name',
+      validation: yup.string()
+        .max(100, 'City can\'t be longer than 100 symbols')
+        .required('Please fill in your city'),
     },
     {
+      type: FieldType.SELECT,
       name: 'street',
       label: 'Street',
-      type: FieldType.SELECT,
-      validation: yup.string().required(),
+      helperMessage: 'Enter your street',
+      options: [
+        { label: 'Other', value: 'Other' }
+      ],
+      validation: yup.string()
+        .max(100, 'Street can\'t be longer than 100 symbols')
+        .required('Please fill in your street'),
     },
     {
+      type: FieldType.TEXT,
       name: 'streetOther',
       label: 'Street (Other)',
-      type: FieldType.TEXT,
-      validation: yup.string().required(),
+      helperMessage: 'Enter your street',
+      validation: yup.string()
+        .max(100, 'Street can\'t be longer than 100 symbols')
+        .required('Please fill in your street'),
       dependency: {
         field: 'street',
         values: ['other'],
       },
     },
     {
+      type: FieldType.TEXT,
       name: 'houseNumber',
       label: 'House Number',
-      type: FieldType.TEXT,
-      validation: yup.string().max(10).required(),
+      helperMessage: 'Enter your house number',
+      validation: yup.string()
+        .max(10, 'House number can\'t be longer than 10 symbols')
+        .required('Please fill in your house number'),
     },
     {
+      type: FieldType.TEXT,
       name: 'flatNumber',
       label: 'Flat Number',
-      type: FieldType.TEXT,
-      validation: yup.string().max(10).required(),
+      helperMessage: 'Enter your flat number (not required)',
+      validation: yup.string().max(10, 'Flat number can\'t be longer than 10 symbols'),
     },
     {
+      type: FieldType.SELECT,
       name: 'housingTenure',
       label: 'Housing Tenure',
-      type: FieldType.SELECT,
+      helperMessage: 'Select your housing status',
       options: [
         {
           label: 'Owner With Mortgage',
@@ -361,14 +389,7 @@ const formSchema: FormSchema = {
           value: HousingTenure.OTHER,
         },
       ],
-      validation: yup.string().oneOf(
-        [
-          HousingTenure.OWNER_WITH_MORTGAGE,
-          HousingTenure.OWNER_WITH_MORTGAGE,
-          HousingTenure.RENTAL,
-          HousingTenure.OTHER,
-        ],
-      ).required(),
+      validation: yup.string().required('Please select your housing tenure'),
     },
   ],
 };
@@ -376,23 +397,23 @@ const formSchema: FormSchema = {
 const contactDetailsForm = new Form(formSchema);
 
 const postalCode = contactDetailsForm.getField('postalCode');
-
-postalCode.attachOnBlurCallback((event) => {
+postalCode.attachOnBlurCallback(async (event) => {
   const { value } = event.target;
-  axios.get<PostCodeLookupResponse>(`https://api.fiestacredito.es/postcode/lookup/${value}`).then(({ data }) => {
-    const { streets, province } = data.data;
-    const provinceField = contactDetailsForm.getField('province');
-    const streetField = contactDetailsForm.getField('street');
-    if (streetField instanceof SelectField) {
-      const streetOptions = streets.reduce((acc, curr) => {
-        acc.push({ label: curr, value: curr });
-        return acc;
-      }, [] as FieldSelectOptions[]);
-      streetOptions.push({ label: 'Other', value: 'Other' });
-      streetField.setOptions(streetOptions);
-    }
-    provinceField.updateValue(province);
-  });
+
+  const endpoint = HttpModule.parse(environment.api.postCodeLookup, { code: value });
+  const { data: response } = await HttpModule.get<PostCodeLookupResponse>(endpoint);
+  const { streets, province } = response.data;
+  const provinceField = contactDetailsForm.getField('province');
+  const streetField = contactDetailsForm.getField('street');
+  if (streetField instanceof SelectField) {
+    const streetOptions = streets.reduce((acc, curr) => {
+      acc.push({ label: curr, value: curr });
+      return acc;
+    }, [] as FieldSelectOptions[]);
+    streetOptions.push({ label: 'Other', value: 'Other' });
+    streetField.setOptions(streetOptions);
+  }
+  provinceField.updateValue(province);
 });
 
 export default contactDetailsForm;

@@ -7,24 +7,30 @@ import { Form } from '../../lib/dynamic-form/util/Form';
 const formSchema: FormSchema = {
   fields: [
     {
+      type: FieldType.TEXT,
       name: 'firstName',
-      type: FieldType.TEXT,
       label: 'First Name',
-      helperMessage: 'The tooltiptext class holds the actual tooltip text. It is hidden by default, and will be visible on hover (see below). We have also added some basic styles to it: 120px width, black background color, white text color, centered text, and 5px top and bottom padding.',
-      validation: yup.string().max(50).matches(/^[^0-9]+$/).required(),
-      autoFocus: true,
+      helperMessage: 'Enter your first name as on ID card',
+      validation: yup.string()
+        .max(50, 'First name can\'t be longer than 50 symbols')
+        .matches(/^[^0-9]+$/, { message: 'Please fill in valid first name' })
+        .required('Please fill in your first name'),
     },
     {
-      name: 'lastName',
       type: FieldType.TEXT,
+      name: 'lastName',
       label: 'Last Name',
-      helperMessage: 'Hello world',
-      validation: yup.string().max(50).matches(/^[^0-9]+$/).required(),
+      helperMessage: 'Enter your last name as on ID card',
+      validation: yup.string()
+        .max(50, 'First last can\'t be longer than 50 symbols')
+        .matches(/^[^0-9]+$/, { message: 'Please fill in valid last name' })
+        .required('Please fill in your last name'),
     },
     {
+      type: FieldType.SELECT,
       name: 'gender',
       label: 'Gender',
-      type: FieldType.SELECT,
+      helperMessage: 'Select your gender',
       options: [
         {
           label: 'Male',
@@ -35,46 +41,51 @@ const formSchema: FormSchema = {
           value: Gender.FEMALE,
         },
       ],
-      validation: yup.string()
-        .oneOf([
-          Gender.MALE,
-          Gender.FEMALE,
-        ]).required(),
+      validation: yup.string().required('Please select your gender'),
     },
     {
-      name: 'dateOfBirth',
-      label: 'Date of birth',
       type: FieldType.DATE,
+      name: 'dateOfBirth',
+      label: 'Date of Birth',
+      helperMessage: 'Select your date of birth (Minimum age is 18 years old)',
       dateParams: {
         minDate: moment().subtract(102, 'years').toDate(),
         maxDate: moment().subtract(18, 'years').toDate(),
       },
-      // validation: yup.date()
-      //   .min(moment().subtract(102, 'years').toDate())
-      //   .max(moment().subtract(18, 'years').toDate()).required(),
+      validation: yup.date()
+        .typeError('Please fill in your date of birth')
+        .min(moment().subtract(102, 'years').toDate(), 'Maximum age is 102 years')
+        .max(moment().subtract(18, 'years').toDate(), 'Minimum age is 18 years')
+        .required('Please fill in your date of birth'),
     },
     {
-      name: 'phoneNumber',
-      label: 'Mobile number',
       type: FieldType.TEXT,
-      validation: yup.string().matches(/^(6[0-9]{8})$|(7[1-4][0-9]{7})$/).required(),
+      name: 'phoneNumber',
+      label: 'Phone Number',
+      helperMessage: 'Enter your personal phone number (number should start with 6, 7 or 9)',
+      validation: yup.string()
+        .matches(/^(6[0-9]{8})$|(7[1-4][0-9]{7})$/, { message: 'Please fill in valid phone number. Please use format 6|7xxxxxxxx' })
+        .required('Please fill in your phone number'),
     },
     {
+      type: FieldType.TEXT,
       name: 'email',
       label: 'Email',
-      type: FieldType.TEXT,
-      validation: yup.string().email().required(),
+      helperMessage: 'Enter your email address',
+      validation: yup.string()
+        .email('Please fill in valid email')
+        .required('Please fill in your email'),
     },
     {
+      type: FieldType.CHECKBOX,
       name: 'generalPolicies',
-      label: 'I confirm that I have read and accept the Terms and Conditions and the Data Processing Policy.',
-      type: FieldType.CHECKBOX,
-      validation: yup.boolean().oneOf([true]),
+      label: 'I confirm that I have read and accept the Terms and Conditions, and Data Processing Policy.',
+      validation: yup.boolean().oneOf([true], 'Please confirm that You are agree with Terms and Conditions'),
     },
     {
-      name: 'marketingConsents',
-      label: 'I agree to keep up to date with the latest news and receive special offers and discounts by any means, including electronic communications or equivalent from FiestaCredito.',
       type: FieldType.CHECKBOX,
+      name: 'marketingConsents',
+      label: 'I agree to keep up to date with the latest news and receive special offers and discounts by any means, including electronic communications or equivalent from FiestaCredito',
       validation: yup.boolean().oneOf([true, false]),
     },
   ],

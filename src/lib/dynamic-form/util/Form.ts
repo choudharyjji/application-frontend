@@ -108,6 +108,12 @@ export class Form {
               then: field.validation,
             });
           }
+          if (fieldValidation.constructor.name === 'DateSchema') {
+            fieldValidation = yup.date().when(field.dependency.field, {
+              is: (val: string) => field.dependency !== undefined && field.dependency.values.indexOf(val) > -1,
+              then: field.validation,
+            });
+          }
         }
         validationSchema[field.name] = fieldValidation;
       }

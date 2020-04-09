@@ -1,10 +1,10 @@
 import { ApplicationData } from '../../../models/ApplicationData';
 import { ApplicationResult } from '../../../models/ApplicationResult';
-import { LeadApplicationProgressState } from './LeadApplicationProgressState';
 import { CustomerConsentsResponse } from '../../../dto/response/CustomerConsentsResponse';
+import { ApplicationProgressStateEnum } from '../enum';
 
 export interface LeadApplicationState {
-  progressState: LeadApplicationProgressState;
+  progressState: ApplicationProgressStateEnum | null;
   applicationData: ApplicationData;
   applicationResult: ApplicationResult;
   customerConsents: Partial<CustomerConsentsResponse>;
