@@ -378,7 +378,7 @@ const formSchema: FormSchema = {
         },
         {
           label: 'Owner Without Mortgage',
-          value: HousingTenure.OWNER_WITH_MORTGAGE,
+          value: HousingTenure.OWNER_WITHOUT_MORTGAGE,
         },
         {
           label: 'Rental',
@@ -410,7 +410,7 @@ postalCode.attachOnBlurCallback(async (event) => {
       acc.push({ label: curr, value: curr });
       return acc;
     }, [] as FieldSelectOptions[]);
-    streetOptions.push({ label: 'Other', value: 'Other' });
+    streetOptions.push({ label: 'Other', value: 'other' });
     streetField.setOptions(streetOptions);
   }
   provinceField.updateValue(province);
