@@ -331,7 +331,7 @@ const formSchema: FormSchema = {
       label: 'Street',
       helperMessage: 'Enter your street',
       options: [
-        { label: 'Other', value: 'Other' }
+        { label: 'Other', value: 'other' },
       ],
       validation: yup.string()
         .max(100, 'Street can\'t be longer than 100 symbols')
