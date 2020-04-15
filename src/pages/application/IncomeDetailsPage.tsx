@@ -14,6 +14,7 @@ import Steps from '../../modules/steps/Steps';
 import Step from '../../modules/steps/Step';
 import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
 import AppRoute from '../../config/route/AppRoute';
+import Button from '../../components/button/Button';
 
 const IncomeDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
@@ -31,6 +32,10 @@ const IncomeDetailsPage = (): ReactElement => {
     });
   };
 
+  const handlePreviousButton = (): void => {
+    history.goBack();
+  };
+
   return (
     <>
       <Steps step={2}>
@@ -45,7 +50,12 @@ const IncomeDetailsPage = (): ReactElement => {
         form={incomeDetailsForm}
         defaultValues={currentApplicationData}
         onSubmit={(data: any) => onSubmit(data)}
-        buttonTitle={t('Apply now')}
+        buttonGroup={(
+          <>
+            <Button label={t('Apply now')} type="submit" color="blue" />
+            <Button label={t('Previous')} type="button" onClick={handlePreviousButton} />
+          </>
+        )}
       />
     </>
   );

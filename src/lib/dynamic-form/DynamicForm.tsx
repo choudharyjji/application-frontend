@@ -18,12 +18,13 @@ interface DynamicFormProp {
   defaultValues?: Record<string, any>;
   inputWrapper?: FixMeType;
   buttonTitle?: string;
+  buttonGroup?: FixMeType;
 }
 
 const DynamicForm = (props: DynamicFormProp): ReactElement => {
   const { t } = useTranslation();
   const {
-    form, onSubmit, defaultValues, buttonTitle,
+    form, onSubmit, defaultValues, buttonTitle, buttonGroup,
   } = props;
   const formDefaultValues = defaultValues || form.getDefaultValues();
   const {
@@ -136,7 +137,14 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
             return null;
           })}
         </div>
-        <Button label={buttonTitle || 'Submit'} color="blue" type="submit" />
+        {buttonGroup
+          ? (
+            <div className="inline-flex">
+              {buttonGroup}
+            </div>
+          )
+          : (<Button label={buttonTitle || 'Submit'} color="blue" type="submit" />)}
+
       </form>
     </>
   );

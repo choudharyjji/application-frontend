@@ -15,6 +15,7 @@ import { ApplicationProgressStateEnum } from '../../state/lead-application/enum'
 import Steps from '../../modules/steps/Steps';
 import Step from '../../modules/steps/Step';
 import AppRoute from '../../config/route/AppRoute';
+import Button from '../../components/button/Button';
 
 const ContactDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
@@ -34,6 +35,10 @@ const ContactDetailsPage = (): ReactElement => {
     });
   };
 
+  const handlePreviousButton = (): void => {
+    history.goBack();
+  };
+
   return (
     <>
       <Steps step={1}>
@@ -48,7 +53,12 @@ const ContactDetailsPage = (): ReactElement => {
         form={contactDetailsForm}
         defaultValues={currentApplicationData}
         onSubmit={(data: FixMeType): void => onSubmit(data)}
-        buttonTitle={t('Next')}
+        buttonGroup={(
+          <>
+            <Button label={t('Next')} type="submit" color="blue" />
+            <Button label={t('Previous')} type="button" onClick={handlePreviousButton} />
+          </>
+        )}
       />
     </>
   );

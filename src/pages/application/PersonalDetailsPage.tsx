@@ -14,6 +14,7 @@ import { ApplicationProgressStateEnum } from '../../state/lead-application/enum'
 import Steps from '../../modules/steps/Steps';
 import Step from '../../modules/steps/Step';
 import AppRoute from '../../config/route/AppRoute';
+import Button from '../../components/button/Button';
 
 const PersonalDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
@@ -32,6 +33,7 @@ const PersonalDetailsPage = (): ReactElement => {
       history.push(AppRoute.application.contactDetails);
     });
   };
+
 
   return (
     <>

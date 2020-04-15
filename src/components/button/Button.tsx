@@ -19,7 +19,7 @@ const Button = (props: ButtonProp): ReactElement => {
       break;
     default:
       bgColor = 'bg-white';
-      textColor = 'text-white';
+      textColor = 'text-black';
       break;
   }
 
