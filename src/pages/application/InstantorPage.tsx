@@ -2,6 +2,7 @@ import React, { ReactElement, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { RootStateInterface } from '../../state/root-state.interface';
+import AppRoute from '../../config/route/AppRoute';
 
 declare const Instantor: any;
 
@@ -24,13 +25,13 @@ const InstantorPage = (): ReactElement => {
     itor.listener((response: any) => {
       switch (response) {
         case 'process-finished':
-          history.push('/application/accepted');
+          history.push(AppRoute.application.accepted);
           break;
         case 'invalid-login':
-          history.push('/application/checking');
+          history.push(AppRoute.application.checking);
           break;
         default:
-          history.push('/application/checking');
+          history.push(AppRoute.application.checking);
           break;
       }
     });

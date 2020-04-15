@@ -12,12 +12,16 @@ import PageHeading from '../../components/pageHeading/PageHeading';
 import PageDescription from '../../components/pageDescription/PageDescription';
 import { LeadApplicationActions } from '../../state/lead-application/actions';
 import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
+import { useHistory } from 'react-router-dom';
+import AppRoute from '../../config/route/AppRoute';
 
 const MobileVerificationPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const currentApplicationData = currentState.applicationData;
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const onSubmit = (data: FixMeType): void => {
     if (currentApplicationData.id) {
       const requestData: MobileVerificationRequest = {
@@ -26,6 +30,7 @@ const MobileVerificationPage = (): ReactElement => {
       };
       HttpModule.post(environment.api.leadMobileVerification, requestData).then(() => {
         dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.CHECKING));
+        history.push(AppRoute.application.checking);
       });
     }
   };

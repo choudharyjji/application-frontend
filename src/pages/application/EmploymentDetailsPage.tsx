@@ -11,6 +11,7 @@ import employmentDetailsForm from '../../config/forms/employment-details.form';
 import HttpModule from '../../services/api/HttpModule';
 import PageHeading from '../../components/pageHeading/PageHeading';
 import PageDescription from '../../components/pageDescription/PageDescription';
+import AppRoute from '../../config/route/AppRoute';
 
 const EmploymentDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
@@ -26,7 +27,7 @@ const EmploymentDetailsPage = (): ReactElement => {
         workPhone: data.workPhone,
       };
       HttpModule.post(environment.api.leadSetEmploymentDetails, requestData).then(() => {
-        history.push('/application/checking');
+        history.push(AppRoute.application.checking);
       });
     }
   };

@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import environment from 'environment';
+import { useHistory } from 'react-router-dom';
 import DynamicForm from '../../lib/dynamic-form/DynamicForm';
 import { LeadApplicationActions } from '../../state/lead-application/actions';
 import { ApplicationData } from '../../models/ApplicationData';
@@ -12,19 +13,21 @@ import HttpModule from '../../services/api/HttpModule';
 import Steps from '../../modules/steps/Steps';
 import Step from '../../modules/steps/Step';
 import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
+import AppRoute from '../../config/route/AppRoute';
 
 const IncomeDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const { applicationData: currentApplicationData } = currentState;
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const history = useHistory();
 
   const onSubmit = (formData: ApplicationData): void => {
     const applicationData = { ...formData, ...currentApplicationData };
     HttpModule.post<LeadApplicationStepResponse>(environment.api.leadCreate, applicationData).then(() => {
       dispatch(LeadApplicationActions.updateApplicationData(applicationData));
-
       dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.CHECKING));
+      history.push(AppRoute.application.checking);
     });
   };
 

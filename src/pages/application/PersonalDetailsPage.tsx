@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import environment from 'environment';
 import { ApplicationData } from '../../models/ApplicationData';
 import personalDetailsForm from '../../config/forms/personal-details.form';
@@ -12,12 +13,14 @@ import HttpModule from '../../services/api/HttpModule';
 import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
 import Steps from '../../modules/steps/Steps';
 import Step from '../../modules/steps/Step';
+import AppRoute from '../../config/route/AppRoute';
 
 const PersonalDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const { applicationData: currentApplicationData } = currentState;
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const history = useHistory();
 
   const onSubmit = (formData: ApplicationData): void => {
     const applicationData = { ...formData, ...currentApplicationData };
@@ -25,8 +28,8 @@ const PersonalDetailsPage = (): ReactElement => {
     HttpModule.put<LeadApplicationStepResponse>(environment.api.leadCreateStep, applicationData).then(({ data }) => {
       applicationData.id = data.id;
       dispatch(LeadApplicationActions.updateApplicationData(applicationData));
-
       dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.CONTACT_DETAILS));
+      history.push(AppRoute.application.contactDetails);
     });
   };
 

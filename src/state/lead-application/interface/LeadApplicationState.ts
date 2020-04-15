@@ -4,7 +4,7 @@ import { CustomerConsentsResponse } from '../../../dto/response/CustomerConsents
 import { ApplicationProgressStateEnum } from '../enum';
 
 export interface LeadApplicationState {
-  progressState: ApplicationProgressStateEnum | null;
+  progressState: ApplicationProgressStateEnum[];
   applicationData: ApplicationData;
   applicationResult: ApplicationResult;
   customerConsents: Partial<CustomerConsentsResponse>;

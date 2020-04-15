@@ -10,12 +10,15 @@ import Loader from '../../components/loader/Loader';
 import HttpModule from '../../services/api/HttpModule';
 import PageHeading from '../../components/pageHeading/PageHeading';
 import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
+import { useHistory } from 'react-router-dom';
+import AppRoute from '../../config/route/AppRoute';
 
 const CheckingPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const currentApplicationData = currentState.applicationData;
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const history = useHistory();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -25,18 +28,24 @@ const CheckingPage = (): ReactElement => {
           dispatch(LeadApplicationActions.updateApplicationResult(data));
 
           let nextState: ApplicationProgressStateEnum | null = null;
+          let nextPage: string | null = null;
           if (data.employmentDetailsRequired === true) {
             nextState = ApplicationProgressStateEnum.EMPLOYMENT_DETAILS;
+            nextPage = AppRoute.application.employmentDetails;
           } else if (data.mobileVerificationRequired === true) {
             nextState = ApplicationProgressStateEnum.MOBILE_VERIFICATION;
+            nextPage = AppRoute.application.mobileVerification;
           } else if (data.status === LeadStatus.ACCEPTED) {
             nextState = ApplicationProgressStateEnum.ACCEPTED;
+            nextPage = AppRoute.application.accepted;
           } else if (data.status === LeadStatus.REJECTED || data.status === LeadStatus.ERROR) {
             nextState = ApplicationProgressStateEnum.REJECTED;
+            nextPage = AppRoute.application.rejected;
           }
 
-          if (nextState) {
+          if (nextState && nextPage) {
             dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(nextState));
+            history.push(nextPage);
           }
         });
       }

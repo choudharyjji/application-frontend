@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect } from 'react';
 import {
-  BrowserRouter as Router, Redirect, Route, Switch, useLocation,
+  BrowserRouter as Router, Redirect, Route, Switch, useLocation, useHistory,
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import AppRoute from '../../config/route/AppRoute';
@@ -21,9 +21,11 @@ import { ApplicationProgressStateEnum } from '../../state/lead-application/enum'
 
 const ApplicationPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
-  const { progressState: currentApplicationProgress } = currentState;
+  const { applicationData: currentApplicationData, progressState: currentApplicationProgress } = currentState;
+  const [activeProgressState] = currentApplicationProgress.slice(-1);
   const location = useLocation();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const progressRouteMap = [
     {
@@ -79,21 +81,31 @@ const ApplicationPage = (): ReactElement => {
   ];
 
   useEffect(() => {
-    const applicationData: ApplicationData = {};
-    applicationData.period = 31;
-    applicationData.amount = 300;
+    const applicationData: ApplicationData = currentApplicationData || { period: 31, amount: 300 };
+
     applicationData.affiliateReference = localStorage.getItem('affiliateReference') || undefined;
     applicationData.affiliateReferenceSubId = localStorage.getItem('affiliateReferenceSubId') || undefined;
     applicationData.affiliateReferenceTransactionId = localStorage.getItem('affiliateReferenceTransactionId') || undefined;
     dispatch(LeadApplicationActions.updateApplicationData<ApplicationData>(applicationData));
 
-    dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.PERSONAL_DETAILS));
-  }, []);
+    if (!activeProgressState) {
+      dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.PERSONAL_DETAILS));
+    }
+    return () => {
+      history.block();
+      history.listen((listener, action) => {
+        if (action === 'POP') {
+          console.log('POP');
+        }
+      });
+    };
+  }, [history]);
 
-  const stateRout = progressRouteMap.find((item) => item.state === currentApplicationProgress);
-  if (stateRout && stateRout.strict && stateRout.route !== location.pathname) {
-    return (<Redirect to={stateRout.route} />);
-  }
+
+  // const stateRout = progressRouteMap.find((item) => item.state === activeProgressState);
+  // if (stateRout && stateRout.strict && stateRout.route !== location.pathname) {
+  //   return (<Redirect to={stateRout.route} />);
+  // }
 
   return (
     <div className="container max-w-form">

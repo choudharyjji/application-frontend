@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import environment from 'environment';
+import { useHistory } from 'react-router-dom';
 import DynamicForm from '../../lib/dynamic-form/DynamicForm';
 import contactDetailsForm from '../../config/forms/contact-details.form';
 import { LeadApplicationActions } from '../../state/lead-application/actions';
@@ -13,12 +14,14 @@ import HttpModule from '../../services/api/HttpModule';
 import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
 import Steps from '../../modules/steps/Steps';
 import Step from '../../modules/steps/Step';
+import AppRoute from '../../config/route/AppRoute';
 
 const ContactDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const { applicationData: currentApplicationData } = currentState;
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const history = useHistory();
 
   const onSubmit = (formData: ApplicationData): void => {
     formData.street = formData.streetOther ? formData.streetOther : formData.street;
@@ -26,8 +29,8 @@ const ContactDetailsPage = (): ReactElement => {
     HttpModule.put<LeadApplicationStepResponse>(environment.api.leadCreateStep, applicationData).then(({ data }) => {
       applicationData.id = data.id;
       dispatch(LeadApplicationActions.updateApplicationData(applicationData));
-
       dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.INCOME_DETAILS));
+      history.push(AppRoute.application.incomeDetails);
     });
   };
 
