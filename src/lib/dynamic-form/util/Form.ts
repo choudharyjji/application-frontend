@@ -90,25 +90,25 @@ export class Form {
       let fieldValidation = field.validation;
       if (fieldValidation) {
         if (field.dependency !== undefined) {
-          if (fieldValidation.constructor.name === 'StringSchema') {
+          if (fieldValidation.type === 'string') {
             fieldValidation = yup.string().when(field.dependency.field, {
               is: (val: string) => field.dependency !== undefined && field.dependency.values.indexOf(val) > -1,
               then: field.validation,
             });
           }
-          if (fieldValidation.constructor.name === 'BooleanSchema') {
+          if (fieldValidation.type === 'boolean') {
             fieldValidation = yup.boolean().when(field.dependency.field, {
               is: (val: string) => field.dependency !== undefined && field.dependency.values.indexOf(val) > -1,
               then: field.validation,
             });
           }
-          if (fieldValidation.constructor.name === 'NumberSchema') {
+          if (fieldValidation.type === 'number') {
             fieldValidation = yup.number().when(field.dependency.field, {
               is: (val: string) => field.dependency !== undefined && field.dependency.values.indexOf(val) > -1,
               then: field.validation,
             });
           }
-          if (fieldValidation.constructor.name === 'DateSchema') {
+          if (fieldValidation.type === 'date') {
             fieldValidation = yup.date().when(field.dependency.field, {
               is: (val: string) => field.dependency !== undefined && field.dependency.values.indexOf(val) > -1,
               then: field.validation,
