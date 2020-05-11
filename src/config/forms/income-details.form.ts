@@ -71,7 +71,7 @@ const formSchema: FormSchema = {
           value: IncomeSource.OTHER,
         },
       ],
-      validation: yup.string().required(),
+      validation: yup.string().required('Please select your income source'),
     },
     {
       type: FieldType.TEXT,
@@ -155,10 +155,10 @@ const formSchema: FormSchema = {
         maxDate: moment().subtract(1, 'days').toDate(),
       },
       validation: yup.date()
+        .required('Please fill in when your contract started')
         .typeError('Please fill in when your contract started')
         .min(moment().subtract(80, 'years').toDate(), 'Contract can not be longer than 80 years')
-        .max(moment().subtract(1, 'days').toDate(), 'Contract minimum duration is 1 day')
-        .required('Please fill in when your contract started'),
+        .max(moment().subtract(1, 'days').toDate(), 'Contract minimum duration is 1 day'),
       dependency: {
         field: 'incomeSource',
         values: [
@@ -216,14 +216,16 @@ const formSchema: FormSchema = {
         values: [VehicleOwnership.CAR],
       },
       validation: yup.string()
-        .matches(/^[a-zA-Z]{3}$/, { message: 'Please fill in valid plate number' })
-        .required('Please fill in the last 3 letters of the license plate'),
+        .required('Please fill in the last 3 letters of the license plate')
+        .matches(/^[a-zA-Z]{3}$/, { message: 'Please fill in valid plate number' }),
     },
     {
       type: FieldType.TEXT,
       name: 'iban',
       label: 'IBAN',
       prefix: 'ES',
+      validation: yup.string().required('Please fill in your IBAN')
+        .length(22, 'This is not a valid International Bank Account Number (IBAN)'),
       helperMessage: 'Enter your International Bank Account Number (IBAN should start with ES)',
     },
     {
