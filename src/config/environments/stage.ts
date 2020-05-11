@@ -1,6 +1,6 @@
 import environment from './base';
 
-const env = environment('https://api.stage.fiestacredito.es');
+const env = environment('https://api.fiestacredito.es');
 export default {
   ...env,
   isDevelopment: true,
