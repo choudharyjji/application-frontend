@@ -26,7 +26,7 @@ const ContactDetailsPage = (): ReactElement => {
 
   const onSubmit = (formData: ApplicationData): void => {
     formData.street = formData.streetOther ? formData.streetOther : formData.street;
-    const applicationData = { ...formData, ...currentApplicationData };
+    const applicationData = { ...currentApplicationData, ...formData };
     HttpModule.put<LeadApplicationStepResponse>(environment.api.leadCreateStep, applicationData).then(({ data }) => {
       applicationData.id = data.id;
       dispatch(LeadApplicationActions.updateApplicationData(applicationData));

@@ -24,7 +24,7 @@ const IncomeDetailsPage = (): ReactElement => {
   const history = useHistory();
 
   const onSubmit = (formData: ApplicationData): void => {
-    const applicationData = { ...formData, ...currentApplicationData };
+    const applicationData = { ...currentApplicationData, ...formData };
     HttpModule.post<LeadApplicationStepResponse>(environment.api.leadCreate, applicationData).then(() => {
       dispatch(LeadApplicationActions.updateApplicationData(applicationData));
       dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.CHECKING));

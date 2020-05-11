@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import DynamicForm from '../../lib/dynamic-form/DynamicForm';
 import { RootStateInterface } from '../../state/root-state.interface';
 import { FixMeType } from '../../type/fix-me.type';
@@ -15,6 +15,7 @@ const CustomerConsetsPage = (): ReactElement => {
   const currentCustomerConsents = currentState.customerConsents;
   const dispatch = useDispatch();
   const { id } = useParams();
+
 
   useEffect(() => {
     if (id) {

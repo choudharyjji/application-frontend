@@ -8,7 +8,7 @@ i18n.use(Backend)
   .init({
     lng: environment.locale,
     fallbackLng: 'en',
-    debug: true,
+    debug: false,
     keySeparator: false,
     interpolation: {
       escapeValue: false,

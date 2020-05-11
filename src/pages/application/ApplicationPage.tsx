@@ -91,6 +91,7 @@ const ApplicationPage = (): ReactElement => {
     if (!activeProgressState) {
       dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.PERSONAL_DETAILS));
     }
+
     return () => {
       history.block();
       history.listen((listener, action) => {
@@ -102,15 +103,15 @@ const ApplicationPage = (): ReactElement => {
   }, [history]);
 
 
-  // const stateRout = progressRouteMap.find((item) => item.state === activeProgressState);
-  // if (stateRout && stateRout.strict && stateRout.route !== location.pathname) {
-  //   return (<Redirect to={stateRout.route} />);
-  // }
+
 
   return (
     <div className="container max-w-form">
       <Router>
         <Switch>
+          <Route exact path={AppRoute.application.index}>
+            <Redirect to={AppRoute.application.personalDetails} />
+          </Route>
           <Route path={AppRoute.application.personalDetails}>
             <PersonalDetailsPage />
           </Route>

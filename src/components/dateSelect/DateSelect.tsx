@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import ReactSelect from 'react-select';
 import moment from 'moment';
 import { Control } from 'react-hook-form';
@@ -26,19 +26,22 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
   const { t } = useTranslation();
   let textInput: HTMLInputElement | null = null;
   const date = moment();
+
   let selectYearValue: number | null = null;
   let selectMonthValue: number | null = null;
   let selectDayValue: number | null = null;
 
   const syncWithInputValue = (): void => {
+    console.log('a');
     if (selectYearValue != null && selectMonthValue != null && selectDayValue != null) {
-      date.set({ year: selectYearValue, month: selectMonthValue, day: selectDayValue });
-      control.setValue(name, date.toDate().toISOString().split('T')[0], true);
-      control.reRender();
+      console.log('b');
+      date.set('year', selectYearValue).set('month', selectMonthValue).set('date', selectDayValue);
+      control.setValue(name, date.toDate().toISOString().split('T')[0]);
       if (textInput !== null) {
         textInput.focus();
         textInput.blur();
       }
+      control.reRender();
     }
   };
 
@@ -94,11 +97,26 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
     { label: t('December'), value: 11 },
   ];
 
+  // const formValues = control.defaultValuesRef.current;
   const formValues = { ...control.defaultValuesRef.current, ...control.getValues() };
   const defaultValue = formValues[name] instanceof Date ? formValues[name] : new Date(formValues[name]);
-  const defaultValueDay = { label: defaultValue.getDate(), value: defaultValue.getDate() };
-  const defaultValueMonth = monthOptions.find((option) => option.value === defaultValue.getMonth() + 1);
-  const defaultValueYear = { label: defaultValue.getFullYear(), value: defaultValue.getFullYear() };
+  let defaultValueDay;
+  let defaultValueMonth;
+  let defaultValueYear;
+
+  if (formValues[name]) {
+    selectDayValue = defaultValue.getDate();
+    selectMonthValue = defaultValue.getMonth();
+    selectYearValue = defaultValue.getFullYear();
+    defaultValueDay = { label: defaultValue.getDate(), value: defaultValue.getDate() };
+    defaultValueMonth = monthOptions.find((option) => option.value === defaultValue.getMonth());
+    defaultValueYear = { label: defaultValue.getFullYear(), value: defaultValue.getFullYear() };
+  }
+
+
+  useEffect(() => {
+    syncWithInputValue();
+  }, []);
 
   const handleDayChange = (selectedOption: FixMeType) => {
     selectDayValue = selectedOption.value;
@@ -127,6 +145,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
               styles={customStyles}
               placeholder={t('Day')}
               options={dayOptions()}
+              value={defaultValueDay}
               onChange={handleDayChange}
             />
           </div>
@@ -136,7 +155,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
               styles={customStyles}
               placeholder={t('Month')}
               options={monthOptions}
-              defaultValue={null}
+              value={defaultValueMonth}
               onChange={handleMonthChange}
             />
           </div>
@@ -146,7 +165,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
               styles={customStyles}
               placeholder={t('Year')}
               options={yearOptions()}
-              defaultValue={null}
+              value={defaultValueYear}
               onChange={handleYearChange}
             />
           </div>

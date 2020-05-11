@@ -1,5 +1,6 @@
 export default {
   application: {
+    index: '/application',
     personalDetails: '/application/personal-details',
     contactDetails: '/application/contact-details',
     incomeDetails: '/application/income-details',

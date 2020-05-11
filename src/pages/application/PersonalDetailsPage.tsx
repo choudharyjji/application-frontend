@@ -14,7 +14,6 @@ import { ApplicationProgressStateEnum } from '../../state/lead-application/enum'
 import Steps from '../../modules/steps/Steps';
 import Step from '../../modules/steps/Step';
 import AppRoute from '../../config/route/AppRoute';
-import Button from '../../components/button/Button';
 
 const PersonalDetailsPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
@@ -24,7 +23,7 @@ const PersonalDetailsPage = (): ReactElement => {
   const history = useHistory();
 
   const onSubmit = (formData: ApplicationData): void => {
-    const applicationData = { ...formData, ...currentApplicationData };
+    const applicationData = { ...currentApplicationData, ...formData };
     dispatch(LeadApplicationActions.updateApplicationData(applicationData));
     HttpModule.put<LeadApplicationStepResponse>(environment.api.leadCreateStep, applicationData).then(({ data }) => {
       applicationData.id = data.id;

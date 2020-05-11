@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement } from 'react';
 import ReactSelect from 'react-select';
 import { Control } from 'react-hook-form';
 import { FixMeType } from '../../type/fix-me.type';
@@ -49,7 +49,6 @@ const Select = (props: SelectProps): ReactElement => {
       textInput.blur();
     }
     control.reRender();
-    console.log(formValues);
   };
 
   return (
