@@ -38,6 +38,7 @@ export interface FieldSchema {
   label: string;
   type: FieldType;
   placeholder?: string;
+  prefix?: string;
   helperMessage?: string;
   options?: FieldSelectOptions[];
   dateParams?: FieldDateParams;

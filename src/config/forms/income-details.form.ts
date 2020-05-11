@@ -223,6 +223,7 @@ const formSchema: FormSchema = {
       type: FieldType.TEXT,
       name: 'iban',
       label: 'IBAN',
+      prefix: 'ES',
       helperMessage: 'Enter your International Bank Account Number (IBAN should start with ES)',
     },
     {
@@ -238,7 +239,8 @@ const incomeDetailsForm = new Form(formSchema);
 
 const iban = incomeDetailsForm.getField('iban');
 iban.attachOnBlurCallback((event) => {
-  const value = event.target.value.replace(/ /g, '');
+  let value = event.target.value.replace(/\D/g, '');
+  value = value.replace(/ /g, '');
   iban.updateValue(value);
 });
 

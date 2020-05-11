@@ -4,7 +4,7 @@ import InputTooltip from '../inputTooltip/InputTooltip';
 
 const Input = (props: InputProp): ReactElement => {
   const {
-    label, innerRef, name, value, onChange, onBlur, onFocus, type,
+    label, innerRef, name, value, onChange, onBlur, onFocus, type, prefix,
     placeholder, tooltip, disabled, autoFocus, spellCheck, autoComplete,
   } = props;
 
@@ -15,7 +15,9 @@ const Input = (props: InputProp): ReactElement => {
       </span>
       <div className="flex flex-no-wrap justify-between items-center">
         <div className="w-11/12">
-          <label>
+          <label
+            className="bg-white hover:shadow-md hover:border-transparent border border-fiesta-gray rounded-md py-2 px-4 flex w-full appearance-none leading-normal transition ease-in-out duration-500">
+            {(prefix) && <span className="inline-flex pr-2">{prefix}</span>}
             <input
               type={type}
               onChange={onChange}
@@ -28,13 +30,13 @@ const Input = (props: InputProp): ReactElement => {
               autoFocus={autoFocus}
               spellCheck={spellCheck}
               autoComplete={autoComplete}
-              className="bg-white focus:outline-none hover:shadow-md hover:border-transparent border border-fiesta-gray rounded-md py-2 px-4 block w-full appearance-none leading-normal transition ease-in-out duration-500"
+              className="focus:outline-none w-full inline-flex"
               ref={innerRef}
             />
           </label>
         </div>
         <div className="flex">
-          {tooltip && <InputTooltip message={tooltip} /> }
+          {tooltip && <InputTooltip message={tooltip} />}
         </div>
       </div>
     </>

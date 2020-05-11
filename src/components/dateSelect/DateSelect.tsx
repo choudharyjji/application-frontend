@@ -32,9 +32,7 @@ const DateSelect = (props: DateSelectProps): ReactElement => {
   let selectDayValue: number | null = null;
 
   const syncWithInputValue = (): void => {
-    console.log('a');
     if (selectYearValue != null && selectMonthValue != null && selectDayValue != null) {
-      console.log('b');
       date.set('year', selectYearValue).set('month', selectMonthValue).set('date', selectDayValue);
       control.setValue(name, date.toDate().toISOString().split('T')[0]);
       if (textInput !== null) {

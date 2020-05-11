@@ -4,6 +4,7 @@ export interface InputProp {
   label: string;
   name: string;
   type: FixMeType;
+  prefix: FixMeType;
   placeholder: FixMeType;
   tooltip?: string;
   disabled: FixMeType;

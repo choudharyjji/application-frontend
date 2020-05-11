@@ -9,6 +9,8 @@ export abstract class BaseField {
 
   protected name: string;
 
+  protected prefix: string | null = null;
+
   protected placeholder: string | null = null;
 
   protected helperMessage: string | null = null;
@@ -30,14 +32,16 @@ export abstract class BaseField {
   protected control: Control | null = null;
 
   protected constructor(name: string,
-    label: string,
-    placeholder: string | null,
-    helperMessage: string | null,
-    defaultValue: string | number | boolean | Date | null,
-    autoFocus: boolean,
-    disabled: boolean) {
+                        label: string,
+                        prefix: string | null,
+                        placeholder: string | null,
+                        helperMessage: string | null,
+                        defaultValue: string | number | boolean | Date | null,
+                        autoFocus: boolean,
+                        disabled: boolean) {
     this.id = `${name}_${Date.now()}`;
     this.name = name;
+    this.prefix = prefix;
     this.label = label;
     this.placeholder = placeholder;
     this.helperMessage = helperMessage;
@@ -71,6 +75,15 @@ export abstract class BaseField {
 
   public setName(name: string): this {
     this.name = name;
+    return this;
+  }
+
+  public getPrefix(): string | null {
+    return this.prefix;
+  }
+
+  public setPrefix(prefix: string | null): this {
+    this.prefix = prefix;
     return this;
   }
 

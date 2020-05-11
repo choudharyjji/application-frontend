@@ -10,6 +10,7 @@ export class DateField extends BaseField {
 
   constructor(name: string,
     label: string,
+    prefix: string | null,
     placeholder: string | null,
     helperMessage: string | null,
     defaultValue: string | number | boolean | Date | null,
@@ -17,7 +18,7 @@ export class DateField extends BaseField {
     disabled: boolean,
     minDate: Date | null,
     maxDate: Date | null) {
-    super(name, label, placeholder, helperMessage, defaultValue, autoFocus, disabled);
+    super(name, label, prefix, placeholder, helperMessage, defaultValue, autoFocus, disabled);
     this.minDate = minDate;
     this.maxDate = maxDate;
   }

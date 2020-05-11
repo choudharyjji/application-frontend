@@ -55,6 +55,7 @@ const DynamicForm = (props: DynamicFormProp): ReactElement => {
                     label={t(field.getLabel())}
                     name={name}
                     type={field.getType()}
+                    prefix={field.getPrefix()}
                     placeholder={field.getPlaceHolder()}
                     tooltip={t(field.getHelperMessage() || '')}
                     disabled={field.isDisabled()}

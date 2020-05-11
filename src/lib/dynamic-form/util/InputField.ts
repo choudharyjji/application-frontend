@@ -7,6 +7,7 @@ export class InputField extends BaseField {
 
   constructor(name: string,
     label: string,
+    prefix: string | null,
     placeholder: string | null,
     helperMessage: string | null,
     defaultValue: string | number | boolean | Date | null,
@@ -14,7 +15,7 @@ export class InputField extends BaseField {
     disabled: boolean,
     autoComplete: boolean,
     spellCheck: boolean) {
-    super(name, label, placeholder, helperMessage, defaultValue, autoFocus, disabled);
+    super(name, label, prefix, placeholder, helperMessage, defaultValue, autoFocus, disabled);
     this.autoComplete = autoComplete;
     this.spellCheck = spellCheck;
   }

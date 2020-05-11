@@ -53,6 +53,7 @@ export class Form {
       if (Form.isInputField(field.type)) {
         fields[field.name] = (new InputField(field.name,
           field.label,
+          field.prefix || null,
           field.placeholder || null,
           field.helperMessage || null,
           field.default || null,
@@ -65,6 +66,7 @@ export class Form {
       if (field.type === FieldType.SELECT) {
         fields[field.name] = new SelectField(field.name,
           field.label,
+          field.prefix || null,
           field.placeholder || null,
           field.helperMessage || null,
           field.default || null,
@@ -75,6 +77,7 @@ export class Form {
       if (field.type === FieldType.DATE) {
         fields[field.name] = new DateField(field.name,
           field.label,
+          field.prefix || null,
           field.placeholder || null,
           field.helperMessage || null,
           field.default || null,
