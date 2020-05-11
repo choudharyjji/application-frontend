@@ -103,8 +103,6 @@ const ApplicationPage = (): ReactElement => {
   }, [history]);
 
 
-
-
   return (
     <div className="container max-w-form">
       <Router>
