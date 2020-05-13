@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import environment from 'environment';
 import { useTranslation } from 'react-i18next';
@@ -14,13 +14,22 @@ import { LeadApplicationActions } from '../../state/lead-application/actions';
 import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
 import { useHistory } from 'react-router-dom';
 import AppRoute from '../../config/route/AppRoute';
+import { toast } from 'react-toastify';
+import i18n from '../../i18n';
+
 
 const MobileVerificationPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
-  const currentApplicationData = currentState.applicationData;
+  const { applicationData: currentApplicationData, progressState: currentApplicationProgress } = currentState;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
+
+  useEffect(() => {
+    if (currentApplicationProgress[currentApplicationProgress.length - 1] !== ApplicationProgressStateEnum.MOBILE_VERIFICATION) {
+      history.replace(AppRoute.application.index);
+    }
+  }, []);
 
   const onSubmit = (data: FixMeType): void => {
     if (currentApplicationData.id) {
@@ -31,6 +40,8 @@ const MobileVerificationPage = (): ReactElement => {
       HttpModule.post(environment.api.leadMobileVerification, requestData).then(() => {
         dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.CHECKING));
         history.push(AppRoute.application.checking);
+      }, () => {
+        toast.error(i18n.t('Verification code is incorrect! Please, try again!'));
       });
     }
   };

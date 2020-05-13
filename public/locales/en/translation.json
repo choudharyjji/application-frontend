@@ -159,6 +159,7 @@
   "Verify": "Verify",
   "Code": "Code",
   "Please verify your mobile": "Please verify your mobile",
+  "Verification code is incorrect! Please, try again!": "Verification code is incorrect! Please, try again!",
   "We have sent a unique verification code via SMS. Please fill in verification code.": "We have sent a unique verification code via SMS. Please fill in verification code.",
   "Please set a password": "Please set a password",
   "Password": "Password",

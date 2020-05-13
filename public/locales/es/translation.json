@@ -159,6 +159,7 @@
   "Verify": "Verificar",
   "Code": "Código",
   "Please verify your mobile": "Por favor verifica tu móvil",
+  "Verification code is incorrect! Please, try again!": "¡El código de verificación es incorrecto! ¡Inténtalo de nuevo!",
   "We have sent a unique verification code via SMS. Please fill in verification code.": "Te hemos enviado un código de verificación único a través de SMS. Por favor, rellene el código de verificación.",
   "Please set a password": "Por favor establezca una contraseña",
   "Password": "Contraseña",
