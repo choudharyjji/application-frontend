@@ -2,6 +2,8 @@ import React, { ReactElement, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import environment from 'environment';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import DynamicForm from '../../lib/dynamic-form/DynamicForm';
 import mobileVerificationForm from '../../config/forms/mobile-verification.form';
 import { RootStateInterface } from '../../state/root-state.interface';
@@ -12,24 +14,19 @@ import PageHeading from '../../components/pageHeading/PageHeading';
 import PageDescription from '../../components/pageDescription/PageDescription';
 import { LeadApplicationActions } from '../../state/lead-application/actions';
 import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
-import { useHistory } from 'react-router-dom';
 import AppRoute from '../../config/route/AppRoute';
-import { toast } from 'react-toastify';
 import i18n from '../../i18n';
+import useApplicationProgressGuardHook from '../../hooks/ApplicationProgressGuardHook';
 
 
 const MobileVerificationPage = (): ReactElement => {
+  useApplicationProgressGuardHook(ApplicationProgressStateEnum.MOBILE_VERIFICATION);
+
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
-  const { applicationData: currentApplicationData, progressState: currentApplicationProgress } = currentState;
+  const { applicationData: currentApplicationData } = currentState;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
-
-  useEffect(() => {
-    if (currentApplicationProgress[currentApplicationProgress.length - 1] !== ApplicationProgressStateEnum.MOBILE_VERIFICATION) {
-      history.replace(AppRoute.application.index);
-    }
-  }, []);
 
   const onSubmit = (data: FixMeType): void => {
     if (currentApplicationData.id) {
@@ -38,7 +35,7 @@ const MobileVerificationPage = (): ReactElement => {
         verificationCode: data.code,
       };
       HttpModule.post(environment.api.leadMobileVerification, requestData).then(() => {
-        dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.CHECKING));
+        dispatch(LeadApplicationActions.pushApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.CHECKING));
         history.push(AppRoute.application.checking);
       }, () => {
         toast.error(i18n.t('Verification code is incorrect! Please, try again!'));

@@ -15,8 +15,13 @@ import Step from '../../modules/steps/Step';
 import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
 import AppRoute from '../../config/route/AppRoute';
 import Button from '../../components/button/Button';
+import useApplicationProgressGuardHook from '../../hooks/ApplicationProgressGuardHook';
+import useApplicationProgressBackButtonHook from '../../hooks/ApplicationProgressBackButtonHook';
 
 const IncomeDetailsPage = (): ReactElement => {
+  useApplicationProgressBackButtonHook();
+  useApplicationProgressGuardHook(ApplicationProgressStateEnum.INCOME_DETAILS);
+
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const { applicationData: currentApplicationData } = currentState;
   const dispatch = useDispatch();
@@ -24,16 +29,17 @@ const IncomeDetailsPage = (): ReactElement => {
   const history = useHistory();
 
   const onSubmit = (formData: ApplicationData): void => {
+    formData.iban = `ES${formData.iban}`;
     const applicationData = { ...currentApplicationData, ...formData };
     HttpModule.post<LeadApplicationStepResponse>(environment.api.leadCreate, applicationData).then(() => {
       dispatch(LeadApplicationActions.updateApplicationData(applicationData));
-      dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.CHECKING));
+      dispatch(LeadApplicationActions.pushApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.CHECKING));
       history.push(AppRoute.application.checking);
     });
   };
 
   const handlePreviousButton = (): void => {
-    history.goBack();
+    dispatch(LeadApplicationActions.popApplicationProgressState());
   };
 
   return (
@@ -60,6 +66,5 @@ const IncomeDetailsPage = (): ReactElement => {
     </>
   );
 };
-
 
 export default IncomeDetailsPage;

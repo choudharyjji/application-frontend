@@ -16,8 +16,13 @@ import Steps from '../../modules/steps/Steps';
 import Step from '../../modules/steps/Step';
 import AppRoute from '../../config/route/AppRoute';
 import Button from '../../components/button/Button';
+import useApplicationProgressGuardHook from '../../hooks/ApplicationProgressGuardHook';
+import useApplicationProgressBackButtonHook from '../../hooks/ApplicationProgressBackButtonHook';
 
 const ContactDetailsPage = (): ReactElement => {
+  useApplicationProgressBackButtonHook();
+  useApplicationProgressGuardHook(ApplicationProgressStateEnum.CONTACT_DETAILS);
+
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const { applicationData: currentApplicationData } = currentState;
   const dispatch = useDispatch();
@@ -30,13 +35,13 @@ const ContactDetailsPage = (): ReactElement => {
     HttpModule.put<LeadApplicationStepResponse>(environment.api.leadCreateStep, applicationData).then(({ data }) => {
       applicationData.id = data.id;
       dispatch(LeadApplicationActions.updateApplicationData(applicationData));
-      dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.INCOME_DETAILS));
+      dispatch(LeadApplicationActions.pushApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.INCOME_DETAILS));
       history.push(AppRoute.application.incomeDetails);
     });
   };
 
   const handlePreviousButton = (): void => {
-    history.goBack();
+    dispatch(LeadApplicationActions.popApplicationProgressState());
   };
 
   return (

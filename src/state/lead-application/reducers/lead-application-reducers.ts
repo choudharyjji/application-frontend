@@ -27,10 +27,24 @@ export function leadApplicationReducer<T extends any>(
       };
       sessionStorage.setItem('state', JSON.stringify(temp));
       return temp;
-    case LeadApplicationActionEnum.UPDATE_APPLICATION_PROGRESS_STATE:
+    case LeadApplicationActionEnum.PUSH_APPLICATION_PROGRESS_STATE:
+      const last = state.progressState[state.progressState.length - 1];
+      if (action.payload != null && last !== action.payload) {
+        temp = {
+          ...state,
+          progressState: [...state.progressState, action.payload],
+        };
+        sessionStorage.setItem('state', JSON.stringify(temp));
+        return temp;
+      }
+      return state;
+
+    case LeadApplicationActionEnum.POP_APPLICATION_PROGRESS_STATE:
+      const progressStates = state.progressState;
+      progressStates.pop();
       temp = {
         ...state,
-        progressState: [...state.progressState, action.payload],
+        progressState: progressStates,
       };
       sessionStorage.setItem('state', JSON.stringify(temp));
       return temp;
@@ -44,5 +58,4 @@ export function leadApplicationReducer<T extends any>(
     default:
       return state;
   }
-
 }

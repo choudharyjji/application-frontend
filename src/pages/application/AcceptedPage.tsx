@@ -7,8 +7,12 @@ import Button from '../../components/button/Button';
 import logo from '../../assets/img/logo-dark-with-colors@3x.png';
 import PageHeading from '../../components/pageHeading/PageHeading';
 import PageDescription from '../../components/pageDescription/PageDescription';
+import useApplicationProgressGuardHook from '../../hooks/ApplicationProgressGuardHook';
+import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
 
 const AcceptedPage = (): ReactElement => {
+  useApplicationProgressGuardHook(ApplicationProgressStateEnum.ACCEPTED);
+
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const { t } = useTranslation();
   const [seconds, updateSeconds] = useState(5);

@@ -2,6 +2,7 @@ import React, { ReactElement, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import environment from 'environment';
+import { useHistory } from 'react-router-dom';
 import { RootStateInterface } from '../../state/root-state.interface';
 import { LeadApplicationActions } from '../../state/lead-application/actions';
 import { LeadStatus } from '../../enum/LeadStatus';
@@ -10,10 +11,12 @@ import Loader from '../../components/loader/Loader';
 import HttpModule from '../../services/api/HttpModule';
 import PageHeading from '../../components/pageHeading/PageHeading';
 import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
-import { useHistory } from 'react-router-dom';
 import AppRoute from '../../config/route/AppRoute';
+import useApplicationProgressGuardHook from '../../hooks/ApplicationProgressGuardHook';
 
 const CheckingPage = (): ReactElement => {
+  useApplicationProgressGuardHook(ApplicationProgressStateEnum.CHECKING);
+
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const currentApplicationData = currentState.applicationData;
   const dispatch = useDispatch();
@@ -44,7 +47,7 @@ const CheckingPage = (): ReactElement => {
           }
 
           if (nextState && nextPage) {
-            dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(nextState));
+            dispatch(LeadApplicationActions.pushApplicationProgressState<ApplicationProgressStateEnum>(nextState));
             history.push(nextPage);
           }
         });

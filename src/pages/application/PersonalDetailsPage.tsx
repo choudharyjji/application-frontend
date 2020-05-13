@@ -14,8 +14,10 @@ import { ApplicationProgressStateEnum } from '../../state/lead-application/enum'
 import Steps from '../../modules/steps/Steps';
 import Step from '../../modules/steps/Step';
 import AppRoute from '../../config/route/AppRoute';
+import useApplicationProgressGuardHook from '../../hooks/ApplicationProgressGuardHook';
 
 const PersonalDetailsPage = (): ReactElement => {
+  useApplicationProgressGuardHook(ApplicationProgressStateEnum.PERSONAL_DETAILS);
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const { applicationData: currentApplicationData } = currentState;
   const dispatch = useDispatch();
@@ -28,7 +30,7 @@ const PersonalDetailsPage = (): ReactElement => {
     HttpModule.put<LeadApplicationStepResponse>(environment.api.leadCreateStep, applicationData).then(({ data }) => {
       applicationData.id = data.id;
       dispatch(LeadApplicationActions.updateApplicationData(applicationData));
-      dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.CONTACT_DETAILS));
+      dispatch(LeadApplicationActions.pushApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.CONTACT_DETAILS));
       history.push(AppRoute.application.contactDetails);
     });
   };

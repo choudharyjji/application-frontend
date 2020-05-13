@@ -23,10 +23,17 @@ export class LeadApplicationActions {
     };
   }
 
-  public static updateApplicationProgressState<T>(data: T): ApplicationDataUpdateAction<T> {
+  public static pushApplicationProgressState<T>(data: T): ApplicationDataUpdateAction<T> {
     return {
-      type: LeadApplicationActionEnum.UPDATE_APPLICATION_PROGRESS_STATE,
+      type: LeadApplicationActionEnum.PUSH_APPLICATION_PROGRESS_STATE,
       payload: data,
+    };
+  }
+
+  public static popApplicationProgressState<T>(): ApplicationDataUpdateAction<T> {
+    return {
+      type: LeadApplicationActionEnum.POP_APPLICATION_PROGRESS_STATE,
+      payload: null,
     };
   }
 }

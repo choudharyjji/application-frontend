@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect } from 'react';
 import {
-  BrowserRouter as Router, Redirect, Route, Switch, useLocation, useHistory,
+  BrowserRouter as Router, Redirect, Route, Switch,
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import AppRoute from '../../config/route/AppRoute';
@@ -23,85 +23,19 @@ const ApplicationPage = (): ReactElement => {
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const { applicationData: currentApplicationData, progressState: currentApplicationProgress } = currentState;
   const [activeProgressState] = currentApplicationProgress.slice(-1);
-  const location = useLocation();
   const dispatch = useDispatch();
-  const history = useHistory();
-
-  const progressRouteMap = [
-    {
-      state: ApplicationProgressStateEnum.PERSONAL_DETAILS,
-      route: AppRoute.application.personalDetails,
-      strict: true,
-    },
-    {
-      state: ApplicationProgressStateEnum.CONTACT_DETAILS,
-      route: AppRoute.application.contactDetails,
-      strict: true,
-    },
-    {
-      state: ApplicationProgressStateEnum.INCOME_DETAILS,
-      route: AppRoute.application.incomeDetails,
-      strict: true,
-    },
-    {
-      state: ApplicationProgressStateEnum.CHECKING,
-      route: AppRoute.application.checking,
-      strict: true,
-    },
-    {
-      state: ApplicationProgressStateEnum.EMPLOYMENT_DETAILS,
-      route: AppRoute.application.employmentDetails,
-      strict: true,
-    },
-    {
-      state: ApplicationProgressStateEnum.INSTANTOR,
-      route: AppRoute.application.instantor,
-      strict: true,
-    },
-    {
-      state: ApplicationProgressStateEnum.MOBILE_VERIFICATION,
-      route: AppRoute.application.mobileVerification,
-      strict: true,
-    },
-    {
-      state: ApplicationProgressStateEnum.ACCEPTED,
-      route: AppRoute.application.accepted,
-      strict: true,
-    },
-    {
-      state: ApplicationProgressStateEnum.REJECTED,
-      route: AppRoute.application.rejected,
-      strict: true,
-    },
-    {
-      state: ApplicationProgressStateEnum.CONTINUE,
-      route: AppRoute.application.continue,
-      strict: false,
-    },
-  ];
 
   useEffect(() => {
     const applicationData: ApplicationData = currentApplicationData || { period: 31, amount: 300 };
-
     applicationData.affiliateReference = localStorage.getItem('affiliateReference') || undefined;
     applicationData.affiliateReferenceSubId = localStorage.getItem('affiliateReferenceSubId') || undefined;
     applicationData.affiliateReferenceTransactionId = localStorage.getItem('affiliateReferenceTransactionId') || undefined;
     dispatch(LeadApplicationActions.updateApplicationData<ApplicationData>(applicationData));
 
     if (!activeProgressState) {
-      dispatch(LeadApplicationActions.updateApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.PERSONAL_DETAILS));
+      dispatch(LeadApplicationActions.pushApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.PERSONAL_DETAILS));
     }
-
-    return () => {
-      history.block();
-      history.listen((listener, action) => {
-        if (action === 'POP') {
-          console.log('POP');
-        }
-      });
-    };
-  }, [history]);
-
+  }, []);
 
   return (
     <div className="container max-w-form">

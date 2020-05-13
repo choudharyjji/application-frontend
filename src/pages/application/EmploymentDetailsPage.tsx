@@ -12,8 +12,12 @@ import HttpModule from '../../services/api/HttpModule';
 import PageHeading from '../../components/pageHeading/PageHeading';
 import PageDescription from '../../components/pageDescription/PageDescription';
 import AppRoute from '../../config/route/AppRoute';
+import useApplicationProgressGuardHook from '../../hooks/ApplicationProgressGuardHook';
+import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
 
 const EmploymentDetailsPage = (): ReactElement => {
+  useApplicationProgressGuardHook(ApplicationProgressStateEnum.EMPLOYMENT_DETAILS);
+
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const currentApplicationData = currentState.applicationData;
   const { t } = useTranslation();
