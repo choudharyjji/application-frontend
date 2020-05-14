@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import environment from 'environment';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +14,7 @@ import PageDescription from '../../components/pageDescription/PageDescription';
 import AppRoute from '../../config/route/AppRoute';
 import useApplicationProgressGuardHook from '../../hooks/ApplicationProgressGuardHook';
 import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
+import { LeadApplicationActions } from '../../state/lead-application/actions';
 
 const EmploymentDetailsPage = (): ReactElement => {
   useApplicationProgressGuardHook(ApplicationProgressStateEnum.EMPLOYMENT_DETAILS);
@@ -22,6 +23,7 @@ const EmploymentDetailsPage = (): ReactElement => {
   const currentApplicationData = currentState.applicationData;
   const { t } = useTranslation();
   const history = useHistory();
+  const dispatch = useDispatch();
   const onSubmit = (data: FixMeType): void => {
     if (currentApplicationData.id) {
       const requestData: EmploymentDetailsRequest = {
@@ -31,6 +33,7 @@ const EmploymentDetailsPage = (): ReactElement => {
         workPhone: data.workPhone,
       };
       HttpModule.post(environment.api.leadSetEmploymentDetails, requestData).then(() => {
+        dispatch(LeadApplicationActions.pushApplicationProgressState<ApplicationProgressStateEnum>(ApplicationProgressStateEnum.CHECKING));
         history.push(AppRoute.application.checking);
       });
     }

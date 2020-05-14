@@ -4,7 +4,7 @@ import { LeadApplicationActionEnum } from '../enum';
 const stateInStorage = sessionStorage.getItem('state');
 const stateValueInStorage = stateInStorage ? JSON.parse(stateInStorage) : null;
 const initialState: LeadApplicationState = stateValueInStorage || {
-  progressState: [],
+  progressState: [0],
 };
 
 export function leadApplicationReducer<T extends any>(
@@ -53,6 +53,15 @@ export function leadApplicationReducer<T extends any>(
         ...state,
         customerConsents: { ...state.customerConsents, ...action.payload },
       };
+      sessionStorage.setItem('state', JSON.stringify(temp));
+      return temp;
+    case LeadApplicationActionEnum.CLEAR_STATE:
+      temp = {
+        ...state,
+        progressState: [0],
+        applicationResult: undefined,
+      };
+
       sessionStorage.setItem('state', JSON.stringify(temp));
       return temp;
     default:

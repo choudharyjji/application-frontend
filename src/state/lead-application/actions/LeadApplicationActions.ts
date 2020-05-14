@@ -36,4 +36,11 @@ export class LeadApplicationActions {
       payload: null,
     };
   }
+
+  public static clearState<T>(): ApplicationDataUpdateAction<T> {
+    return {
+      type: LeadApplicationActionEnum.CLEAR_STATE,
+      payload: null,
+    };
+  }
 }

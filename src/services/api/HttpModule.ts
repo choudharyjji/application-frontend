@@ -1,6 +1,4 @@
 import axios from 'axios';
-import { toast } from 'react-toastify';
-import i18n from '../../i18n';
 
 axios.interceptors.response.use(
   (response) => response,
@@ -9,11 +7,7 @@ axios.interceptors.response.use(
       && error.response.status >= 400
       && error.response.status < 500;
 
-    if (!expectedError) {
-      console.log('Logging the error', error);
-    } else {
-      toast.error(i18n.t('Something went wrong. Please, try again later.'));
-    }
+    console.log('Logging the error', error);
 
     return Promise.reject(error);
   },

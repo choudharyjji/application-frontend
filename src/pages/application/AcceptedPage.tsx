@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { RootStateInterface } from '../../state/root-state.interface';
@@ -9,19 +9,22 @@ import PageHeading from '../../components/pageHeading/PageHeading';
 import PageDescription from '../../components/pageDescription/PageDescription';
 import useApplicationProgressGuardHook from '../../hooks/ApplicationProgressGuardHook';
 import { ApplicationProgressStateEnum } from '../../state/lead-application/enum';
+import { LeadApplicationActions } from '../../state/lead-application/actions';
 
 const AcceptedPage = (): ReactElement => {
   useApplicationProgressGuardHook(ApplicationProgressStateEnum.ACCEPTED);
+  const dispatch = useDispatch();
 
   const currentState = useSelector((state: RootStateInterface) => state.leadApplication);
   const { t } = useTranslation();
   const [seconds, updateSeconds] = useState(5);
   const { applicationResult } = currentState;
-  const { partner } = applicationResult;
+  const partner = applicationResult ? applicationResult.partner : null;
   const partnerLogo = partner?.logo ? partner?.logo : logo;
 
   const redirect = (): void => {
     if (applicationResult.redirect) {
+      //dispatch(LeadApplicationActions.clearState());
       window.location.href = applicationResult.redirect;
     }
   };
@@ -34,7 +37,9 @@ const AcceptedPage = (): ReactElement => {
         updateSeconds(seconds - 1);
       }
     }, 1000);
-    return (): void => clearInterval(countdown);
+    return (): void => {
+      clearInterval(countdown);
+    };
   });
 
   if (!partner) {
